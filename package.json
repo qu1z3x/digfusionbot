@@ -1,0 +1,18 @@
+{
+	"name": "digfusionbot",
+	"type": "module",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon ./index.js && nodemon ./tgterminal.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"firebase": "^10.11.0",
+		"googleapis": "^134.0.0",
+		"node-cron": "^3.0.3",
+		"node-telegram-bot-api": "^0.65.1",
+		"nodemon": "^3.1.0"
+	}
+}
