@@ -1977,27 +1977,21 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 					? "Лучший покупатель (-20%) 🫅"
 					: "";
 
+			// <b>Заявки:</b>\nВсего: <b>${
+			// 	dataAboutUser.requestsHistiory.length
+			// }шт</b>\nВыполнено: <b>${
+			// 	dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+			// 		.length
+			// }шт\n\nОтзывы:</b>\nОставлено: <b>${
+			// 	dataAboutUser.requestsHistiory.length
+			// }шт</b> - <a href="https://t.me/${BotName}/?start=myFeedbacks">к отзывам</a>\nОдобрено: <b>${
+			// 	dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+			// 		.length
+			// }шт</b>
+
 			dataAboutUser.userAction = "settings";
 			await bot.editMessageText(
-				`<b><i>👤 Профиль • ${
-					dataAboutUser.chatId
-				}⚙️</i>\n\nДанные:\n</b>Логин: <b>${
-					dataAboutUser.login
-				}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>${
-					dataAboutUser.phoneNumber
-				}</b>\nСтатус:\n<b>${
-					dataAboutUser.userStatus
-				}</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\n\n<b>Заявки:</b>\nВсего: <b>${
-					dataAboutUser.requestsHistiory.length
-				}шт</b>\nВыполнено: <b>${
-					dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-						.length
-				}шт\n\nОтзывы:</b>\nОставлено: <b>${
-					dataAboutUser.requestsHistiory.length
-				}шт</b> - <a href="https://t.me/${BotName}/?start=myFeedbacks">к отзывам</a>\nОдобрено: <b>${
-					dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-						.length
-				}шт</b>`,
+				`<b><i>👤 Профиль • <code>${dataAboutUser.chatId}</code> ⚙️</i>\n\nДанные:\n</b>Логин: <b>${dataAboutUser.login}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>${dataAboutUser.phoneNumber}</b>\nСтатус:\n<b>${dataAboutUser.userStatus}</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\n\nПрошу извинить, <b>бот-консультант</b> только <b>стажируется,</b> поэтому некоторые разделы ещё <b>в разработке..</b> 🫤`,
 				{
 					parse_mode: "html",
 					chat_id: chatId,
@@ -2071,7 +2065,7 @@ async function userStatusInfo(chatId) {
 
 	try {
 		await bot.editMessageText(
-			`<b><i>👑 Статус клиента 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении!</b> 😍\n\nВот весь список:<blockquote><b>"Клиент 🙂"</b> - без скидки (начальный)\n<b>"Постоянный клиент 😎"</b> - 5% (после <b>3 заказов</b>)\n<b>"Особый клиент 🤩"</b> - 10% (после <b>6 заказов</b>)\n<b>"Лучший покупатель 🫅"</b> - 20% (после <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
+			`<b><i>👑 Статус клиента 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (начальный)\n<b>"Постоянный клиент 😎"</b> - 5% (после <b>3 заказов</b>)\n<b>"Особый клиент 🤩"</b> - 10% (после <b>6 заказов</b>)\n<b>"Лучший покупатель 🫅"</b> - 20% (после <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
 				dataAboutUser.userStatus
 			}</b>\n\nКол-во заказов: <b>${
 				dataAboutUser.requestsHistiory.filter((obj) => obj.isActive).length
@@ -2867,7 +2861,7 @@ async function StartAll() {
 				) {
 					dataAboutUser.login = text;
 
-					menuHome(chatId, false, true);
+					firstMeeting(chatId, 4);
 				}
 
 				if (
@@ -3429,21 +3423,21 @@ async function StartAll() {
 						break;
 				}
 			}
-
-			cron.schedule(`*/30 * * * *`, function () {
-				// Запись данных в базу данных
-				console.log("DB updated");
-				if (TOKEN == TOKENs[1]) {
-					set(dataRef, {
-						usersData: usersData,
-						requestsData: requestsData,
-						feedbacksData: feedbacksData,
-					});
-				}
-			});
 		} catch (error) {
 			console.log(error);
 			sendDataAboutError(chatId, `${String(error)}`);
+		}
+	});
+
+	cron.schedule(`*/30 * * * *`, function () {
+		// Запись данных в базу данных
+		console.log("DB updated");
+		if (TOKEN == TOKENs[1]) {
+			set(dataRef, {
+				usersData: usersData,
+				requestsData: requestsData,
+				feedbacksData: feedbacksData,
+			});
 		}
 	});
 }
