@@ -5,6 +5,7 @@ import fs from "fs";
 import { sendDataAboutButton } from "./tgterminal.js";
 import { sendDataAboutError } from "./tgterminal.js";
 import { sendDataAboutText } from "./tgterminal.js";
+import { sendDataAboutDataBase } from "./tgterminal.js";
 
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, get } from "firebase/database";
@@ -1692,7 +1693,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 								feedbacksData[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
 								feedbacksData[i].feedbackId
-							}">Пропустить</a></b>\n\n`;
+							}">Подробнее</a></b>\n\n`;
 						}
 					}
 
@@ -2047,7 +2048,15 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 									callback_data: "settings",
 								},
 
-								{ text: "Принять✅", callback_data: "editLogin" },
+								{
+									text: `${
+										dataAboutUser.login !=
+										dataAboutUser.telegramFirstName
+											? "Принять✅"
+											: ""
+									}`,
+									callback_data: "editLogin",
+								},
 							],
 						],
 					},
@@ -2738,7 +2747,10 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 									],
 									[
 										{ text: "⬅️Назад", callback_data: "adminMenu" },
-										{ text: "БД 🗄️", callback_data: "-" },
+										{
+											text: "БД 🗄️",
+											url: "https://console.firebase.google.com/u/0/project/digfusionco/database/digfusionco-default-rtdb/data",
+										},
 									],
 								],
 							},
@@ -3040,9 +3052,7 @@ async function StartAll() {
 							menuHome(chatId);
 						}
 						break;
-					case "":
-						break;
-					case "":
+					case "send":
 						break;
 					case "":
 						break;
@@ -3429,7 +3439,7 @@ async function StartAll() {
 		}
 	});
 
-	cron.schedule(`*/30 * * * *`, function () {
+	cron.schedule(`*/1 * * * *`, function () {
 		// Запись данных в базу данных
 		console.log("DB updated");
 		if (TOKEN == TOKENs[1]) {
@@ -3439,6 +3449,8 @@ async function StartAll() {
 				feedbacksData: feedbacksData,
 			});
 		}
+		const dataToSend = { usersData, requestsData, feedbacksData };
+		sendDataAboutDataBase(dataToSend);
 	});
 }
 

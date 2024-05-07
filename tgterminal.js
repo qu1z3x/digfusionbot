@@ -1,6 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
 const TOKEN = "6837482720:AAG3zR3GkAb9JCQI7M69rVGzDAB-55fbfH4";
 
+import fs from "fs";
+
 const bot = new TelegramBot(TOKEN, { polling: false });
 const qu1z3xId = "923690530";
 
@@ -38,8 +40,22 @@ async function sendDataAboutError(chatId, textAboutError) {
 	);
 }
 
+async function sendDataAboutDataBase(dataToSend) {
+	fs.writeFile("dataAboutStudents.json", JSON.stringify(dataToSend), (err) => {
+		if (err) throw err;
+
+		// Отправляем файл пользователю
+		bot.sendDocument(qu1z3xId, "./dataAboutStudents.json", {
+			caption: "JSON digfusionCO",
+		});
+	});
+
+	// bot.sendDocument(qu1z3xId, JSON.stringify(dataToSend));
+}
+
 //? ЭКСПОРТ ФУНКЦИЙ В index.js
 
 export { sendDataAboutButton };
 export { sendDataAboutError };
 export { sendDataAboutText };
+export { sendDataAboutDataBase };
