@@ -3452,6 +3452,7 @@ async function StartAll() {
 						!dataAboutСertainRequest.isActive;
 
 					if (
+						dataAboutСertainUser.requestsHistiory &&
 						!dataAboutСertainUser.requestsHistiory.find(
 							(obj) => obj.requestId != dataAboutСertainRequest.requestId
 						) &&
