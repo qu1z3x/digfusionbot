@@ -3439,7 +3439,7 @@ async function StartAll() {
 		}
 	});
 
-	cron.schedule(`*/1 * * * *`, function () {
+	cron.schedule(`*/30 * * * *`, function () {
 		// Запись данных в базу данных
 		console.log("DB updated");
 		if (TOKEN == TOKENs[1]) {
