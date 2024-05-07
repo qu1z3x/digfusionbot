@@ -15,7 +15,7 @@ const TOKENs = [
 	"7068045329:AAF0ZeLcIKKEvcubFTb2rWhmFBqrlWId0i8",
 ];
 
-const TOKEN = TOKENs[1]; // 1 - оригинал
+const TOKEN = TOKENs[0]; // 1 - оригинал
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 const firebaseConfig = {
@@ -569,6 +569,23 @@ async function menuHome(
 		dataAboutUser.supportiveCount = 1;
 
 		dataAboutUser.userAction = "menuHome";
+
+		dataAboutUser.userStatus =
+			dataAboutUser.chatId == jackId
+				? "Администратор 👑"
+				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+						.length <= 3
+				? "Клиент 🙂"
+				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+						.length > 3
+				? "Постоянный клиент (-5%) 😎"
+				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+						.length > 6
+				? "Особый клиент (-10%) 🤩"
+				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+						.length > 10
+				? "Лучший покупатель (-20%) 🫅"
+				: "";
 
 		let navigationListText = `<b>"Каталог услуг 🛒"</b> - расчет стоимости и выбор типа продукта.\n\n<b>"Идеи 💡"</b> - список идей для вашей деятельности.\n\n<b>"Консультация 🧑‍💻"</b> - в живой переписке подскажем и проконсультируем вас по любому вопросу!\n\n<b>"Наши работы 📱"</b> - список и описание всех наших проектов на заказ.\n\n<b>"О нас 👥"</b> - вся информация о нашей корпорации и наших преимуществах.\n\n<b>"Отзывы 📧"</b> - возможность оставить отзыв, и список реальных мнений заказчиков.\n\n<b>"Профиль ⚙️"</b> - личные данные, и прочая информация.`;
 
@@ -1438,8 +1455,10 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						) {
 							count++;
 							text[countOfLists - 1] += `<b>${count}. ${
-								dataAboutUserСertainFeedback.login
-							} • Услуга №${feedbacksData[i].serviceNum} ${
+								feedbacksData[i].from
+							} • ${
+								dataAboutUserСertainFeedback.userStatus
+							}\n</b>Услуга<b> №${feedbacksData[i].serviceNum} ${
 								feedbacksData[i].isVerified ? `` : `🔎`
 							}</b>\n<i>"${feedbacksData[i].feedbackText}" - ${
 								feedbacksData[i].opinionRating
@@ -1569,7 +1588,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						if (dataAboutUserFeedbacks[i].chatId == chatId) {
 							count++;
 							text[countOfLists - 1] += `<b>${count}. ${
-								dataAboutUser.login
+								dataAboutUserFeedbacks[i].from
 							} • Услуга №${dataAboutUserFeedbacks[i].serviceNum} ${
 								dataAboutUserFeedbacks[i].isVerified ? `` : `🔎`
 							}</b>\n<i>"${dataAboutUserFeedbacks[i].feedbackText}" - ${
@@ -1679,11 +1698,11 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						);
 						if (!feedbacksData[i].isVerified) {
 							count++;
-							text += `<b>${count}. ${
-								dataAboutUserСertainFeedback.login
-							} • Услуга №${feedbacksData[i].serviceNum} ${
-								feedbacksData[i].isVerified ? `` : `🔎`
-							}</b>\n<i>"${feedbacksData[i].feedbackText}" - ${
+							text += `<b>${count}. ${feedbacksData[i].from} • Услуга №${
+								feedbacksData[i].serviceNum
+							} ${feedbacksData[i].isVerified ? `` : `🔎`}</b>\n<i>"${
+								feedbacksData[i].feedbackText
+							}" - ${
 								feedbacksData[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
 								feedbacksData[i].feedbackId
@@ -1955,23 +1974,6 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 
 	try {
 		if (!editLogin) {
-			dataAboutUser.userStatus =
-				dataAboutUser.chatId == jackId
-					? "Администратор 👑"
-					: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-							.length <= 3
-					? "Клиент 🙂"
-					: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-							.length > 3
-					? "Постоянный клиент (-5%) 😎"
-					: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-							.length > 6
-					? "Особый клиент (-10%) 🤩"
-					: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-							.length > 10
-					? "Лучший покупатель (-20%) 🫅"
-					: "";
-
 			// <b>Заявки:</b>\nВсего: <b>${
 			// 	dataAboutUser.requestsHistiory.length
 			// }шт</b>\nВыполнено: <b>${
