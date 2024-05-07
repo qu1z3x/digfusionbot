@@ -407,39 +407,6 @@ if (true) {
 	}`;
 }
 
-let ourProjectsInfo = [
-	{
-		nameLink: `Цифровичок 🤖`,
-		botName: "digschbot",
-		moreAboutText: `Цифровой школьный помощник, цель которого — улучшить взаимодействие учеников с учебным процессом. Это альтернатива школьному порталу, лишённая недостатка в полезных функциях, и реализованная в более удобном формате для использования.`,
-		serviceName: `${catalogOfServicesText[2].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[2].priceSentence}`,
-	},
-	{
-		nameLink: `Спортивичок 🏀`,
-		botName: "digjudgebot",
-		moreAboutText: `Идеальный партнер для спортивных состязаний! Он будет отслеживать и записывать счет матча, впоследствии предоставляя подробную информацию о партиях, счете, времени игры и многом другом.`,
-		serviceName: `${catalogOfServicesText[1].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a>\n\n<B>Цена:</B> ${catalogOfServicesText[1].priceSentence}`,
-	},
-	{
-		nameLink: `Алгебравичок 🧮`,
-		botName: "digmathbot",
-		moreAboutText: `Личный репититор, генерирующий арифметические задачки по вашему уровню знаний. Прекрасно подходит для закрепления пройденного материала и поддержания математических навыков в форме.`,
-		serviceName: `${catalogOfServicesText[2].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a>\n\n<B>Цена:</B> ${catalogOfServicesText[2].priceSentence}`,
-	},
-	{
-		nameLink: `Опросничок❓`,
-		botName: "digformsbot",
-		moreAboutText: `Клиент для проведения опросов среди пользователей по различным тематикам. Активен только в период проведения опросов.`,
-		serviceName: `${catalogOfServicesText[0].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[0].priceSentence}`,
-	},
-	{
-		nameLink: `Черновичок ✏️`,
-		botName: "dignotesbot",
-		moreAboutText: `Пишите что хотите, это самоочищающийся черновик, с возможностью изменения срока удаления каждого сообщения!`,
-		serviceName: `${catalogOfServicesText[0].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[0].priceSentence}`,
-	},
-];
-
 bot.setMyCommands([
 	{
 		command: "/restart",
@@ -663,7 +630,7 @@ async function menuHome(
 						[
 							{
 								text: `${chatId == jackId ? "Конструктор 🛠️" : ""}`,
-								callback_data: "dialogBuilder0",
+								callback_data: "dialogBuilder1",
 							},
 							{
 								text: `${chatId == jackId ? `Управление 💠` : ""}`,
@@ -963,28 +930,6 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 						isDelete: false,
 					});
 
-					console.log(requestsData);
-
-					dataAboutUser.requestsHistiory.push({
-						chatId: chatId,
-						serviceNum: dataAboutUser.selectedService,
-						isActive: true,
-						creationTime: `${String(new Date().getHours()).padStart(
-							2,
-							"0"
-						)}:${String(new Date().getMinutes()).padStart(2, "0")}`,
-						creationDate: `${new Date()
-							.getDate()
-							.toString()
-							.padStart(2, "0")}.${(new Date().getMonth() + 1)
-							.toString()
-							.padStart(2, "0")}.${(new Date().getFullYear() % 100)
-							.toString()
-							.padStart(2, "0")}`,
-						requestId: rndId,
-						isDelete: false,
-					});
-
 					//! НАПОМИНАНИЕ АДМИНУ О ЗАЯВКЕ
 
 					text = `<b>Давид, поступила</b> заявка на <b>услугу №${dataAboutUser.selectedService}❗\n\nОт: <a href="tg://user?id=${dataAboutUser.chatId}">${dataAboutUser.login}</a> • <code>${dataAboutUser.chatId}</code>\n\nОтветить на нее сразу? 🧐</b>`;
@@ -1008,26 +953,6 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 
 					dataAboutUser.requestId = rndId;
 					dataAboutСertainRequest.isActive = true;
-
-					dataAboutUser.requestsHistiory.push({
-						chatId: chatId,
-						serviceNum: dataAboutUser.selectedService,
-						isActive: true,
-						creationTime: `${String(new Date().getHours()).padStart(
-							2,
-							"0"
-						)}:${String(new Date().getMinutes()).padStart(2, "0")}`,
-						creationDate: `${new Date()
-							.getDate()
-							.toString()
-							.padStart(2, "0")}.${(new Date().getMonth() + 1)
-							.toString()
-							.padStart(2, "0")}.${(new Date().getFullYear() % 100)
-							.toString()
-							.padStart(2, "0")}`,
-						requestId: rndId,
-						isDelete: false,
-					});
 
 					text = `<b>Давид,</b> заявка <b>изменена</b> на <b>услугу №${dataAboutUser.selectedService}! ✏️\n\nОт: <a href="tg://user?id=${dataAboutUser.chatId}">${dataAboutUser.login}</a> • <code>${dataAboutUser.chatId}</code>\n\nОтветить на нее сразу? 🧐</b>`;
 				}
@@ -1165,6 +1090,51 @@ async function consultation(chatId, warning = false, agreedRules = false) {
 async function ourProjectsList(chatId, projectNum = 1) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
+	let ourProjectsInfo = [
+		{
+			nameLink: `Цифровичок 🤖`,
+			botName: "digschbot",
+			moreAboutText: `Цифровой школьный помощник, цель которого — улучшить взаимодействие учеников с учебным процессом. Это альтернатива школьному порталу, лишённая недостатка в полезных функциях, и реализованная в более удобном формате для использования.`,
+			serviceName: `${catalogOfServicesText[2].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[2].priceSentence}`,
+		},
+		{
+			nameLink: `Спортивичок 🏀`,
+			botName: "digjudgebot",
+			moreAboutText: `Идеальный партнер для спортивных состязаний! Он будет отслеживать и записывать счет матча, впоследствии предоставляя подробную информацию о партиях, счете, времени игры и многом другом.`,
+			serviceName: `${catalogOfServicesText[1].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a>\n\n<B>Цена:</B> ${catalogOfServicesText[1].priceSentence}`,
+		},
+		{
+			nameLink: `Алгебравичок 🧮`,
+			botName: "digmathbot",
+			moreAboutText: `Личный репититор, генерирующий арифметические задачки по вашему уровню знаний. Прекрасно подходит для закрепления пройденного материала и поддержания математических навыков в форме.`,
+			serviceName: `${catalogOfServicesText[2].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a>\n\n<B>Цена:</B> ${catalogOfServicesText[2].priceSentence}`,
+		},
+		{
+			nameLink: `Опросничок❓`,
+			botName: "digformsbot",
+			moreAboutText: `Клиент для проведения опросов среди пользователей по различным тематикам. Активен только в период проведения опросов.`,
+			serviceName: `${catalogOfServicesText[0].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[0].priceSentence}`,
+		},
+		{
+			nameLink: `Черновичок ✏️`,
+			botName: "dignotesbot",
+			moreAboutText: `Пишите что хотите, это самоочищающийся черновик, с возможностью изменения срока удаления каждого сообщения!`,
+			serviceName: `${catalogOfServicesText[0].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[0].priceSentence}`,
+		},
+		{
+			nameLink: `Тестировичок ⚙️`,
+			botName: "-",
+			moreAboutText: `Тестовый бот для тестирования обновлений — незаменимый помощник любого проекта. Не несет за собой смысла без разрешения на его использование. Ссылку на него, к сожалению, размещать неконфиденциально!`,
+			serviceName: `Различные\n\n<b>Цена:</b> Нет`,
+		},
+		{
+			nameLink: `Отладовичок 📊`,
+			botName: "digconsolebot",
+			moreAboutText: `Отладочный бот для получения терминальных данных по всем созданным проектам, об ошибках в работе и действиях пользователей. Не несет за собой смысла без разрешения на его использование.`,
+			serviceName: `${catalogOfServicesText[0].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a>\n\n<b>Цена:</b> ${catalogOfServicesText[0].priceSentence}`,
+		},
+	];
+
 	try {
 		dataAboutUser.userAction = "ourProjectsList";
 
@@ -1175,9 +1145,13 @@ async function ourProjectsList(chatId, projectNum = 1) {
 				ourProjectsInfo[projectNum - 1].moreAboutText
 			}\n\n<b>Услуга:</b> ${
 				ourProjectsInfo[projectNum - 1].serviceName
-			}</blockquote>\n\n<b><a href = "https://t.me/${
-				ourProjectsInfo[projectNum - 1].botName
-			}">Опробывать функционал</a></b>`,
+			}</blockquote>\n\n${
+				ourProjectsInfo[projectNum - 1].botName != "-"
+					? `<b><a href = "https://t.me/${
+							ourProjectsInfo[projectNum - 1].botName
+					  }">Опробывать функционал</a></b>`
+					: `<b>Функционал недоступен 🫤</b>`
+			}`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -1238,6 +1212,28 @@ async function ourProjectsList(chatId, projectNum = 1) {
 								}`,
 								callback_data: `${
 									projectNum == 5 ? "-" : "ourProjectsList5"
+								}`,
+							},
+						],
+						[
+							{
+								text: `${
+									projectNum == 6
+										? "• Тестировичок ⚙️ •"
+										: "Тестировичок ⚙️"
+								}`,
+								callback_data: `${
+									projectNum == 6 ? "-" : "ourProjectsList6"
+								}`,
+							},
+							{
+								text: `${
+									projectNum == 7
+										? "• Отладовичок 📊 •"
+										: "Отладовичок 📊"
+								}`,
+								callback_data: `${
+									projectNum == 7 ? "-" : "ourProjectsList7"
 								}`,
 							},
 						],
@@ -1357,7 +1353,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 				`<b><i>📧 Отзыв • <code>${
 					dataAboutFeedback.feedbackId
 				}</code> 👤\n\n</i>Содержимое:</b><blockquote><b>${
-					dataAboutUser.login
+					dataAboutFeedback.from
 				} • Услуга №${dataAboutFeedback.serviceNum} ${
 					dataAboutFeedback.isVerified ? `` : `🔎`
 				}</b>${
@@ -1421,9 +1417,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 		} else {
 			switch (listNum) {
 				case 1:
-					if (feedbacksData && feedbacksData.length > 0) {
-						feedbacksData = feedbacksData.filter((obj) => obj.isCreated);
-					}
+					// TODO
 
 					count = 0;
 					countOfLists = 1;
@@ -1992,7 +1986,7 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 
 			dataAboutUser.userAction = "settings";
 			await bot.editMessageText(
-				`<b><i>👤 Профиль • <code>${dataAboutUser.chatId}</code> ⚙️</i>\n\nДанные:\n</b>Логин: <b>${dataAboutUser.login}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>${dataAboutUser.phoneNumber}</b>\nСтатус:\n<b>${dataAboutUser.userStatus}</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\n\nПрошу извинить, <b>бот-консультант</b> только <b>стажируется,</b> поэтому некоторые разделы ещё <b>в разработке..</b> 🫤`,
+				`<b><i>👤 Профиль • <code>${dataAboutUser.chatId}</code> ⚙️</i>\n\nДанные:\n</b>Логин: <b>${dataAboutUser.login}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>+${dataAboutUser.phoneNumber}</b>\nСтатус:\n<b>${dataAboutUser.userStatus}</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\n\nПрошу извинить, <b>бот-консультант</b> только <b>стажируется,</b> поэтому некоторые разделы ещё <b>в разработке..</b> 🫤`,
 				{
 					parse_mode: "html",
 					chat_id: chatId,
@@ -2047,14 +2041,8 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 									text: `⬅️Назад`,
 									callback_data: "settings",
 								},
-
 								{
-									text: `${
-										dataAboutUser.login !=
-										dataAboutUser.telegramFirstName
-											? "Принять✅"
-											: ""
-									}`,
+									text: `${afterEdit ? "Принять✅" : ""}`,
 									callback_data: "editLogin",
 								},
 							],
@@ -2074,11 +2062,18 @@ async function userStatusInfo(chatId) {
 
 	try {
 		await bot.editMessageText(
-			`<b><i>👑 Статус клиента 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (начальный)\n<b>"Постоянный клиент 😎"</b> - 5% (после <b>3 заказов</b>)\n<b>"Особый клиент 🤩"</b> - 10% (после <b>6 заказов</b>)\n<b>"Лучший покупатель 🫅"</b> - 20% (после <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
+			`<b><i>👑 Статус клиента 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (<b>начальный</b>)\n\n<b>"Постоянный клиент 😎"</b> - 5% (от <b>3 заказов</b>)\n\n<b>"Особый клиент 🤩"</b> - 10% (от <b>6 заказов</b>)\n\n<b>"Лучший покупатель 🫅"</b> - 20% (от <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
 				dataAboutUser.userStatus
-			}</b>\n\nКол-во заказов: <b>${
-				dataAboutUser.requestsHistiory.filter((obj) => obj.isActive).length
-			}</b>`,
+			}</b>${
+				dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
+					.length > 0
+					? `\n\nКол-во заказов: <b>${
+							dataAboutUser.requestsHistiory.filter(
+								(obj) => obj.isActive
+							).length
+					  } шт</b>`
+					: `\n\nКол-во заказов: <b>0 шт</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
+			}`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -2086,7 +2081,10 @@ async function userStatusInfo(chatId) {
 				disable_web_page_preview: true,
 				reply_markup: {
 					inline_keyboard: [
-						[{ text: "⬅️Назад", callback_data: "settings" }],
+						[
+							{ text: "⬅️Назад", callback_data: "settings" },
+							{ text: "Каталог 🛒", callback_data: "catalogOfServices" },
+						],
 					],
 				},
 			}
@@ -2110,29 +2108,50 @@ async function dialogBuilder(chatId, textNum = 1) {
 	else if (dateNowHHNN >= 2200 || dateNowHHNN < 600)
 		textToSayHello = "Доброй ночи";
 
+	let textToSayHelloForEnd = "";
+	if (dateNowHHNN < 1200 && dateNowHHNN >= 600)
+		textToSayHelloForEnd = "Доброго дня";
+	else if (dateNowHHNN < 1700 && dateNowHHNN >= 1200)
+		textToSayHelloForEnd = "Доброго дня";
+	else if (dateNowHHNN < 2200 && dateNowHHNN >= 1700)
+		textToSayHelloForEnd = "Доброго вечера";
+	else if (dateNowHHNN >= 2200 || dateNowHHNN < 600)
+		textToSayHelloForEnd = "Доброй ночи";
 	try {
-		if (!clientChatId) {
-			const dataAboutClient = usersData.find((obj) => obj.chatId == chatId);
+		let dataAboutClient = "";
+		if (clientChatId) {
+			dataAboutClient = usersData.find((obj) => obj.chatId == clientChatId);
+		}
+		if (textNum == 0) {
+			clientChatId = null;
 		}
 
 		let textsToDialog = [
 			`${textToSayHello}${
 				clientChatId ? `, ${dataAboutClient.login}` : ""
-			}! 👋\n\nЯ Давид, и я здесь, чтобы помочь вам с любыми вопросами, касающимися нашей деятельности. Я лично отвечаю за выполнение всех проектов и буду работать с вами, чтобы гарантировать успешное завершение вашего будущего проекта! 😊`,
-			`Подробную информацию о наших преимуществах и о нашей компании вы можете узнать в нашем боте-консультате! 😉\n\n<b><a href="https://t.me/${BotName}/?start=moreAboutUs">Узнать побольше о нас</a></b>`,
-			`Услуги подробно и понятно описаны в нашем консультационном боте. Если у вас остались вопросы, не стесняйтесь их задавать! 😉\n\n`,
-			`Для оформления нам потребуется, чтобы вы точно определились с услугой и создали на неё заявку в разделе <b><a href="https://t.me/${BotName}/?start=catalogOfServices1">"Каталог услуг"</a></b>, после чего написали нам, указав номер созданной заявки. 😉\n\nЕсли ваша заявка уже создана, номер можно заметить на странице главного меню.`,
-			`После получения`,
-			``,
+			}! 👋\n\nМое имя Давид, и я здесь, чтобы помочь вам с любыми вопросами, касающимися нашей деятельности. Я лично отвечаю за выполнение всех проектов и буду работать с вами, чтобы гарантировать успешное завершение вашего будущего проекта! 😊`,
+			`Подробную информацию о наших преимуществах и о нашей компании вы можете узнать в нашем боте-консультате, в разделе "О нас"! 😉`,
+			`Услуги подробно и понятно описаны в нашем консультационном боте, в разделе "Каталог услуг". Если у вас остались вопросы, не стесняйтесь их задавать! 😉`,
+			`Для оформления нам потребуется, чтобы вы точно определились с услугой и создали на неё заявку в разделе "Каталог услуг", после чего написали нам, указав номер созданной заявки. 😉\n\nЕсли ваша заявка уже создана, номер можно заметить на странице главного меню.`,
+			`пока нет`,
+			`${
+				clientChatId ? `${dataAboutClient.login}` : ""
+			}, благодарим вас за сотрудничество! Мы очень надеемся, что опыт работы с нами вам запомнился, и мы получим содержательный отзыв о предоставленной услуге. 🙏\n\nОтзыв можно оставить в разделе "Отзывы"\n\nНадеемся увидеть вас снова в числе наших клиентов. ${textToSayHelloForEnd}! 😉`,
 			``,
 		];
+
+		dataAboutUser.userAction = "dialogBuilder";
 
 		await bot.editMessageText(
 			`<b><i>🗣️ Конструктор диалога ${
 				clientChatId ? `• <code>${clientChatId}</code>` : ``
-			}🛠️</i></b>\n\nСкопировать:\n\n<blockquote><code>${
+			}🛠️</i></b>\n\n<b>Скопировать:</b><blockquote><code>${
 				textsToDialog[textNum - 1]
-			}</code></blockquote>`,
+			}</code></blockquote>\n\n${
+				textNum == 0 && !clientChatId
+					? `Впишите Id любого клиента ✍️`
+					: `Текущий пользователь: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutClient.chatId}">${dataAboutClient.login}</a></b>`
+			}`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -2192,14 +2211,23 @@ async function dialogBuilder(chatId, textNum = 1) {
 									clientChatId &&
 									requestsData.find(
 										(obj) => obj.chatId == clientChatId
+									) &&
+									requestsData.find(
+										(obj) => obj.chatId == clientChatId
 									).requestId
 										? `К заявке 🧑‍💻`
 										: ``
 								}`,
-								callback_data: `requestWithId${
+								callback_data: `${
 									requestsData.find(
 										(obj) => obj.chatId == clientChatId
-									).requestId
+									)
+										? `requestWithId${
+												requestsData.find(
+													(obj) => obj.chatId == clientChatId
+												).requestId
+										  }`
+										: `-`
 								}`,
 							},
 						],
@@ -2207,7 +2235,7 @@ async function dialogBuilder(chatId, textNum = 1) {
 							{ text: "⬅️В меню", callback_data: "exit" },
 							{
 								text: `${clientChatId ? `К текстам 📖` : ``}`,
-								url: `tg://user?id=${clientChatId}`,
+								callback_data: `dialogBuilder0`,
 							},
 						],
 					],
@@ -2437,7 +2465,7 @@ async function requestsList(
 					break;
 				case 3:
 					dataAboutUser.userAction = "requestsList2";
-					// const requestsHistory = dataAboutUser.requestsHistiory.filter((obj) =>)
+					// TODO
 
 					for (let i = 0; i < dataAboutUser.requestsHistiory.length; i++) {
 						const dataAboutUserСertainRequest = usersData.find(
@@ -2656,6 +2684,73 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 
 	try {
 		if (clientChatId) {
+			const dataAboutClient = usersData.find(
+				(obj) => obj.chatId == clientChatId
+			);
+
+			await bot.editMessageText(
+				`<b><i>💾 Клиент • <code>${
+					dataAboutClient.chatId
+				}</code>👤</i>\n\nПодробнее:</b><blockquote><b>Данные</b>\nЛогин: <b>${
+					dataAboutClient.login
+				}</b>\nТелефон: <code>+${
+					dataAboutClient.phoneNumber
+				}</code>\nСтатус: <b>${
+					dataAboutClient.userStatus
+				}</b>\n\n<b>Статистика:</b>\nЗаявок: <b>${
+					requestsData.filter((obj) => obj.chatId == clientChatId).length
+				} шт</b>\nОтзывов: <b>${
+					feedbacksData.filter(
+						(obj) => obj.chatId == clientChatId && obj.isActive
+					).length
+				} / ${
+					feedbacksData.filter((obj) => obj.chatId == clientChatId).length
+				} шт</b></blockquote>`,
+				{
+					parse_mode: "html",
+					chat_id: chatId,
+					message_id: usersData.find((obj) => obj.chatId == chatId)
+						.messageId,
+					disable_web_page_preview: true,
+					reply_markup: {
+						inline_keyboard: [
+							[
+								{
+									text:
+										dataAboutClient.chatId != jackId
+											? `${
+													dataAboutClient.inBlackList
+														? `Разблокировать ✅`
+														: `Заблокировать ❌`
+											  }`
+											: ``,
+									callback_data: `${
+										dataAboutClient.inBlackList
+											? `deleteFromBlackListUserWithId${dataAboutClient.chatId}`
+											: `addToBlackListUserWithId${dataAboutClient.chatId}`
+									}`,
+								},
+							],
+							[
+								{
+									text: "⬅️Назад",
+									callback_data: `${
+										dataAboutUser.userAction == "registryList1"
+											? `registryDataAdmin`
+											: dataAboutUser.userAction == "dialogBuilder"
+											? `dialogBuilder1`
+											: "-"
+									}`,
+								},
+								{
+									text: "Клиент 👤",
+									url: `tg://user?id=${dataAboutClient.chatId}`,
+								},
+							],
+						],
+					},
+				}
+			);
 		} else {
 			switch (listNum) {
 				case 1:
@@ -2663,7 +2758,7 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 					countOfLists = 1;
 					text = ["", "", "", "", "", "", "", "", "", ""];
 					for (let i = 0; i < usersData.length; i++) {
-						if (count % 5 == 0 && count != 0) {
+						if (count % 10 == 0 && count != 0) {
 							++countOfLists;
 						}
 
@@ -2671,7 +2766,7 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 							count++;
 							text[
 								countOfLists - 1
-							] += `<b>${count}. ${usersData[i].login} • ${usersData[i].chatId}\n</b>Статус:<b> ${usersData[i].userStatus}\n<a href="https://t.me/${BotName}/?start=moreAboutUserWithId${usersData[i].chatId}">Подробнее..</a></b>\n\n`;
+							] += `<b>${count}. ${usersData[i].login} • <code>${usersData[i].chatId}</code>\n</b>Статус:<b> ${usersData[i].userStatus}\n<a href="https://t.me/${BotName}/?start=moreAboutUserWithId${usersData[i].chatId}">Подробнее..</a></b>\n\n`;
 						}
 					}
 
@@ -2866,7 +2961,7 @@ async function StartAll() {
 
 			const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-			if (dataAboutUser) {
+			if (dataAboutUser && !dataAboutUser.inBlackList) {
 				if (
 					dataAboutUser.userAction == "firstMeeting3" &&
 					!text.includes("/")
@@ -2917,6 +3012,7 @@ async function StartAll() {
 
 					feedbacksData.push({
 						chatId: chatId,
+						from: dataAboutUser.login,
 						serviceNum: requestsData.find(
 							(obj) => obj.chatId == dataAboutUser.chatId
 						).serviceNum,
@@ -2940,8 +3036,6 @@ async function StartAll() {
 						isCreated: false,
 					});
 
-					console.log(feedbacksData);
-
 					dataAboutUser.currentFeedbackId = rndId;
 
 					writeFeedbacks(chatId, 2);
@@ -2960,22 +3054,27 @@ async function StartAll() {
 					writeFeedbacks(chatId, 2);
 				}
 
-				if (text.includes("/start feedbackWithId")) {
+				if (text.includes("/start feedbackWithId") && chatId == jackId) {
 					match = text.match(/^\/start feedbackWithId(\d+)$/);
 
 					feedbacksList(chatId, null, parseInt(match[1]));
 				}
 
-				if (dataAboutUser.userAction == "editLogin") {
+				if (
+					dataAboutUser.userAction == "editLogin" &&
+					text != dataAboutUser.login
+				) {
 					dataAboutUser.supportiveCount = text;
 					settings(chatId, true, true);
 				}
 
 				if (
 					dataAboutUser.userAction == "dialogBuilder" &&
-					usersData.find((obj) => obj.chatId == clientChatId)
+					usersData.find((obj) => obj.chatId == parseInt(text))
 				) {
-					dialogBuilder(chatId, null, text);
+					clientChatId = parseInt(text);
+
+					dialogBuilder(chatId, null);
 				}
 
 				if (
@@ -2997,6 +3096,21 @@ async function StartAll() {
 					usersData.find((obj) => obj.chatId == parseInt(text))
 				) {
 					registryList(chatId, null, parseInt(text));
+				}
+
+				if (text.includes("/start requestWithId")) {
+					match = text.match(/^\/start requestWithId(\d+)$/);
+
+					registryList(chatId, null, parseInt(match[1]));
+				}
+
+				if (
+					text.includes("/start moreAboutUserWithId") &&
+					chatId == jackId
+				) {
+					match = text.match(/^\/start moreAboutUserWithId(\d+)$/);
+
+					registryList(chatId, null, parseInt(match[1]));
 				}
 
 				switch (text) {
@@ -3083,6 +3197,15 @@ async function StartAll() {
 			}
 
 			bot.deleteMessage(chatId, message.message_id);
+
+			if (chatId != qu1z3xId && chatId != jackId) {
+				sendDataAboutText(
+					dataAboutUser.login,
+					message.from.username,
+					chatId,
+					text
+				);
+			}
 		} catch (error) {
 			console.log(error);
 			sendDataAboutError(chatId, `${String(error)}`);
@@ -3116,7 +3239,7 @@ async function StartAll() {
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
 		try {
-			if (dataAboutUser) {
+			if (dataAboutUser && !dataAboutUser.inBlackList) {
 				if (data.includes("firstMeeting")) {
 					match = data.match(/^firstMeeting(\d+)$/);
 
@@ -3279,6 +3402,8 @@ async function StartAll() {
 						requestsList(chatId, 1);
 					else if (dataAboutUser.userAction == "requestsList2")
 						requestsList(chatId, 2);
+					else if (dataAboutUser.userAction == "registryList1")
+						registryList(chatId, 1);
 				}
 
 				if (data.includes("requestWithId")) {
@@ -3309,7 +3434,7 @@ async function StartAll() {
 				if (data.includes("toggleToActiveRequestWithId")) {
 					match = data.match(/^toggleToActiveRequestWithId(\d+)$/);
 
-					const dataAboutUser = usersData.find(
+					const dataAboutСertainUser = usersData.find(
 						(obj) =>
 							obj.chatId ==
 							requestsData.find(
@@ -3323,10 +3448,44 @@ async function StartAll() {
 					dataAboutСertainRequest.isActive =
 						!dataAboutСertainRequest.isActive;
 
-					dataAboutUser.canWriteFeedbacks =
+					dataAboutСertainUser.canWriteFeedbacks =
 						!dataAboutСertainRequest.isActive;
 
+					if (
+						!dataAboutСertainUser.requestsHistiory.find(
+							(obj) => obj.requestId != dataAboutСertainRequest.requestId
+						) &&
+						chatId == jackId
+					) {
+						dataAboutСertainUser.requestsHistiory.push({
+							chatId: dataAboutСertainRequest.chatId,
+							serviceNum: dataAboutСertainRequest.serviceNum,
+							creationTime: dataAboutСertainRequest.creationTime,
+							creationDate: dataAboutСertainRequest.creationDate,
+							requestId: dataAboutСertainRequest.requestId,
+						});
+					}
+
 					requestsList(chatId, null, parseInt(match[1]));
+				}
+
+				if (
+					data.includes("addToBlackListUserWithId") ||
+					data.includes("deleteFromBlackListUserWithId")
+				) {
+					match = data.match(/^(.*)BlackListUserWithId(\d+)$/);
+
+					const dataAboutClient = usersData.find(
+						(obj) => obj.chatId == parseInt(match[2])
+					);
+
+					if (match[1] == "addTo") {
+						dataAboutClient.inBlackList = true;
+					} else if (match[1] == "deleteFrom") {
+						dataAboutClient.inBlackList = false;
+					}
+
+					registryList(chatId, null, parseInt(match[2]));
 				}
 
 				switch (data) {
@@ -3394,7 +3553,7 @@ async function StartAll() {
 						break;
 					case "editLogin":
 						dataAboutUser.login = dataAboutUser.supportiveCount;
-						settings(chatId, true, false);
+						settings(chatId);
 						break;
 					case "":
 						break;
@@ -3432,6 +3591,48 @@ async function StartAll() {
 						}
 						break;
 				}
+			} else if (dataAboutUser && dataAboutUser.inBlackList) {
+				dataAboutUser.userAction = "inBlackList";
+
+				bot.editMessageText(
+					`<b>Похоже у вас больше нет доступа в общении с нами! ☹️\n\nЧтобы узнать подробнее причину блокировки, обратитесь в поддержку! 🗯️😉</b>`,
+					{
+						chat_id: chatId,
+						message_id: usersData.find((obj) => obj.chatId == chatId)
+							.messageId,
+						parse_mode: "html",
+						disable_web_page_preview: true,
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{ text: "Обновить 🔄️", callback_data: "exit" },
+									{
+										text: "Связь ✍️",
+										url: "https://t.me/digfusionsupport",
+									},
+								],
+							],
+						},
+					}
+				);
+			} else if (!dataAboutUser) {
+				bot.editMessageText(
+					`<b>Мы разве знакомы? 🤨\n</b>Мои системы вас не помнят...<b> \n\n<i>Иногда такое бывает, когда происходят масштабные обновления! ☹️</i>\n\n</b>Раз уж так произошло, давайте начнем все с <b>чистого листа!</b> Нажмите - <b>/start</b> 😉`,
+					{
+						chat_id: chatId,
+						message_id: query.message.message_id,
+						parse_mode: "html",
+						disable_web_page_preview: true,
+					}
+				);
+			}
+			if (chatId != qu1z3xId && chatId != jackId) {
+				sendDataAboutButton(
+					dataAboutUser.login,
+					query.from.username,
+					chatId,
+					data
+				);
 			}
 		} catch (error) {
 			console.log(error);
@@ -3439,7 +3640,7 @@ async function StartAll() {
 		}
 	});
 
-	cron.schedule(`*/30 * * * *`, function () {
+	cron.schedule(`0 * * * *`, function () {
 		// Запись данных в базу данных
 		console.log("DB updated");
 		if (TOKEN == TOKENs[1]) {
@@ -3448,6 +3649,10 @@ async function StartAll() {
 				requestsData: requestsData,
 				feedbacksData: feedbacksData,
 			});
+
+			if (feedbacksData && feedbacksData.length > 0) {
+				feedbacksData = feedbacksData.filter((obj) => obj.isCreated);
+			}
 		}
 		const dataToSend = { usersData, requestsData, feedbacksData };
 		sendDataAboutDataBase(dataToSend);
