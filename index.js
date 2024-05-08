@@ -871,7 +871,9 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 					} ⌛\n\n<b>Цена:</b> ${
 						catalogOfServicesText[serviceNum - 1].priceSentence
 					} 💰</blockquote>\n\n${
-						requestsData.find((obj) => (obj.chatId = chatId))
+						requestsData.find(
+							(obj) => obj.chatId == chatId && obj.isActive
+						)
 							? `<b>❗Ранее,</b> вы выбирали <b>услугу №${
 									requestsData.find((obj) => obj.chatId == chatId)
 										.serviceNum
