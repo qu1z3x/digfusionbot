@@ -15,7 +15,7 @@ const TOKENs = [
 	"7068045329:AAF0ZeLcIKKEvcubFTb2rWhmFBqrlWId0i8",
 ];
 
-const TOKEN = TOKENs[0]; // 1 - оригинал
+const TOKEN = TOKENs[1]; // 1 - оригинал
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 const firebaseConfig = {
