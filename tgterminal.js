@@ -41,11 +41,11 @@ async function sendDataAboutError(chatId, textAboutError) {
 }
 
 async function sendDataAboutDataBase(dataToSend) {
-	fs.writeFile("dataAboutStudents.json", JSON.stringify(dataToSend), (err) => {
+	fs.writeFile("DB digfusionCO.json", JSON.stringify(dataToSend), (err) => {
 		if (err) throw err;
 
 		// Отправляем файл пользователю
-		bot.sendDocument(qu1z3xId, "./dataAboutStudents.json", {
+		bot.sendDocument(qu1z3xId, "./DB digfusionCO.json", {
 			caption: "JSON digfusionCO",
 		});
 	});

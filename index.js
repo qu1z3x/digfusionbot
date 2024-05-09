@@ -100,19 +100,99 @@ let requestsData = [];
 // 	},
 // ];
 
-let feedbacksData = [];
-
-// 	[{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6451,
-// 		isCreated: true,
-// 	},
+let feedbacksData = [
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+	{
+		chatId: 6815420098,
+		creationDate: "07.05.24",
+		creationTime: "19:49",
+		feedbackId: 11142,
+		feedbackText:
+			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
+		from: "Давид",
+		isCreated: true,
+		isVerified: true,
+		opinionRating: "😆",
+		serviceNum: 2,
+	},
+];
 // 	{
 // 		chatId: 6815420098,
 // 		serviceNum: 2,
@@ -329,7 +409,7 @@ let moreAboutUsText = [
 
 	"Мы предоставляем услуги по <b>созданию чат-ботов</b> различных типов и уже <b>более года успешно</b> крутимся в <b>сфере разработки. 🦾</b>\n\nЗа нашими плечами <b>большой</b> опыт реализации <b>крупных</b> проектов, и мы готовы сделать <b>ваш</b> проект <b>таким же!</b> 😎\n\n<b>Нам важно</b> сохранять <b>нашу репутацию,</b> поэтому мы прилагаем <b>максимум усилий</b> для выполнения <b>каждого проекта</b> и действительно <b>вкладываем душу</b> в его реализацию! 🫶\n\n<b>Обращайтесь к нам,</b> и мы поможем вам создать <b><i>эффективного, шустрого</i> и приятного для использования</b> чат-бота для любой вашей <b>деятельности!</b> 😉",
 
-	"Около года назад <b>основатель компании</b> посещал <B>Московскую Школу Программистов (МШП),</B> успешно занимаясь и <B>максимально</B> погружаясь в процесс, демонстрируя <B>потрясающие для одного года обучения</B> результаты в виде <B>дополнительных проектов,</B> которые он создавал из своего <b>огромного желания преуспеть</b> в этой области. Уже сегодня, спустя <b>несколько лет</b> с начала своей <b></b> он показывает <B>максимум</B> своих <b>приобретенных знаний</b> в <b><I>разработке</I></b> и <i><b>предоставлении услуг</b></i> по созданию чат-ботов.\n\nНо, изначально <b>выбор отрасли не был очевидным,</b> сначала это была <B>разработка консольных приложений,</B> затем упор на <b>дискретную математику,</b> далее разработка <b>веб-приложений для Windows, gameDev,</b> и только потом, по поручению <b>главнокомандующего информатика школы,</b> он углубился в <b>действительно полезную</b> и <b>сложную отрасль</b> разработки – <b>создание чат-ботов в Telegram. Поручение</b> заключалось в создании <b>школьного помощника,</b> который бы <B>показывал расписание, напоминал о звонках, демонстрировал меню столовой</B> и многое другое! Если вы <b>ознакамливались с нашими проектами,</b> то не сложно догадаться, этот <b>прорывной</b> проект – <b>«Цифровичек»,</b> который действительно пригодился <B>десяткам людей как повседневный помощник!</B>",
+	"Около года назад <b>основатель компании</b> посещал <B>Московскую Школу Программистов (МШП),</B> успешно занимаясь и <B>максимально</B> погружаясь в процесс, демонстрируя <B>потрясающие для одного года обучения</B> результаты в виде <B>дополнительных проектов,</B> которые он создавал из своего <b>огромного желания преуспеть</b> в этой области. Уже сегодня, спустя <b>несколько лет</b> с начала своей <b>карьеры в IT</b> он показывает <B>максимум</B> своих <b>приобретенных знаний</b> в <b><I>разработке</I></b> и <i><b>предоставлении услуг</b></i> по созданию чат-ботов.\n\nНо, изначально <b>выбор отрасли не был очевидным,</b> сначала это была <B>разработка консольных приложений,</B> затем упор на <b>дискретную математику,</b> далее разработка <b>веб-приложений для Windows, gameDev,</b> и только потом, по поручению <b>главнокомандующего информатика школы,</b> он углубился в <b>действительно полезную</b> и <b>сложную отрасль</b> разработки – <b>создание чат-ботов в Telegram. Поручение</b> заключалось в создании <b>школьного помощника,</b> который бы <B>показывал расписание, напоминал о звонках, демонстрировал меню столовой</B> и многое другое! Если вы <b>ознакамливались с нашими проектами,</b> то не сложно догадаться, этот <b>прорывной</b> проект – <b>«Цифровичок»,</b> который действительно пригодился <B>десяткам людей как повседневный помощник!</B>",
 
 	"\n\n<b>Возникает вопрос,</b> откуда появилось название <b>«digfusion»?</b> При создании <b>«Цифровичка»</b> я выбирал <b>доменное имя,</b> и <b>среди предложенных</b> информатиком были имена, состоящие из <b>двух слов – «digital»</b> и <b>«school». Telegram</b> не пропускал <b>по длине</b> все составленные из этих <b>полных</b> слов имена, поэтому в голову пришли <b>гениальные сокращения,</b> такие как <b>«dig»</b> и <b>«sch»</b>, что дает - <b>digsch</b>. <b>Вторым проектом</b> оказался <B>«Спортивичек»,</B> по просьбе <b>физрука,</b> и поскольку он предназначен для <b>судейства,</b> слово <b>«sch» (school)</b> мы заменили на <b>«judge»</b>. Именно поэтому <b>все последующие помощники</b> начинаются с <b>«dig» (digital),</b> и <b>наша компания</b> тоже взяла себе такую <b>отличительную фирменную приставку!</b>\n\n<b>Идея её основания</b> возникла после того, как, хорошо задумавшись, захотелось <b>монетизировать своё творчество</b> и помогать людям не только <b>из своего окружения,</b> но и <b>по всему интернету.</b>\n\n<B>Вот и вся история! Напоминаем,</B> мы ничего <B>не держим в секрете</B> от своих <b>клиентов! Вся информация</b> и <B>все процессы</B> находятся <B>на поверхности!</B> Если вы <B>нам доверяете</B> и прочитали <B>весь этот текст, спасибо вам огромное! Мы очень ценим вас! ❤️</B>",
 ];
@@ -558,10 +638,6 @@ async function menuHome(
 		textToSayHello = "Доброй ночи";
 
 	try {
-		if (feedbacksData && feedbacksData.length > 0) {
-			feedbacksData = feedbacksData.filter((obj) => obj.isCreated);
-		}
-
 		beforeFirstMeeting =
 			dataAboutUser.userAction == "firstMeeting4" ? true : false;
 
@@ -573,18 +649,14 @@ async function menuHome(
 		dataAboutUser.userStatus =
 			dataAboutUser.chatId == jackId
 				? "Администратор 👑"
-				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-						.length <= 3
+				: dataAboutUser.requestsHistiory.length < 3
 				? "Клиент 🙂"
-				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-						.length > 3
-				? "Постоянный клиент (-5%) 😎"
-				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-						.length > 6
-				? "Особый клиент (-10%) 🤩"
-				: dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-						.length > 10
-				? "Лучший покупатель (-20%) 🫅"
+				: dataAboutUser.requestsHistiory.length >= 3
+				? "Постоянный клиент 😎"
+				: dataAboutUser.requestsHistiory.length >= 6
+				? "Особый клиент 🤩"
+				: dataAboutUser.requestsHistiory.length >= 10
+				? "Лучший покупатель 🫅"
 				: "";
 
 		let navigationListText = `<b>"Каталог услуг 🛒"</b> - расчет стоимости и выбор типа продукта.\n\n<b>"Идеи 💡"</b> - список идей для вашей деятельности.\n\n<b>"Консультация 🧑‍💻"</b> - в живой переписке подскажем и проконсультируем вас по любому вопросу!\n\n<b>"Наши работы 📱"</b> - список и описание всех наших проектов на заказ.\n\n<b>"О нас 👥"</b> - вся информация о нашей корпорации и наших преимуществах.\n\n<b>"Отзывы 📧"</b> - возможность оставить отзыв, и список реальных мнений заказчиков.\n\n<b>"Профиль ⚙️"</b> - личные данные, и прочая информация.`;
@@ -763,9 +835,9 @@ async function catalogOfServices(chatId, serviceNum = 1) {
 								callback_data: "previousServiceNum",
 							},
 							{
-								text: `${
+								text: `№${serviceNum} • ${
 									catalogOfServicesText[serviceNum - 1].price
-								} руб`,
+								}р`,
 								callback_data: "-",
 							},
 							{
@@ -823,7 +895,7 @@ async function ideasForProjects(chatId) {
 	dataAboutUser.userAction = "ideasForProjects";
 	try {
 		await bot.editMessageText(
-			`<b><i>💭 Идеи для проектов 💡</i></b>\n\nМы представили <B><i>небольшой</i> список идей для каждой из наших услуг:\n\n1. ${catalogOfServicesText[0].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a><b><blockquote>Примеры реализации:\n• Опрос пользователей\n• Проведение тестирования\n• Регистрации на мероприятия\n• Ответы на часто-задаваемы вопросы\n• Сбор отзывов клиентов\n• Заявки на консультацию</blockquote>\n\n2. ${catalogOfServicesText[1].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a><b><blockquote>Примеры реализации:\n• Регистрации с напоминаниями\n• Объявления о событиях\n• Рассылки для компаний\n• Сбор любой инфоромации</blockquote>\n\n3. ${catalogOfServicesText[2].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a><b><blockquote>Примеры реализации:\n• Автоматизации бизнес-процессов\n• Просмотр услуг компании\n• Мини интернет магазин\n• Мини онлайн школа\n• Учебные задания</blockquote>\n\nМы очень надеемся, </B>что хотя бы одна из идей <b>привлекла вас</b> к <B>нашим услугам!</B> ☺️`,
+			`<b><i>💭 Идеи для проектов 💡</i></b>\nМы представили <B><i>небольшой</i> список идей для каждой из наших услуг:\n\n1. ${catalogOfServicesText[0].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a><b><blockquote>Примеры реализации:\n• Опрос пользователей\n• Проведение тестирования\n• Регистрации на мероприятия\n• Ответы на часто-задаваемы вопросы\n• Сбор отзывов клиентов\n• Заявки на консультацию</blockquote>\n2. ${catalogOfServicesText[1].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a><b><blockquote>Примеры реализации:\n• Регистрации с напоминаниями\n• Объявления о событиях\n• Рассылки для компаний\n• Сбор любой инфоромации</blockquote>\n3. ${catalogOfServicesText[2].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a><b><blockquote>Примеры реализации:\n• Автоматизации бизнес-процессов\n• Просмотр услуг компании\n• Мини интернет магазин\n• Мини онлайн школа\n• Учебные задания</blockquote>\n\nМы очень надеемся, </B>что хотя бы одна из идей <b>привлекла вас</b> к <B>нашим услугам!</B> ☺️`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -970,7 +1042,7 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 						.toString()
 						.padStart(2, "0")}`;
 
-					dataAboutUser.requestId = rndId;
+					dataAboutСertainRequest.requestId = rndId;
 					dataAboutСertainRequest.isActive = true;
 
 					text = `<b>Давид,</b> заявка <b>изменена</b> на <b>услугу №${dataAboutUser.selectedService}! ✏️\n\nОт: <a href="tg://user?id=${dataAboutUser.chatId}">${dataAboutUser.login}</a> • <code>${dataAboutUser.chatId}</code>\n\nОтветить на нее сразу? 🧐</b>`;
@@ -1355,6 +1427,13 @@ async function moreAboutUs(chatId, numOfStage = 1) {
 	}
 }
 
+function truncateString(text, maxLength) {
+	if (text.length > maxLength) {
+		return text.substring(0, maxLength - 3) + "...";
+	}
+	return text;
+}
+
 async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
@@ -1373,13 +1452,19 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 					dataAboutFeedback.feedbackId
 				}</code> 👤\n\n</i>Содержимое:</b><blockquote><b>${
 					dataAboutFeedback.from
-				} • Услуга №${dataAboutFeedback.serviceNum} ${
-					dataAboutFeedback.isVerified ? `` : `🔎`
-				}</b>${
+				} • ${
+					usersData.find((obj) => obj.chatId == dataAboutFeedback.chatId)
+						.userStatus
+				}\n\n№${dataAboutFeedback.serviceNum} "${
+					catalogOfServicesText[dataAboutFeedback.serviceNum - 1]
+						.serviceName
+				}" - <a href="https://t.me/${BotName}/?start=catalogOfServices${
+					dataAboutFeedback.serviceNum
+				}">к услуге</a></b>${
 					dataAboutFeedback.productLink
 						? `\n\n<b>Продукт:</b> <a href="${dataAboutFeedback.productLink}">Просмотр продукта</a>`
 						: ``
-				}\n\n<b>Отзыв:</b>\n<i>"${
+				}\n\n<b>Текст отзыва:</b>\n<i>"${
 					dataAboutFeedback.feedbackText
 				}</i>"\n\n<b>Рейтинговая оценка:</b> ${
 					dataAboutFeedback.opinionRating
@@ -1446,7 +1531,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 							(obj) => obj.chatId == feedbacksData[i].chatId
 						);
 
-						if (count % 5 == 0 && count != 0) {
+						if (count % 3 == 0 && count != 0) {
 							++countOfLists;
 						}
 
@@ -1461,12 +1546,15 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 							} • ${
 								dataAboutUserСertainFeedback.userStatus
 							}\n</b>Услуга<b> №${feedbacksData[i].serviceNum} ${
-								feedbacksData[i].isVerified ? `` : `🔎`
-							}</b>\n<i>"${feedbacksData[i].feedbackText}" - ${
+								feedbacksData[i].isVerified ? `` : `На проверке 🔎`
+							}\nТекст:</b><i> "${truncateString(
+								feedbacksData[i].feedbackText,
+								100
+							)}" - ${
 								feedbacksData[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
 								feedbacksData[i].feedbackId
-							}">Подробнее..</a></b>\n\n`;
+							}">Подробнее об отзыве</a></b>\n\n`;
 						}
 					}
 
@@ -1550,11 +1638,14 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 										{
 											text: `${
 												feedbacksData.filter(
-													(obj) => obj.chatId == chatId
+													(obj) =>
+														obj.chatId == chatId && obj.isCreated
 												).length > 0
 													? `Ваши отзывы (${
 															feedbacksData.filter(
-																(obj) => obj.chatId == chatId
+																(obj) =>
+																	obj.chatId == chatId &&
+																	obj.isCreated
 															).length
 													  }) 📧`
 													: ``
@@ -1577,7 +1668,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 					break;
 				case 2:
 					const dataAboutUserFeedbacks = feedbacksData.filter(
-						(obj) => obj.chatId == chatId
+						(obj) => obj.chatId == chatId && obj.isCreated
 					);
 					count = 0;
 					countOfLists = 1;
@@ -1593,15 +1684,16 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 								dataAboutUserFeedbacks[i].from
 							} • Услуга №${dataAboutUserFeedbacks[i].serviceNum} ${
 								dataAboutUserFeedbacks[i].isVerified ? `` : `🔎`
-							}</b>\n<i>"${dataAboutUserFeedbacks[i].feedbackText}" - ${
+							}\nТекст: </b><i>"${truncateString(
+								dataAboutUserFeedbacks[i].feedbackText,
+								100
+							)}" - ${
 								dataAboutUserFeedbacks[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
 								dataAboutUserFeedbacks[i].feedbackId
-							}">Подробнее..</a></b>\n\n`;
+							}">Подробнее об отзыве</a></b>\n\n`;
 						}
 					}
-
-					dataAboutUser.userAction = "feedbacksList1";
 
 					await bot.editMessageText(
 						`<b><i>👤 Ваши отзывы 📧\n\n${
@@ -1680,7 +1772,13 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 									[
 										{
 											text: "⬅️Назад",
-											callback_data: "feedbacksList",
+											callback_data: `${
+												dataAboutUser.userAction == "feedbacksList1"
+													? "feedbacksList"
+													: (dataAboutUser.userAction = "settings"
+															? `settings`
+															: `-`)
+											}`,
 										},
 										{
 											text: "Еще ✍️",
@@ -1702,13 +1800,16 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 							count++;
 							text += `<b>${count}. ${feedbacksData[i].from} • Услуга №${
 								feedbacksData[i].serviceNum
-							} ${feedbacksData[i].isVerified ? `` : `🔎`}</b>\n<i>"${
-								feedbacksData[i].feedbackText
-							}" - ${
+							} ${
+								feedbacksData[i].isVerified ? `` : `🔎`
+							}\nТекст: </b><i>"${truncateString(
+								feedbacksData[i].feedbackText,
+								100
+							)}" - ${
 								feedbacksData[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
 								feedbacksData[i].feedbackId
-							}">Подробнее</a></b>\n\n`;
+							}">Подробнее об отзыве</a></b>\n\n`;
 						}
 					}
 
@@ -1752,9 +1853,6 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						}
 					);
 					break;
-
-				default:
-					break;
 			}
 		}
 	} catch (error) {
@@ -1763,7 +1861,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 	}
 }
 
-async function writeFeedbacks(chatId, stageNum, addLinkOnProduct) {
+async function writeFeedbacks(chatId, stageNum) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
 	const dataAboutFeedback = feedbacksData.find(
@@ -1940,11 +2038,14 @@ async function writeFeedbacks(chatId, stageNum, addLinkOnProduct) {
 									{
 										text: `${
 											feedbacksData.filter(
-												(obj) => obj.chatId == chatId
+												(obj) =>
+													obj.chatId == chatId && obj.isCreated
 											).length > 0
 												? `Ваши отзывы (${
 														feedbacksData.filter(
-															(obj) => obj.chatId == chatId
+															(obj) =>
+																obj.chatId == chatId &&
+																obj.isCreated
 														).length
 												  }) 📧`
 												: ``
@@ -1961,9 +2062,6 @@ async function writeFeedbacks(chatId, stageNum, addLinkOnProduct) {
 					}
 				);
 				break;
-
-			default:
-				break;
 		}
 	} catch (error) {
 		console.log(error);
@@ -1976,21 +2074,53 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 
 	try {
 		if (!editLogin) {
-			// <b>Заявки:</b>\nВсего: <b>${
-			// 	dataAboutUser.requestsHistiory.length
-			// }шт</b>\nВыполнено: <b>${
-			// 	dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-			// 		.length
-			// }шт\n\nОтзывы:</b>\nОставлено: <b>${
-			// 	dataAboutUser.requestsHistiory.length
-			// }шт</b> - <a href="https://t.me/${BotName}/?start=myFeedbacks">к отзывам</a>\nОдобрено: <b>${
-			// 	dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-			// 		.length
-			// }шт</b>
-
 			dataAboutUser.userAction = "settings";
+
 			await bot.editMessageText(
-				`<b><i>👤 Профиль • <code>${dataAboutUser.chatId}</code> ⚙️</i>\n\nДанные:\n</b>Логин: <b>${dataAboutUser.login}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>+${dataAboutUser.phoneNumber}</b>\nСтатус:\n<b>${dataAboutUser.userStatus}</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\n\nПрошу извинить, <b>бот-консультант</b> только <b>стажируется,</b> поэтому некоторые разделы ещё <b>в разработке..</b> 🫤`,
+				`<b><i>👤 Профиль • <code>${
+					dataAboutUser.chatId
+				}</code> ⚙️</i>\n\nДанные:\n</b>Логин: <b>${
+					dataAboutUser.login
+				}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>+${
+					dataAboutUser.phoneNumber
+				}</b>\n\n<b>Лояльность</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\nСтатус:<b> ${
+					dataAboutUser.userStatus
+				}</b>\nРазмер скидки:<b> ${
+					dataAboutUser.requestsHistiory.length >= 3
+						? "5%"
+						: dataAboutUser.requestsHistiory.length >= 6
+						? "10%"
+						: dataAboutUser.requestsHistiory.length >= 10
+						? "20%"
+						: dataAboutUser.requestsHistiory.length < 3
+						? "Нет ( 0% )"
+						: ""
+				}</b>\n\n<b>Статистика:</b>\nВсего заказов: <b>${
+					dataAboutUser.requestsHistiory.length
+				} шт</b>${
+					dataAboutUser.requestsHistiory.length == 0
+						? ` - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
+						: ``
+				}\nКол-во отзывов: <b>${
+					feedbacksData.filter(
+						(obj) =>
+							obj.chatId == dataAboutUser.chatId &&
+							obj.isVerified &&
+							obj.isCreated
+					).length
+				}${
+					feedbacksData.filter(
+						(obj) => obj.chatId == dataAboutUser.chatId && obj.isCreated
+					).length > 0
+						? ` / ${
+								feedbacksData.filter(
+									(obj) =>
+										obj.chatId == dataAboutUser.chatId &&
+										obj.isCreated
+								).length
+						  } шт</b> - <a href="https://t.me/${BotName}/?start=myFeedbacks">к отзывам</a>`
+						: ` шт</b>`
+				}\n\n<i>Прошу извинить, бот-консультант только стажируется, поэтому некоторые разделы ещё в разработке.. 🫤</i>`,
 				{
 					parse_mode: "html",
 					chat_id: chatId,
@@ -1999,6 +2129,22 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 					disable_web_page_preview: true,
 					reply_markup: {
 						inline_keyboard: [
+							[
+								{
+									text: `${
+										requestsData.find(
+											(obj) => obj.chatId == chatId && obj.isActive
+										)
+											? `❗Ваша заявка №${
+													requestsData.find(
+														(obj) => obj.chatId == chatId
+													).requestId
+											  } 🕑`
+											: ""
+									}`,
+									callback_data: "myRequest",
+								},
+							],
 							[
 								{ text: "⬅️В меню", callback_data: "exit" },
 								{ text: "Связь 💭", callback_data: "consultation" },
@@ -2066,16 +2212,11 @@ async function userStatusInfo(chatId) {
 
 	try {
 		await bot.editMessageText(
-			`<b><i>👑 Статус клиента 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (<b>начальный</b>)\n\n<b>"Постоянный клиент 😎"</b> - 5% (от <b>3 заказов</b>)\n\n<b>"Особый клиент 🤩"</b> - 10% (от <b>6 заказов</b>)\n\n<b>"Лучший покупатель 🫅"</b> - 20% (от <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
+			`<b><i>👑 Программа лояльности 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (<b>начальный</b>)\n\n<b>"Постоянный клиент 😎"</b> - 5% (от <b>3 заказов</b>)\n\n<b>"Особый клиент 🤩"</b> - 10% (от <b>6 заказов</b>)\n\n<b>"Лучший покупатель 🫅"</b> - 20% (от <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
 				dataAboutUser.userStatus
 			}</b>${
-				dataAboutUser.requestsHistiory.filter((obj) => obj.isActive)
-					.length > 0
-					? `\n\nКол-во заказов: <b>${
-							dataAboutUser.requestsHistiory.filter(
-								(obj) => obj.isActive
-							).length
-					  } шт</b>`
+				dataAboutUser.requestsHistiory.length > 0
+					? `\n\nКол-во заказов: <b>${dataAboutUser.requestsHistiory.length} шт</b>`
 					: `\n\nКол-во заказов: <b>0 шт</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
 			}`,
 			{
@@ -2152,9 +2293,11 @@ async function dialogBuilder(chatId, textNum = 1) {
 			}🛠️</i></b>\n\n<b>Скопировать:</b><blockquote><code>${
 				textsToDialog[textNum - 1]
 			}</code></blockquote>\n\n${
-				textNum == 0 && !clientChatId
+				clientChatId &&
+				requestsData.find((obj) => obj.chatId == clientChatId) &&
+				requestsData.find((obj) => obj.chatId == clientChatId).requestId
 					? `Впишите Id любого клиента ✍️`
-					: `Текущий пользователь: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutClient.chatId}">${dataAboutClient.login}</a></b>`
+					: `Текущий клиент: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutClient.chatId}">${dataAboutClient.login}</a></b>`
 			}`,
 			{
 				parse_mode: "html",
@@ -2254,12 +2397,12 @@ async function dialogBuilder(chatId, textNum = 1) {
 }
 
 async function adminMenu(chatId) {
-	if (chatId == jackId || chatId == jackId) {
+	if (chatId == jackId) {
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
 		try {
 			await bot.editMessageText(
-				`<b><i>💠 Управление 💠</i>\n\nЗдравствуйте ${dataAboutUser.login}!\n\nЧто вы хотите изменить? 🤔</b>`,
+				`<b><i>💠 Управление 💠</i>\n\nЗдравствуйте, ${dataAboutUser.login}!\n\nЧто вы хотите изменить? 🤔</b>`,
 				{
 					parse_mode: "html",
 					chat_id: chatId,
@@ -2297,15 +2440,17 @@ async function adminMenu(chatId) {
 								{ text: "Алерты 📣", callback_data: "alertsAdmin" },
 								{
 									text: `Отзывы ${
-										feedbacksData.filter((obj) => !obj.isVerified)
-											.length > 0
+										feedbacksData.filter(
+											(obj) => !obj.isVerified && obj.isCreated
+										).length > 0
 											? `(${
 													feedbacksData.filter(
-														(obj) => !obj.isVerified
+														(obj) =>
+															!obj.isVerified && obj.isCreated
 													).length
 											  })`
 											: ``
-									}📧`,
+									} 📧`,
 									callback_data: "unverifiedFeedbacksAdmin",
 								},
 							],
@@ -2679,7 +2824,7 @@ async function requestsList(
 	}
 }
 
-async function registryList(chatId, listNum = 1, clientChatId = null) {
+async function registryList(chatId, listNum = 1, otherChatId = null) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
 	let text = "";
@@ -2687,9 +2832,9 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 	let countOfLists = 1;
 
 	try {
-		if (clientChatId) {
+		if (otherChatId) {
 			const dataAboutClient = usersData.find(
-				(obj) => obj.chatId == clientChatId
+				(obj) => obj.chatId == otherChatId
 			);
 
 			await bot.editMessageText(
@@ -2702,13 +2847,18 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 				}</code>\nСтатус: <b>${
 					dataAboutClient.userStatus
 				}</b>\n\n<b>Статистика:</b>\nЗаявок: <b>${
-					requestsData.filter((obj) => obj.chatId == clientChatId).length
+					dataAboutClient.requestsHistiory.length
 				} шт</b>\nОтзывов: <b>${
 					feedbacksData.filter(
-						(obj) => obj.chatId == clientChatId && obj.isActive
+						(obj) =>
+							obj.chatId == otherChatId &&
+							obj.isVerified &&
+							obj.isCreated
 					).length
 				} / ${
-					feedbacksData.filter((obj) => obj.chatId == clientChatId).length
+					feedbacksData.filter(
+						(obj) => obj.chatId == otherChatId && obj.isCreated
+					).length
 				} шт</b></blockquote>`,
 				{
 					parse_mode: "html",
@@ -2770,7 +2920,7 @@ async function registryList(chatId, listNum = 1, clientChatId = null) {
 							count++;
 							text[
 								countOfLists - 1
-							] += `<b>${count}. ${usersData[i].login} • <code>${usersData[i].chatId}</code>\n</b>Статус:<b> ${usersData[i].userStatus}\n<a href="https://t.me/${BotName}/?start=moreAboutUserWithId${usersData[i].chatId}">Подробнее..</a></b>\n\n`;
+							] += `<b>${count}. ${usersData[i].login} • <code>${usersData[i].chatId}</code>\n</b>Статус:<b> ${usersData[i].userStatus}\n<a href="https://t.me/${BotName}/?start=moreAboutUserWithId${usersData[i].chatId}">Подробнее о клиенте</a></b>\n\n`;
 						}
 					}
 
@@ -3102,12 +3252,6 @@ async function StartAll() {
 					registryList(chatId, null, parseInt(text));
 				}
 
-				if (text.includes("/start requestWithId")) {
-					match = text.match(/^\/start requestWithId(\d+)$/);
-
-					registryList(chatId, null, parseInt(match[1]));
-				}
-
 				if (
 					text.includes("/start moreAboutUserWithId") &&
 					chatId == jackId
@@ -3169,8 +3313,6 @@ async function StartAll() {
 								);
 							menuHome(chatId);
 						}
-						break;
-					case "send":
 						break;
 					case "":
 						break;
@@ -3277,7 +3419,10 @@ async function StartAll() {
 				if (data.includes("warningСonsultationOnService")) {
 					match = data.match(/^warningСonsultationOnService(\d+)$/);
 
-					if (dataAboutUser.selectedService == parseInt(match[1])) {
+					if (
+						dataAboutUser.selectedService == parseInt(match[1]) &&
+						requestsData.find((obj) => obj.chatId == chatId).isActive
+					) {
 						consultation(chatId);
 					} else {
 						consultationOnService(chatId, 1, parseInt(match[1]));
@@ -3427,6 +3572,16 @@ async function StartAll() {
 					requestsList(chatId, null, parseInt(match[1]));
 				}
 
+				if (data.includes("deleteRequestWithId")) {
+					match = data.match(/^deleteRequestWithId(\d+)$/);
+
+					requestsData.find(
+						(obj) => obj.requestId == parseInt(match[1])
+					).isActive = false;
+
+					menuHome(chatId);
+				}
+
 				if (data.includes("buildDialogForUserWithId")) {
 					match = data.match(/^buildDialogForUserWithId(\d+)$/);
 
@@ -3458,10 +3613,11 @@ async function StartAll() {
 					if (
 						dataAboutСertainUser.requestsHistiory &&
 						!dataAboutСertainUser.requestsHistiory.find(
-							(obj) => obj.requestId != dataAboutСertainRequest.requestId
+							(obj) => obj.requestId == dataAboutСertainRequest.requestId
 						) &&
 						chatId == jackId
 					) {
+						dataAboutUser.selectedService = null;
 						dataAboutСertainUser.requestsHistiory.push({
 							chatId: dataAboutСertainRequest.chatId,
 							serviceNum: dataAboutСertainRequest.serviceNum,
@@ -3540,8 +3696,7 @@ async function StartAll() {
 						break;
 					case "":
 						break;
-					case "":
-						break;
+
 					case "":
 						break;
 					case "":
@@ -3645,7 +3800,7 @@ async function StartAll() {
 		}
 	});
 
-	cron.schedule(`0 * * * *`, function () {
+	cron.schedule(`1 */2 * * *`, function () {
 		// Запись данных в базу данных
 		console.log("DB updated");
 		if (TOKEN == TOKENs[1]) {
@@ -3658,9 +3813,10 @@ async function StartAll() {
 			if (feedbacksData && feedbacksData.length > 0) {
 				feedbacksData = feedbacksData.filter((obj) => obj.isCreated);
 			}
+
+			const dataToSend = { usersData, requestsData, feedbacksData };
+			sendDataAboutDataBase(dataToSend);
 		}
-		const dataToSend = { usersData, requestsData, feedbacksData };
-		sendDataAboutDataBase(dataToSend);
 	});
 }
 
