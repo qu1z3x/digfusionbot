@@ -707,7 +707,7 @@ async function menuHome(
 						[
 							{
 								text: "Наши работы 📱",
-								callback_data: "ourProjectsList1",
+								callback_data: "ourProjectsList0",
 							},
 						],
 						[
@@ -838,7 +838,12 @@ async function catalogOfServices(chatId, serviceNum = 1) {
 								text: `№${serviceNum} • ${
 									catalogOfServicesText[serviceNum - 1].price
 								}р`,
-								callback_data: "-",
+								callback_data: `${
+									dataAboutСertainRequest &&
+									dataAboutСertainRequest.serviceNum == serviceNum
+										? `myRequest`
+										: `warningСonsultationOnService${serviceNum}`
+								}`,
 							},
 							{
 								text: `⬇️`,
@@ -1230,18 +1235,22 @@ async function ourProjectsList(chatId, projectNum = 1) {
 		dataAboutUser.userAction = "ourProjectsList";
 
 		await bot.editMessageText(
-			`<b><i>🛠️ Наши работы 📱</i></b>\n\nПроект: <b>${
-				ourProjectsInfo[projectNum - 1].nameLink
-			}\n\nПодробнее:</b><blockquote><b>Для чего:</b> ${
-				ourProjectsInfo[projectNum - 1].moreAboutText
-			}\n\n<b>Услуга:</b> ${
-				ourProjectsInfo[projectNum - 1].serviceName
-			}</blockquote>\n\n${
-				ourProjectsInfo[projectNum - 1].botName != "-"
-					? `<b><a href = "https://t.me/${
-							ourProjectsInfo[projectNum - 1].botName
-					  }">Опробывать функционал</a></b>`
-					: `<b>Функционал недоступен 🫤</b>`
+			`<b><i>🛠️ Наши работы 📱</i></b>\n\n${
+				projectNum == 0
+					? `В списке ниже представлены <b>приложения нашей компании</b> и несколько <b>заказов от наших клиентов! 🛍️</b><i>\n\n(Некоторые проекты по просьбе заказчиков остались в их правах)</i>\n\nВыберите любой <b>проект</b> ниже, чтобы просмотреть <b>подробности</b> и <b>опробовать функционал! 😉</b>`
+					: `Проект: <b>${
+							ourProjectsInfo[projectNum - 1].nameLink
+					  }\n\nПодробнее:</b><blockquote><b>Для чего:</b> ${
+							ourProjectsInfo[projectNum - 1].moreAboutText
+					  }\n\n<b>Услуга:</b> ${
+							ourProjectsInfo[projectNum - 1].serviceName
+					  }</blockquote>\n\n${
+							ourProjectsInfo[projectNum - 1].botName != "-"
+								? `<b><a href = "https://t.me/${
+										ourProjectsInfo[projectNum - 1].botName
+								  }">Опробывать функционал</a></b>`
+								: `<b>Функционал недоступен 🫤</b>`
+					  }`
 			}`,
 			{
 				parse_mode: "html",
@@ -1521,8 +1530,6 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 		} else {
 			switch (listNum) {
 				case 1:
-					// TODO
-
 					count = 0;
 					countOfLists = 1;
 					text = ["", "", "", "", "", "", "", "", "", ""];
@@ -1546,7 +1553,9 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 							} • ${
 								dataAboutUserСertainFeedback.userStatus
 							}\n</b>Услуга<b> №${feedbacksData[i].serviceNum} ${
-								feedbacksData[i].isVerified ? `` : `На проверке 🔎`
+								feedbacksData[i].isVerified
+									? ``
+									: `</b>- на проверке 🔎<b>`
 							}\nТекст:</b><i> "${truncateString(
 								feedbacksData[i].feedbackText,
 								100
@@ -1695,6 +1704,8 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						}
 					}
 
+					dataAboutUser.userAction = "feedbacksList2";
+
 					await bot.editMessageText(
 						`<b><i>👤 Ваши отзывы 📧\n\n${
 							countOfLists > 1
@@ -1772,13 +1783,7 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 									[
 										{
 											text: "⬅️Назад",
-											callback_data: `${
-												dataAboutUser.userAction == "feedbacksList1"
-													? "feedbacksList"
-													: (dataAboutUser.userAction = "settings"
-															? `settings`
-															: `-`)
-											}`,
+											callback_data: `feedbacksList`,
 										},
 										{
 											text: "Еще ✍️",
@@ -2263,9 +2268,13 @@ async function dialogBuilder(chatId, textNum = 1) {
 	else if (dateNowHHNN >= 2200 || dateNowHHNN < 600)
 		textToSayHelloForEnd = "Доброй ночи";
 	try {
-		let dataAboutClient = "";
-		if (clientChatId) {
+		let dataAboutClient = "",
+			dataAboutСertainRequest = "";
+		if (usersData.find((obj) => obj.chatId == clientChatId)) {
 			dataAboutClient = usersData.find((obj) => obj.chatId == clientChatId);
+			dataAboutСertainRequest = requestsData.find(
+				(obj) => obj.chatId == clientChatId
+			);
 		}
 		if (textNum == 0) {
 			clientChatId = null;
@@ -2280,7 +2289,7 @@ async function dialogBuilder(chatId, textNum = 1) {
 			`Для оформления нам потребуется, чтобы вы точно определились с услугой и создали на неё заявку в разделе "Каталог услуг", после чего написали нам, указав номер созданной заявки. 😉\n\nЕсли ваша заявка уже создана, номер можно заметить на странице главного меню.`,
 			`пока нет`,
 			`${
-				clientChatId ? `${dataAboutClient.login}` : ""
+				clientChatId ? `${dataAboutClient.login}` : "Уважаемый клиент"
 			}, благодарим вас за сотрудничество! Мы очень надеемся, что опыт работы с нами вам запомнился, и мы получим содержательный отзыв о предоставленной услуге. 🙏\n\nОтзыв можно оставить в разделе "Отзывы"\n\nНадеемся увидеть вас снова в числе наших клиентов. ${textToSayHelloForEnd}! 😉`,
 			``,
 		];
@@ -2289,15 +2298,13 @@ async function dialogBuilder(chatId, textNum = 1) {
 
 		await bot.editMessageText(
 			`<b><i>🗣️ Конструктор диалога ${
-				clientChatId ? `• <code>${clientChatId}</code>` : ``
+				dataAboutСertainRequest ? `• <code>${clientChatId}</code>` : ``
 			}🛠️</i></b>\n\n<b>Скопировать:</b><blockquote><code>${
 				textsToDialog[textNum - 1]
 			}</code></blockquote>\n\n${
-				clientChatId &&
-				requestsData.find((obj) => obj.chatId == clientChatId) &&
-				requestsData.find((obj) => obj.chatId == clientChatId).requestId
+				!dataAboutСertainRequest
 					? `Впишите Id любого клиента ✍️`
-					: `Текущий клиент: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutClient.chatId}">${dataAboutClient.login}</a></b>`
+					: `Текущий клиент: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutСertainRequest.chatId}">${dataAboutСertainRequest.login}</a></b>`
 			}`,
 			{
 				parse_mode: "html",
@@ -2350,25 +2357,20 @@ async function dialogBuilder(chatId, textNum = 1) {
 						],
 						[
 							{
-								text: `${clientChatId ? `К клиенту 👤` : ``}`,
+								text: `${
+									dataAboutСertainRequest ? `К клиенту 👤` : ``
+								}`,
 								url: `tg://user?id=${clientChatId}`,
 							},
 							{
 								text: `${
-									clientChatId &&
-									requestsData.find(
-										(obj) => obj.chatId == clientChatId
-									) &&
-									requestsData.find(
-										(obj) => obj.chatId == clientChatId
-									).requestId
+									dataAboutСertainRequest &&
+									dataAboutСertainRequest.requestId
 										? `К заявке 🧑‍💻`
 										: ``
 								}`,
 								callback_data: `${
-									requestsData.find(
-										(obj) => obj.chatId == clientChatId
-									)
+									dataAboutСertainRequest
 										? `requestWithId${
 												requestsData.find(
 													(obj) => obj.chatId == clientChatId
@@ -2381,7 +2383,9 @@ async function dialogBuilder(chatId, textNum = 1) {
 						[
 							{ text: "⬅️В меню", callback_data: "exit" },
 							{
-								text: `${clientChatId ? `К текстам 📖` : ``}`,
+								text: `${
+									dataAboutСertainRequest ? `К текстам 📖` : ``
+								}`,
 								callback_data: `dialogBuilder0`,
 							},
 						],
@@ -3208,7 +3212,7 @@ async function StartAll() {
 					writeFeedbacks(chatId, 2);
 				}
 
-				if (text.includes("/start feedbackWithId") && chatId == jackId) {
+				if (text.includes("/start feedbackWithId")) {
 					match = text.match(/^\/start feedbackWithId(\d+)$/);
 
 					feedbacksList(chatId, null, parseInt(match[1]));
