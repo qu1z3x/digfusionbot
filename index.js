@@ -514,7 +514,13 @@ async function firstMeeting(chatId, numOfStage = 1) {
 						disable_web_page_preview: true,
 						reply_markup: {
 							inline_keyboard: [
-								[{ text: "Супер! 👍", callback_data: "firstMeeting2" }],
+								[
+									{
+										text: "Что такое чат-бот❓",
+										callback_data: "firstMeeting5",
+									},
+								],
+								[{ text: "Далее➡️", callback_data: "firstMeeting2" }],
 							],
 						},
 					}
@@ -524,7 +530,7 @@ async function firstMeeting(chatId, numOfStage = 1) {
 				dataAboutUser.userAction = "firstMeeting2";
 
 				await bot.editMessageText(
-					`Мы сделали подборку <b>ключевых преимуществ,</b> благодаря которым <b>сотрудничество с нами</b> станет для вас <b>максимально выгодным</b> и <b>комфортным!</b>\n\n${moreAboutUsText[0]}`,
+					`Подборка <b>ключевых преимуществ,</b> благодаря которым <b>сотрудничество с нами</b> станет для вас <b>максимально выгодным</b> и <b>комфортным!</b>\n\n${moreAboutUsText[0]}`,
 					{
 						parse_mode: "html",
 						chat_id: chatId,
@@ -535,7 +541,14 @@ async function firstMeeting(chatId, numOfStage = 1) {
 							inline_keyboard: [
 								[
 									{
-										text: "Мне это нравится! 😊",
+										text: "Что такое чат-бот❓",
+										callback_data: "firstMeeting5",
+									},
+								],
+								[
+									{ text: "⬅️Назад", callback_data: "firstMeeting1" },
+									{
+										text: "Далее➡️",
 										callback_data: "firstMeeting3",
 									},
 								],
@@ -548,7 +561,7 @@ async function firstMeeting(chatId, numOfStage = 1) {
 				dataAboutUser.userAction = "firstMeeting3";
 
 				await bot.editMessageText(
-					`Теперь <b>узнаем</b> друг друга <b>получше!</b> 😊\n\nМы уже рассказали <b>о себе,</b> теперь <b>ваша</b> очередь!\n\n<b>Пожалуйста, напишите как можно к вам обращаться для дальнейшего общения? 🤔</b>`,
+					`Теперь <b>узнаем</b> друг друга <b>получше!</b> 😊\n\n<b>Мы</b> уже рассказали <b>о себе,</b> теперь <b>ваша</b> очередь!\n\n<i>(Можно изменить в настройках)</i>\n\n<b>Пожалуйста, напишите как можно к вам обращаться для дальнейшего общения? 🤔</b>`,
 					{
 						parse_mode: "html",
 						chat_id: chatId,
@@ -559,57 +572,102 @@ async function firstMeeting(chatId, numOfStage = 1) {
 							inline_keyboard: [
 								[
 									{
-										text: `Или оставить ${dataAboutUser.telegramFirstName} ✅`,
+										text: `Оставить ${dataAboutUser.telegramFirstName} ✅`,
 										callback_data: "firstMeeting4",
 									},
 								],
+								[{ text: "⬅️Назад", callback_data: "firstMeeting2" }],
 							],
 						},
 					}
 				);
 				break;
 			case 4:
-				dataAboutUser.userAction = "firstMeeting4";
+				menuHome(chatId, false, true);
+
+				// dataAboutUser.userAction = "firstMeeting4";
+				// await bot.editMessageText(
+				// 	`<b>${dataAboutUser.login},</b> очень прятно! 😁\n\nНа <b>последнем этапе</b> я попрошу <b>вас</b> предоставить <b>номер телефона</b> для <b>подтверждения вашей личности.</b> 😊`,
+				// 	{
+				// 		parse_mode: "html",
+				// 		chat_id: chatId,
+				// 		message_id: usersData.find((obj) => obj.chatId == chatId)
+				// 			.messageId,
+				// 		disable_web_page_preview: true,
+				// 		// reply_markup: {
+				// 		// 	inline_keyboard: [[{ text: "", callback_data: "-" }]],
+				// 		// },
+				// 	}
+				// );
+
+				// await bot
+				// 	.sendMessage(
+				// 		chatId,
+				// 		`Используйте <b>удобное автозаполнение! ⬇️</b>`,
+				// 		{
+				// 			parse_mode: "HTML",
+				// 			disable_web_page_preview: true,
+				// 			reply_markup: {
+				// 				keyboard: [
+				// 					[
+				// 						{
+				// 							text: "Автозаполнить номер",
+				// 							request_contact: true,
+				// 							resize_keyboard: true,
+				// 						},
+				// 					],
+				// 				],
+				// 			},
+				// 		}
+				// 	)
+				// 	.then((message) => {
+				// 		dataAboutUser.messageIdOther = message.message_id;
+				// 	});
+
+				break;
+			case 5:
 				await bot.editMessageText(
-					`<b>${dataAboutUser.login},</b> очень прятно! 😁\n\nНа <b>последнем этапе</b> я попрошу <b>вас</b> предоставить <b>номер телефона</b> для <b>подтверждения вашей личности.</b> 😊`,
+					`<b><i>ЧТО ЖЕ ТАКОЕ ЧАТ-БОТ❓</i></b>\n\nЭто инструмент, <b>обрабатывающий</b> различные <b>запросы</b> пользователей <b>в формате диалога в мессенджере,</b> точно так же, как и <b>этот помощник,</b> текст которого <b>вы</b> сейчас читаете. 😊\n\nТакой <b>проект может</b> стать как прекрасным инструментом для <b>монетизации вашей деятельности,</b> так и <b>обычным опросником</b> для получения различных <B>данных</B> от групп людей. \n\nВ <b>пример</b> мы приведем наши <b>крупные</b> и <B>успешные работы.</B> ⬇️`,
 					{
 						parse_mode: "html",
 						chat_id: chatId,
 						message_id: usersData.find((obj) => obj.chatId == chatId)
 							.messageId,
 						disable_web_page_preview: true,
-						// reply_markup: {
-						// 	inline_keyboard: [[{ text: "", callback_data: "" }]],
-						// },
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{
+										text: "Цифровичок 🤖",
+										url: "https://t.me/digschbot",
+									},
+								],
+								[
+									{
+										text: "Спортивичок 🏀",
+										url: "https://t.me/digjudgebot",
+									},
+									{
+										text: "Алгебравичок 🧮",
+										url: "https://t.me/digmathbot",
+									},
+								],
+								[
+									{
+										text: "⬅️Назад",
+										callback_data:
+											dataAboutUser.userAction == "firstMeeting1"
+												? "firstMeeting1"
+												: dataAboutUser.userAction ==
+												  "firstMeeting2"
+												? "firstMeeting2"
+												: "",
+									},
+								],
+							],
+						},
 					}
 				);
-
-				await bot
-					.sendMessage(
-						chatId,
-						`Используйте <b>удобное автозаполнение! ⬇️</b>`,
-						{
-							parse_mode: "HTML",
-							disable_web_page_preview: true,
-							reply_markup: {
-								keyboard: [
-									[
-										{
-											text: "Автозаполнить номер",
-											request_contact: true,
-											resize_keyboard: true,
-										},
-									],
-								],
-							},
-						}
-					)
-					.then((message) => {
-						dataAboutUser.messageIdOther = message.message_id;
-					});
-
-				break;
-			case 4:
 				break;
 			case 2:
 				break;
@@ -639,7 +697,7 @@ async function menuHome(
 
 	try {
 		beforeFirstMeeting =
-			dataAboutUser.userAction == "firstMeeting4" ? true : false;
+			dataAboutUser.userAction == "firstMeeting3" ? true : false;
 
 		dataAboutUser.registrationIsOver = true;
 		dataAboutUser.supportiveCount = 1;
@@ -659,7 +717,7 @@ async function menuHome(
 				? "Лучший покупатель 🫅"
 				: "";
 
-		let navigationListText = `<b>"Каталог услуг 🛒"</b> - расчет стоимости и выбор типа продукта.\n\n<b>"Идеи 💡"</b> - список идей для вашей деятельности.\n\n<b>"Консультация 🧑‍💻"</b> - в живой переписке подскажем и проконсультируем вас по любому вопросу!\n\n<b>"Наши работы 📱"</b> - список и описание всех наших проектов на заказ.\n\n<b>"О нас 👥"</b> - вся информация о нашей корпорации и наших преимуществах.\n\n<b>"Отзывы 📧"</b> - возможность оставить отзыв, и список реальных мнений заказчиков.\n\n<b>"Профиль ⚙️"</b> - личные данные, и прочая информация.`;
+		let navigationListText = `<b>"Каталог услуг 🛒"</b> - расчет стоимости и выбор типа продукта.\n\n<b>"Идеи 💡"</b> - список идей для вашей деятельности.\n\n<b>"Консультация 🧑‍💻"</b> - в живой переписке подскажем и проконсультируем вас по любому вопросу!\n\n<b>"Наши работы 📱"</b> - список и описание всех наших проектов.\n\n<b>"О нас 👥"</b> - вся информация о нашей корпорации и наших преимуществах.\n\n<b>"Отзывы 📧"</b> - возможность оставить отзыв, и список реальных мнений заказчиков.\n\n<b>"Профиль ⚙️"</b> - личные данные, и прочая информация.`;
 
 		await bot.editMessageText(
 			`${
@@ -900,7 +958,7 @@ async function ideasForProjects(chatId) {
 	dataAboutUser.userAction = "ideasForProjects";
 	try {
 		await bot.editMessageText(
-			`<b><i>💭 Идеи для проектов 💡</i></b>\nМы представили <B><i>небольшой</i> список идей для каждой из наших услуг:\n\n1. ${catalogOfServicesText[0].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a><b><blockquote>Примеры реализации:\n• Опрос пользователей\n• Проведение тестирования\n• Регистрации на мероприятия\n• Ответы на часто-задаваемы вопросы\n• Сбор отзывов клиентов\n• Заявки на консультацию</blockquote>\n2. ${catalogOfServicesText[1].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a><b><blockquote>Примеры реализации:\n• Регистрации с напоминаниями\n• Объявления о событиях\n• Рассылки для компаний\n• Сбор любой инфоромации</blockquote>\n3. ${catalogOfServicesText[2].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a><b><blockquote>Примеры реализации:\n• Автоматизации бизнес-процессов\n• Просмотр услуг компании\n• Мини интернет магазин\n• Мини онлайн школа\n• Учебные задания</blockquote>\n\nМы очень надеемся, </B>что хотя бы одна из идей <b>привлекла вас</b> к <B>нашим услугам!</B> ☺️`,
+			`<b><i>💭 Идеи для проектов 💡</i></b>\n\nМы представили <B><i>небольшой</i> список идей для каждой из наших услуг:\n\n1. ${catalogOfServicesText[0].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a><b><blockquote>Примеры реализации:\n• Опрос пользователей\n• Проведение тестирования\n• Регистрации на мероприятия\n• Ответы на часто-задаваемы вопросы\n• Сбор отзывов клиентов\n• Заявки на консультацию</blockquote>\n2. ${catalogOfServicesText[1].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a><b><blockquote>Примеры реализации:\n• Регистрации с напоминаниями\n• Объявления о событиях\n• Рассылки для компаний\n• Сбор любой инфоромации</blockquote>\n3. ${catalogOfServicesText[2].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a><b><blockquote>Примеры реализации:\n• Автоматизации бизнес-процессов\n• Просмотр услуг компании\n• Мини интернет магазин\n• Мини онлайн школа\n• Учебные задания</blockquote>\n\nМы очень надеемся, </B>что хотя бы одна из идей <b>привлекла вас</b> к <B>нашим услугам!</B> ☺️`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -1237,7 +1295,7 @@ async function ourProjectsList(chatId, projectNum = 1) {
 		await bot.editMessageText(
 			`<b><i>🛠️ Наши работы 📱</i></b>\n\n${
 				projectNum == 0
-					? `В списке ниже представлены <b>приложения нашей компании</b> и несколько <b>заказов от наших клиентов! 🛍️</b><i>\n\n(Некоторые проекты по просьбе заказчиков остались в их правах)</i>\n\nВыберите любой <b>проект</b> ниже, чтобы просмотреть <b>подробности</b> и <b>опробовать функционал! 😉</b>`
+					? `В списке ниже представлены <b>приложения нашей компании</b> и несколько <b>заказов от наших клиентов! 🛍️</b><i>\n\n(Некоторые проекты не размещены, по просьбе заказчиков они остались в их правах)</i>\n\nВыберите любой <b>проект</b> ниже, чтобы просмотреть <b>подробности</b> и <b>опробовать функционал! 😉</b>`
 					: `Проект: <b>${
 							ourProjectsInfo[projectNum - 1].nameLink
 					  }\n\nПодробнее:</b><blockquote><b>Для чего:</b> ${
@@ -2087,9 +2145,11 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 					dataAboutUser.chatId
 				}</code> ⚙️</i>\n\nДанные:\n</b>Логин: <b>${
 					dataAboutUser.login
-				}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>\nТелефон: <b>+${
+				}</b> - <a href="https://t.me/${BotName}/?start=editLogin">изменить</a>${
 					dataAboutUser.phoneNumber
-				}</b>\n\n<b>Лояльность</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\nСтатус:<b> ${
+						? `\nТелефон: <b>+${dataAboutUser.phoneNumber}</b>`
+						: ``
+				}\n\n<b>Лояльность</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\nСтатус:<b> ${
 					dataAboutUser.userStatus
 				}</b>\nРазмер скидки:<b> ${
 					dataAboutUser.requestsHistiory.length >= 3
@@ -2438,7 +2498,7 @@ async function adminMenu(chatId) {
 								},
 								{
 									text: "Услуги 💰",
-									callback_data: "catalogOfServicesAdmin",
+									callback_data: "editCatalogOfServicesAdmin",
 								},
 							],
 							[
@@ -2477,550 +2537,574 @@ async function requestsList(
 	requestId = null,
 	dataAboutRequestForUser = false
 ) {
-	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
+	if (chatId == jackId) {
+		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-	try {
-		if (dataAboutRequestForUser) {
-			const dataAboutСertainRequest = requestsData.find(
-				(obj) => obj.chatId == chatId
-			);
+		try {
+			if (dataAboutRequestForUser) {
+				const dataAboutСertainRequest = requestsData.find(
+					(obj) => obj.chatId == chatId
+				);
 
-			await bot.editMessageText(
-				`<b><i>🧑‍💻 Ваша заявка • <code>№${
-					dataAboutСertainRequest.requestId
-				}</code> 🪪</i>\n\nНа услугу №${
-					dataAboutСertainRequest.serviceNum
-				}:\n</b><blockquote><b>${dataAboutСertainRequest.serviceNum}. ${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.serviceName
-				} - <a href="https://t.me/${BotName}/?start=catalogOfServices${
-					dataAboutСertainRequest.serviceNum
-				}">к услуге</a>\n\nПодробнее:</b> ${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.moreAbout
-				}\n\n<b>Действует:</b> ${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.lifeTime
-				}\n\n<b>Срок выполнения:</b> ${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.executionDate
-				} ⌛\n\n<b>Цена:</b> ${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.priceSentence
-				} 💰</blockquote>\n\nСтатус: <b>${
-					dataAboutСertainRequest.isActive
-						? "Обрабатывается.. 🕑"
-						: "Обработана! ✅"
-				}</b>\n\n<B>${dataAboutСertainRequest.creationTime}</B> - ${
-					dataAboutСertainRequest.creationDate
-				}`,
-				{
-					parse_mode: "html",
-					chat_id: chatId,
-					message_id: usersData.find((obj) => obj.chatId == chatId)
-						.messageId,
-					disable_web_page_preview: true,
-					reply_markup: {
-						inline_keyboard: [
-							[
-								{
-									text: `Сменить услугу 🔃`,
-									callback_data: `catalogOfServices`,
-								},
-							],
-							[
-								{
-									text: "Связь 💭",
-									callback_data: `consultation`,
-								},
-								{
-									text: `Удалить ❌`,
-									callback_data: `deleteRequestWithId${dataAboutСertainRequest.requestId}`,
-								},
-							],
+				await bot.editMessageText(
+					`<b><i>🧑‍💻 Ваша заявка • <code>№${
+						dataAboutСertainRequest.requestId
+					}</code> 🪪</i>\n\nНа услугу №${
+						dataAboutСertainRequest.serviceNum
+					}:\n</b><blockquote><b>${dataAboutСertainRequest.serviceNum}. ${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.serviceName
+					} - <a href="https://t.me/${BotName}/?start=catalogOfServices${
+						dataAboutСertainRequest.serviceNum
+					}">к услуге</a>\n\nПодробнее:</b> ${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.moreAbout
+					}\n\n<b>Действует:</b> ${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.lifeTime
+					}\n\n<b>Срок выполнения:</b> ${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.executionDate
+					} ⌛\n\n<b>Цена:</b> ${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.priceSentence
+					} 💰</blockquote>\n\nСтатус: <b>${
+						dataAboutСertainRequest.isActive
+							? "Обрабатывается.. 🕑"
+							: "Обработана! ✅"
+					}</b>\n\n<B>${dataAboutСertainRequest.creationTime}</B> - ${
+						dataAboutСertainRequest.creationDate
+					}`,
+					{
+						parse_mode: "html",
+						chat_id: chatId,
+						message_id: usersData.find((obj) => obj.chatId == chatId)
+							.messageId,
+						disable_web_page_preview: true,
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{
+										text: `Сменить услугу 🔃`,
+										callback_data: `catalogOfServices`,
+									},
+								],
+								[
+									{
+										text: "Связь 💭",
+										callback_data: `consultation`,
+									},
+									{
+										text: `Удалить ❌`,
+										callback_data: `deleteRequestWithId${dataAboutСertainRequest.requestId}`,
+									},
+								],
 
-							[
-								{
-									text: "⬅️В меню",
-									callback_data: "exit",
-								},
+								[
+									{
+										text: "⬅️В меню",
+										callback_data: "exit",
+									},
+								],
 							],
-						],
-					},
+						},
+					}
+				);
+			} else if (!requestId) {
+				let listText = "";
+				let count = 0;
+				let countOfLists = 1;
+
+				listText = ["", "", "", "", "", "", "", "", "", ""];
+				switch (listNum) {
+					case 1:
+						dataAboutUser.userAction = "requestsList1";
+
+						let dataAboutRequests = requestsData.filter(
+							(obj) => obj.isActive == true
+						);
+						for (let i = 0; i < dataAboutRequests.length; i++) {
+							const dataAboutUserСertainRequest = usersData.find(
+								(obj) => obj.chatId == requestsData[i].chatId
+							);
+
+							if (count % 10 == 0 && count != 0) {
+								++countOfLists;
+							}
+							count++;
+							listText[
+								countOfLists - 1
+							] += `<b>[${count}] <a href="tg://user?id=${
+								dataAboutRequests[i].chatId
+							}">${dataAboutUserСertainRequest.login}</a> • <code>${
+								dataAboutRequests[i].chatId
+							}</code> 🕑\n${dataAboutRequests[i].serviceNum}. ${
+								catalogOfServicesText[
+									dataAboutRequests[i].serviceNum - 1
+								].serviceName
+							}</b>\n<b>${dataAboutRequests[i].creationTime}</b> - ${
+								dataAboutRequests[i].creationDate
+							}<b>\n<a href = "https://t.me/${BotName}/?start=requestWithId${
+								dataAboutRequests[i].requestId
+							}">Подробнее о заявке</a></b>\n\n`;
+						}
+						break;
+					case 2:
+						dataAboutUser.userAction = "requestsList2";
+
+						for (let i = 0; i < requestsData.length; i++) {
+							const dataAboutUserСertainRequest = usersData.find(
+								(obj) => obj.chatId == requestsData[i].chatId
+							);
+
+							if (count % 10 == 0 && count != 0) {
+								++countOfLists;
+							}
+							count++;
+							listText[
+								countOfLists - 1
+							] += `<b>[${count}] <a href="tg://user?id=${
+								requestsData[i].chatId
+							}">${dataAboutUserСertainRequest.login}</a> • <code>${
+								requestsData[i].chatId
+							}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
+								requestsData[i].serviceNum
+							}. ${
+								catalogOfServicesText[requestsData[i].serviceNum - 1]
+									.serviceName
+							}</b>\n<b>${requestsData[i].creationTime}</b> - ${
+								requestsData[i].creationDate
+							}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
+								requestsData[i].requestId
+							}">Подробнее о заявке</a></b>\n\n`;
+						}
+						break;
+					case 3:
+						dataAboutUser.userAction = "requestsList3";
+
+						for (
+							let i = 0;
+							i < dataAboutUser.requestsHistiory.length;
+							i++
+						) {
+							const dataAboutUserСertainRequest = usersData.find(
+								(obj) => obj.chatId == requestsData[i].chatId
+							);
+
+							if (count % 10 == 0 && count != 0) {
+								++countOfLists;
+							}
+							count++;
+							listText[
+								countOfLists - 1
+							] += `<b>[${count}] <a href="tg://user?id=${
+								requestsData[i].chatId
+							}">${dataAboutUserСertainRequest.login}</a> • <code>${
+								requestsData[i].chatId
+							}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
+								requestsData[i].serviceNum
+							}. ${
+								catalogOfServicesText[requestsData[i].serviceNum - 1]
+									.serviceName
+							}</b>\n<b>${requestsData[i].creationTime}</b> - ${
+								requestsData[i].creationDate
+							}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
+								requestsData[i].requestId
+							}">Подробнее о заявке</a></b>\n\n`;
+						}
+						break;
 				}
-			);
-		} else if (!requestId) {
-			let listText = "";
-			let count = 0;
-			let countOfLists = 1;
 
-			listText = ["", "", "", "", "", "", "", "", "", ""];
-			switch (listNum) {
-				case 1:
-					dataAboutUser.userAction = "requestsList1";
-
-					let dataAboutRequests = requestsData.filter(
-						(obj) => obj.isActive == true
-					);
-					for (let i = 0; i < dataAboutRequests.length; i++) {
-						const dataAboutUserСertainRequest = usersData.find(
-							(obj) => obj.chatId == requestsData[i].chatId
-						);
-
-						if (count % 10 == 0 && count != 0) {
-							++countOfLists;
-						}
-						count++;
-						listText[
-							countOfLists - 1
-						] += `<b>[${count}] <a href="tg://user?id=${
-							dataAboutRequests[i].chatId
-						}">${dataAboutUserСertainRequest.login}</a> • <code>${
-							dataAboutRequests[i].chatId
-						}</code> 🕑\n${dataAboutRequests[i].serviceNum}. ${
-							catalogOfServicesText[dataAboutRequests[i].serviceNum - 1]
-								.serviceName
-						}</b>\n<b>${dataAboutRequests[i].creationTime}</b> - ${
-							dataAboutRequests[i].creationDate
-						}<b>\n<a href = "https://t.me/${BotName}/?start=requestWithId${
-							dataAboutRequests[i].requestId
-						}">Подробнее о заявке</a></b>\n\n`;
-					}
-					break;
-				case 2:
-					dataAboutUser.userAction = "requestsList2";
-
-					for (let i = 0; i < requestsData.length; i++) {
-						const dataAboutUserСertainRequest = usersData.find(
-							(obj) => obj.chatId == requestsData[i].chatId
-						);
-
-						if (count % 10 == 0 && count != 0) {
-							++countOfLists;
-						}
-						count++;
-						listText[
-							countOfLists - 1
-						] += `<b>[${count}] <a href="tg://user?id=${
-							requestsData[i].chatId
-						}">${dataAboutUserСertainRequest.login}</a> • <code>${
-							requestsData[i].chatId
-						}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
-							requestsData[i].serviceNum
-						}. ${
-							catalogOfServicesText[requestsData[i].serviceNum - 1]
-								.serviceName
-						}</b>\n<b>${requestsData[i].creationTime}</b> - ${
-							requestsData[i].creationDate
-						}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
-							requestsData[i].requestId
-						}">Подробнее о заявке</a></b>\n\n`;
-					}
-					break;
-				case 3:
-					dataAboutUser.userAction = "requestsList3";
-
-					for (let i = 0; i < dataAboutUser.requestsHistiory.length; i++) {
-						const dataAboutUserСertainRequest = usersData.find(
-							(obj) => obj.chatId == requestsData[i].chatId
-						);
-
-						if (count % 10 == 0 && count != 0) {
-							++countOfLists;
-						}
-						count++;
-						listText[
-							countOfLists - 1
-						] += `<b>[${count}] <a href="tg://user?id=${
-							requestsData[i].chatId
-						}">${dataAboutUserСertainRequest.login}</a> • <code>${
-							requestsData[i].chatId
-						}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
-							requestsData[i].serviceNum
-						}. ${
-							catalogOfServicesText[requestsData[i].serviceNum - 1]
-								.serviceName
-						}</b>\n<b>${requestsData[i].creationTime}</b> - ${
-							requestsData[i].creationDate
-						}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
-							requestsData[i].requestId
-						}">Подробнее о заявке</a></b>\n\n`;
-					}
-					break;
-			}
-
-			await bot.editMessageText(
-				`<b><i>🧑‍💻 Список заявок • ${
-					listNum == 1 ? "Новые❗" : listNum == 2 ? "За все время 📚" : ""
-				}\n\n${
-					countOfLists > 1
-						? `${dataAboutUser.supportiveCount} / ${countOfLists} стр • `
-						: ``
-				}${count} ${
-					(count >= 5 && count <= 20) ||
-					(count % 10 >= 5 && count % 10 <= 9) ||
-					count % 10 == 0
-						? "заявок"
-						: `${
-								count % 10 == 1
-									? "заявка"
-									: `${
-											count % 10 >= 2 && count % 10 <= 4
-												? "заявки"
-												: ``
-									  }`
-						  }`
-				}</i></b>\n\n${
-					listText[dataAboutUser.supportiveCount - 1]
-						? `${
-								listText[dataAboutUser.supportiveCount - 1]
-						  }Впишите Id любой заявки ✍️`
-						: "Не вижу <b>ни одной</b> заявки.. 🤷‍♂️"
-				}`,
-				{
-					parse_mode: "html",
-					chat_id: chatId,
-					message_id: usersData.find((obj) => obj.chatId == chatId)
-						.messageId,
-					disable_web_page_preview: true,
-					reply_markup: {
-						inline_keyboard: [
-							[
-								{
-									text:
-										countOfLists > 1
-											? dataAboutUser.supportiveCount > 1
-												? "⬅️"
-												: "🚫"
-											: "",
-									callback_data:
-										dataAboutUser.supportiveCount > 1
-											? "previousPage"
+				await bot.editMessageText(
+					`<b><i>🧑‍💻 Список заявок • ${
+						listNum == 1
+							? "Новые❗"
+							: listNum == 2
+							? "За все время 📚"
+							: ""
+					}\n\n${
+						countOfLists > 1
+							? `${dataAboutUser.supportiveCount} / ${countOfLists} стр • `
+							: ``
+					}${count} ${
+						(count >= 5 && count <= 20) ||
+						(count % 10 >= 5 && count % 10 <= 9) ||
+						count % 10 == 0
+							? "заявок"
+							: `${
+									count % 10 == 1
+										? "заявка"
+										: `${
+												count % 10 >= 2 && count % 10 <= 4
+													? "заявки"
+													: ``
+										  }`
+							  }`
+					}</i></b>\n\n${
+						listText[dataAboutUser.supportiveCount - 1]
+							? `${
+									listText[dataAboutUser.supportiveCount - 1]
+							  }Впишите Id любой заявки ✍️`
+							: "Не вижу <b>ни одной</b> заявки.. 🤷‍♂️"
+					}`,
+					{
+						parse_mode: "html",
+						chat_id: chatId,
+						message_id: usersData.find((obj) => obj.chatId == chatId)
+							.messageId,
+						disable_web_page_preview: true,
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{
+										text:
+											countOfLists > 1
+												? dataAboutUser.supportiveCount > 1
+													? "⬅️"
+													: "🚫"
+												: "",
+										callback_data:
+											dataAboutUser.supportiveCount > 1
+												? "previousPage"
+												: "-",
+									},
+									{
+										text:
+											countOfLists > 1
+												? `${dataAboutUser.supportiveCount} стр`
+												: "",
+										callback_data: "firstPage",
+									},
+									{
+										text:
+											countOfLists > 1
+												? listText[dataAboutUser.supportiveCount]
+													? "➡️"
+													: "🚫"
+												: "",
+										callback_data: listText[
+											dataAboutUser.supportiveCount
+										]
+											? "nextPage"
 											: "-",
-								},
-								{
-									text:
-										countOfLists > 1
-											? `${dataAboutUser.supportiveCount} стр`
-											: "",
-									callback_data: "firstPage",
-								},
-								{
-									text:
-										countOfLists > 1
-											? listText[dataAboutUser.supportiveCount]
-												? "➡️"
-												: "🚫"
-											: "",
-									callback_data: listText[
-										dataAboutUser.supportiveCount
-									]
-										? "nextPage"
-										: "-",
-								},
+									},
+								],
+								[
+									{
+										text:
+											listNum == 1
+												? `• Новые ${
+														requestsData.filter(
+															(obj) => obj.isActive == true
+														).length != 0
+															? `(${
+																	requestsData.filter(
+																		(obj) =>
+																			obj.isActive == true
+																	).length
+															  } шт) `
+															: ""
+												  }❗•`
+												: `Новые ${
+														requestsData.filter(
+															(obj) => obj.isActive == true
+														).length != 0
+															? `(${
+																	requestsData.filter(
+																		(obj) =>
+																			obj.isActive == true
+																	).length
+															  } шт) `
+															: ""
+												  }❗`,
+										callback_data: "requestsList1",
+									},
+								],
+								[
+									{ text: "⬅️Назад", callback_data: "adminMenu" },
+									{
+										text: `${listNum == 2 ? "• Все 📚 •" : "Все 📚"}`,
+										callback_data: "requestsList2",
+									},
+								],
 							],
-							[
-								{
-									text:
-										listNum == 1
-											? `• Новые ${
-													requestsData.filter(
-														(obj) => obj.isActive == true
-													).length != 0
-														? `(${
-																requestsData.filter(
-																	(obj) => obj.isActive == true
-																).length
-														  } шт) `
-														: ""
-											  }❗•`
-											: `Новые ${
-													requestsData.filter(
-														(obj) => obj.isActive == true
-													).length != 0
-														? `(${
-																requestsData.filter(
-																	(obj) => obj.isActive == true
-																).length
-														  } шт) `
-														: ""
-											  }❗`,
-									callback_data: "requestsList1",
-								},
-							],
-							[
-								{ text: "⬅️Назад", callback_data: "adminMenu" },
-								{
-									text: `${listNum == 2 ? "• Все 📚 •" : "Все 📚"}`,
-									callback_data: "requestsList2",
-								},
-							],
-						],
-					},
-				}
-			);
-		} else if (requestId) {
-			const dataAboutСertainRequest = requestsData.find(
-				(obj) => obj.requestId == requestId
-			);
-			const dataAboutUserСertainRequest = usersData.find(
-				(obj) => obj.chatId == dataAboutСertainRequest.chatId
-			);
+						},
+					}
+				);
+			} else if (requestId) {
+				const dataAboutСertainRequest = requestsData.find(
+					(obj) => obj.requestId == requestId
+				);
+				const dataAboutUserСertainRequest = usersData.find(
+					(obj) => obj.chatId == dataAboutСertainRequest.chatId
+				);
 
-			await bot.editMessageText(
-				`<b><i>🧑‍💻 Заявка • <code>${requestId}</code> 🪪</i></b>\n\n<b><a href="tg://user?id=${
-					dataAboutСertainRequest.chatId
-				}">${dataAboutUserСertainRequest.login}</a></b> • <code>${
-					dataAboutUserСertainRequest.chatId
-				}</code>\n<b>Услуга:</b>\n<blockquote><b>${
-					dataAboutСertainRequest.serviceNum
-				}. ${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.serviceName
-				}\nЦена: </b>${
-					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-						.priceSentence
-				}</blockquote>\n<b>${dataAboutСertainRequest.creationTime}</b> - ${
-					dataAboutСertainRequest.creationDate
-				} ${dataAboutСertainRequest.isActive ? "" : "✅"}`,
-				{
-					parse_mode: "html",
-					chat_id: chatId,
-					message_id: usersData.find((obj) => obj.chatId == chatId)
-						.messageId,
-					disable_web_page_preview: true,
-					reply_markup: {
-						inline_keyboard: [
-							[
-								{
-									text: "🛠️",
-									callback_data: `buildDialogForUserWithId${dataAboutСertainRequest.chatId}`,
-								},
-								{
-									text: "👤",
-									url: `tg://user?id=${dataAboutСertainRequest.chatId}`,
-								},
-								{
-									text: `${
-										dataAboutСertainRequest.isActive ? "✅" : "🕑"
-									}`,
-									callback_data: `toggleToActiveRequestWithId${dataAboutСertainRequest.requestId}`,
-								},
+				await bot.editMessageText(
+					`<b><i>🧑‍💻 Заявка • <code>${requestId}</code> 🪪</i></b>\n\n<b><a href="tg://user?id=${
+						dataAboutСertainRequest.chatId
+					}">${dataAboutUserСertainRequest.login}</a></b> • <code>${
+						dataAboutUserСertainRequest.chatId
+					}</code>\n<b>Услуга:</b>\n<blockquote><b>${
+						dataAboutСertainRequest.serviceNum
+					}. ${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.serviceName
+					}\nЦена: </b>${
+						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+							.priceSentence
+					}</blockquote>\n<b>${
+						dataAboutСertainRequest.creationTime
+					}</b> - ${dataAboutСertainRequest.creationDate} ${
+						dataAboutСertainRequest.isActive ? "" : "✅"
+					}`,
+					{
+						parse_mode: "html",
+						chat_id: chatId,
+						message_id: usersData.find((obj) => obj.chatId == chatId)
+							.messageId,
+						disable_web_page_preview: true,
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{
+										text: "🛠️",
+										callback_data: `buildDialogForUserWithId${dataAboutСertainRequest.chatId}`,
+									},
+									{
+										text: "👤",
+										url: `tg://user?id=${dataAboutСertainRequest.chatId}`,
+									},
+									{
+										text: `${
+											dataAboutСertainRequest.isActive ? "✅" : "🕑"
+										}`,
+										callback_data: `toggleToActiveRequestWithId${dataAboutСertainRequest.requestId}`,
+									},
+								],
+								[
+									{
+										text: "⬅️Назад",
+										callback_data:
+											dataAboutUser.userAction == "requestsList1" ||
+											dataAboutUser.userAction == "requestsList2"
+												? "requestsList1"
+												: "exit",
+									},
+								],
 							],
-							[
-								{
-									text: "⬅️Назад",
-									callback_data:
-										dataAboutUser.userAction == "requestsList1" ||
-										dataAboutUser.userAction == "requestsList2"
-											? "requestsList1"
-											: "exit",
-								},
-							],
-						],
-					},
-				}
-			);
+						},
+					}
+				);
+			}
+		} catch (error) {
+			console.log(error);
+			sendDataAboutError(chatId, `${String(error)}`);
 		}
-	} catch (error) {
-		console.log(error);
-		sendDataAboutError(chatId, `${String(error)}`);
 	}
 }
 
 async function registryList(chatId, listNum = 1, otherChatId = null) {
-	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
+	if (chatId == jackId) {
+		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-	let text = "";
-	let count = 0;
-	let countOfLists = 1;
+		let text = "";
+		let count = 0;
+		let countOfLists = 1;
 
-	try {
-		if (otherChatId) {
-			const dataAboutClient = usersData.find(
-				(obj) => obj.chatId == otherChatId
-			);
+		try {
+			if (otherChatId) {
+				const dataAboutClient = usersData.find(
+					(obj) => obj.chatId == otherChatId
+				);
 
-			await bot.editMessageText(
-				`<b><i>💾 Клиент • <code>${
-					dataAboutClient.chatId
-				}</code>👤</i>\n\nПодробнее:</b><blockquote><b>Данные</b>\nЛогин: <b>${
-					dataAboutClient.login
-				}</b>\nТелефон: <code>+${
-					dataAboutClient.phoneNumber
-				}</code>\nСтатус: <b>${
-					dataAboutClient.userStatus
-				}</b>\n\n<b>Статистика:</b>\nЗаявок: <b>${
-					dataAboutClient.requestsHistiory.length
-				} шт</b>\nОтзывов: <b>${
-					feedbacksData.filter(
-						(obj) =>
-							obj.chatId == otherChatId &&
-							obj.isVerified &&
-							obj.isCreated
-					).length
-				} / ${
-					feedbacksData.filter(
-						(obj) => obj.chatId == otherChatId && obj.isCreated
-					).length
-				} шт</b></blockquote>`,
-				{
-					parse_mode: "html",
-					chat_id: chatId,
-					message_id: usersData.find((obj) => obj.chatId == chatId)
-						.messageId,
-					disable_web_page_preview: true,
-					reply_markup: {
-						inline_keyboard: [
-							[
-								{
-									text:
-										dataAboutClient.chatId != jackId
-											? `${
-													dataAboutClient.inBlackList
-														? `Разблокировать ✅`
-														: `Заблокировать ❌`
-											  }`
-											: ``,
-									callback_data: `${
-										dataAboutClient.inBlackList
-											? `deleteFromBlackListUserWithId${dataAboutClient.chatId}`
-											: `addToBlackListUserWithId${dataAboutClient.chatId}`
-									}`,
-								},
-							],
-							[
-								{
-									text: "⬅️Назад",
-									callback_data: `${
-										dataAboutUser.userAction == "registryList1"
-											? `registryDataAdmin`
-											: dataAboutUser.userAction == "dialogBuilder"
-											? `dialogBuilder1`
-											: "-"
-									}`,
-								},
-								{
-									text: "Клиент 👤",
-									url: `tg://user?id=${dataAboutClient.chatId}`,
-								},
-							],
-						],
-					},
-				}
-			);
-		} else {
-			switch (listNum) {
-				case 1:
-					count = 0;
-					countOfLists = 1;
-					text = ["", "", "", "", "", "", "", "", "", ""];
-					for (let i = 0; i < usersData.length; i++) {
-						if (count % 10 == 0 && count != 0) {
-							++countOfLists;
-						}
-
-						if (usersData[i].registrationIsOver) {
-							count++;
-							text[
-								countOfLists - 1
-							] += `<b>${count}. ${usersData[i].login} • <code>${usersData[i].chatId}</code>\n</b>Статус:<b> ${usersData[i].userStatus}\n<a href="https://t.me/${BotName}/?start=moreAboutUserWithId${usersData[i].chatId}">Подробнее о клиенте</a></b>\n\n`;
-						}
-					}
-
-					dataAboutUser.userAction = "registryList1";
-
-					await bot.editMessageText(
-						`<b><i>💾 Реестр клиентов 📁\n\n${
-							countOfLists > 1
-								? `${dataAboutUser.supportiveCount} / ${countOfLists} стр • `
-								: ``
-						}${count} ${
-							(count >= 5 && count <= 20) ||
-							(count % 10 >= 5 && count % 10 <= 9) ||
-							count % 10 == 0
-								? "клиентов"
-								: `${
-										count % 10 == 1
-											? "клиент"
-											: `${
-													count % 10 >= 2 && count % 10 <= 4
-														? "клиента"
-														: ``
-											  }`
-								  }`
-						}</i></b>\n\n${
-							text[dataAboutUser.supportiveCount - 1]
-								? `${
-										text[dataAboutUser.supportiveCount - 1]
-								  }Впишите Id любого клиента ✍️`
-								: `Пока ни одного клиента..🤷‍♂️`
-						}`,
-						{
-							parse_mode: "html",
-							chat_id: chatId,
-							message_id: usersData.find((obj) => obj.chatId == chatId)
-								.messageId,
-							disable_web_page_preview: true,
-							reply_markup: {
-								inline_keyboard: [
-									[
-										{
-											text:
-												countOfLists > 1
-													? dataAboutUser.supportiveCount > 1
-														? "⬅️"
-														: "🚫"
-													: "",
-											callback_data:
-												dataAboutUser.supportiveCount > 1
-													? "previousPage"
-													: "-",
-										},
-										{
-											text:
-												countOfLists > 1
-													? `${dataAboutUser.supportiveCount} стр`
-													: "",
-											callback_data: "firstPage",
-										},
-										{
-											text:
-												countOfLists > 1
-													? text[dataAboutUser.supportiveCount]
-														? "➡️"
-														: "🚫"
-													: "",
-											callback_data: text[
-												dataAboutUser.supportiveCount
-											]
-												? "nextPage"
-												: "-",
-										},
-									],
-									[
-										{ text: "⬅️Назад", callback_data: "adminMenu" },
-										{
-											text: "БД 🗄️",
-											url: "https://console.firebase.google.com/u/0/project/digfusionco/database/digfusionco-default-rtdb/data",
-										},
-									],
+				await bot.editMessageText(
+					`<b><i>💾 Клиент • <code>${
+						dataAboutClient.chatId
+					}</code>👤</i>\n\nПодробнее:</b><blockquote><b>Данные</b>\nЛогин: <b>${
+						dataAboutClient.login
+					}</b>${
+						dataAboutClient.phoneNumber
+							? `\nТелефон: <code>+${dataAboutClient.phoneNumber}</code>`
+							: ``
+					}\nСтатус: <b>${
+						dataAboutClient.userStatus
+					}</b>\n\n<b>Статистика:</b>\nЗаявок: <b>${
+						dataAboutClient.requestsHistiory.length
+					} шт</b>\nОтзывов: <b>${
+						feedbacksData.filter(
+							(obj) =>
+								obj.chatId == otherChatId &&
+								obj.isVerified &&
+								obj.isCreated
+						).length
+					} / ${
+						feedbacksData.filter(
+							(obj) => obj.chatId == otherChatId && obj.isCreated
+						).length
+					} шт</b></blockquote>`,
+					{
+						parse_mode: "html",
+						chat_id: chatId,
+						message_id: usersData.find((obj) => obj.chatId == chatId)
+							.messageId,
+						disable_web_page_preview: true,
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{
+										text:
+											dataAboutClient.chatId != jackId
+												? `${
+														dataAboutClient.inBlackList
+															? `Разблокировать ✅`
+															: `Заблокировать ❌`
+												  }`
+												: ``,
+										callback_data: `${
+											dataAboutClient.inBlackList
+												? `deleteFromBlackListUserWithId${dataAboutClient.chatId}`
+												: `addToBlackListUserWithId${dataAboutClient.chatId}`
+										}`,
+									},
 								],
-							},
+								[
+									{
+										text: "⬅️Назад",
+										callback_data: `${
+											dataAboutUser.userAction == "registryList1"
+												? `registryDataAdmin`
+												: dataAboutUser.userAction ==
+												  "dialogBuilder"
+												? `dialogBuilder1`
+												: "-"
+										}`,
+									},
+									{
+										text: "Клиент 👤",
+										url: `tg://user?id=${dataAboutClient.chatId}`,
+									},
+								],
+							],
+						},
+					}
+				);
+			} else {
+				switch (listNum) {
+					case 1:
+						count = 0;
+						countOfLists = 1;
+						text = ["", "", "", "", "", "", "", "", "", ""];
+						for (let i = 0; i < usersData.length; i++) {
+							if (count % 10 == 0 && count != 0) {
+								++countOfLists;
+							}
+
+							if (usersData[i].registrationIsOver) {
+								count++;
+								text[
+									countOfLists - 1
+								] += `<b>${count}. ${usersData[i].login} • <code>${usersData[i].chatId}</code>\n</b>Статус:<b> ${usersData[i].userStatus}\n<a href="https://t.me/${BotName}/?start=moreAboutUserWithId${usersData[i].chatId}">Подробнее о клиенте</a></b>\n\n`;
+							}
 						}
-					);
-					break;
-				case 2:
-					break;
+
+						dataAboutUser.userAction = "registryList1";
+
+						await bot.editMessageText(
+							`<b><i>💾 Реестр клиентов 📁\n\n${
+								countOfLists > 1
+									? `${dataAboutUser.supportiveCount} / ${countOfLists} стр • `
+									: ``
+							}${count} ${
+								(count >= 5 && count <= 20) ||
+								(count % 10 >= 5 && count % 10 <= 9) ||
+								count % 10 == 0
+									? "клиентов"
+									: `${
+											count % 10 == 1
+												? "клиент"
+												: `${
+														count % 10 >= 2 && count % 10 <= 4
+															? "клиента"
+															: ``
+												  }`
+									  }`
+							}</i></b>\n\n${
+								text[dataAboutUser.supportiveCount - 1]
+									? `${
+											text[dataAboutUser.supportiveCount - 1]
+									  }Впишите Id любого клиента ✍️`
+									: `Пока ни одного клиента..🤷‍♂️`
+							}`,
+							{
+								parse_mode: "html",
+								chat_id: chatId,
+								message_id: usersData.find(
+									(obj) => obj.chatId == chatId
+								).messageId,
+								disable_web_page_preview: true,
+								reply_markup: {
+									inline_keyboard: [
+										[
+											{
+												text:
+													countOfLists > 1
+														? dataAboutUser.supportiveCount > 1
+															? "⬅️"
+															: "🚫"
+														: "",
+												callback_data:
+													dataAboutUser.supportiveCount > 1
+														? "previousPage"
+														: "-",
+											},
+											{
+												text:
+													countOfLists > 1
+														? `${dataAboutUser.supportiveCount} стр`
+														: "",
+												callback_data: "firstPage",
+											},
+											{
+												text:
+													countOfLists > 1
+														? text[dataAboutUser.supportiveCount]
+															? "➡️"
+															: "🚫"
+														: "",
+												callback_data: text[
+													dataAboutUser.supportiveCount
+												]
+													? "nextPage"
+													: "-",
+											},
+										],
+										[
+											{
+												text: "⬅️Назад",
+												callback_data: "adminMenu",
+											},
+											{
+												text: "БД 🗄️",
+												url: "https://console.firebase.google.com/u/0/project/digfusionco/database/digfusionco-default-rtdb/data",
+											},
+										],
+									],
+								},
+							}
+						);
+						break;
+					case 2:
+						break;
+				}
 			}
+		} catch (error) {
+			console.log(error);
+			sendDataAboutError(chatId, `${String(error)}`);
 		}
-	} catch (error) {
-		console.log(error);
-		sendDataAboutError(chatId, `${String(error)}`);
 	}
 }
 
-async function servicesEditAdmin(chatId) {
+async function editCatalogOfServices(chatId) {
 	if (chatId == jackId) {
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
@@ -3034,7 +3118,7 @@ async function servicesEditAdmin(chatId) {
 						.messageId,
 					disable_web_page_preview: true,
 					reply_markup: {
-						inline_keyboard: [[{ text: "", callback_data: "" }]],
+						inline_keyboard: [[{ text: "", callback_data: "-" }]],
 					},
 				}
 			);
@@ -3046,21 +3130,23 @@ async function servicesEditAdmin(chatId) {
 }
 
 async function alertsAdmin(chatId) {
-	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
+	if (chatId == jackId) {
+		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-	try {
-		await bot.editMessageText(`<b><i>Алерты 📣</i></b>`, {
-			parse_mode: "html",
-			chat_id: chatId,
-			message_id: usersData.find((obj) => obj.chatId == chatId).messageId,
-			disable_web_page_preview: true,
-			reply_markup: {
-				inline_keyboard: [[{ text: "", callback_data: "" }]],
-			},
-		});
-	} catch (error) {
-		console.log(error);
-		sendDataAboutError(chatId, `${String(error)}`);
+		try {
+			await bot.editMessageText(`<b><i>Алерты 📣</i></b>`, {
+				parse_mode: "html",
+				chat_id: chatId,
+				message_id: usersData.find((obj) => obj.chatId == chatId).messageId,
+				disable_web_page_preview: true,
+				reply_markup: {
+					inline_keyboard: [[{ text: "", callback_data: "-" }]],
+				},
+			});
+		} catch (error) {
+			console.log(error);
+			sendDataAboutError(chatId, `${String(error)}`);
+		}
 	}
 }
 
@@ -3735,7 +3821,8 @@ async function StartAll() {
 						dataAboutUser.supportiveCount = 1;
 						registryList(chatId);
 						break;
-					case "":
+					case "editCatalogOfServicesAdmin":
+						editCatalogOfServices(chatId);
 						break;
 					case "":
 						break;
