@@ -42,64 +42,6 @@ let BotName = "digfusionbot";
 
 let usersData = [];
 let requestsData = [];
-
-// [
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 1,
-// 		isActive: true,
-// 		creationTime: "20:04",
-// 		creationDate: "05.05.24",
-// 		requestId: 18855,
-// 		isDelete: false,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 1,
-// 		isActive: true,
-// 		creationTime: "20:04",
-// 		creationDate: "05.05.24",
-// 		requestId: 18855,
-// 		isDelete: false,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 1,
-// 		isActive: true,
-// 		creationTime: "20:04",
-// 		creationDate: "05.05.24",
-// 		requestId: 18855,
-// 		isDelete: false,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 1,
-// 		isActive: true,
-// 		creationTime: "20:04",
-// 		creationDate: "05.05.24",
-// 		requestId: 18855,
-// 		isDelete: false,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 1,
-// 		isActive: true,
-// 		creationTime: "20:04",
-// 		creationDate: "05.05.24",
-// 		requestId: 18855,
-// 		isDelete: false,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 1,
-// 		isActive: true,
-// 		creationTime: "20:04",
-// 		creationDate: "05.05.24",
-// 		requestId: 18855,
-// 		isDelete: false,
-// 	},
-// ];
-
 let feedbacksData = [
 	{
 		chatId: 6815420098,
@@ -707,7 +649,9 @@ async function menuHome(
 		dataAboutUser.userStatus =
 			dataAboutUser.chatId == jackId
 				? "Администратор 👑"
-				: dataAboutUser.requestsHistiory.length < 3
+				: (dataAboutUser.requestsHistiory &&
+						dataAboutUser.requestsHistiory.length < 3) ||
+				  !dataAboutUser.requestsHistiory
 				? "Клиент 🙂"
 				: dataAboutUser.requestsHistiory.length >= 3
 				? "Постоянный клиент 😎"
@@ -2152,19 +2096,27 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 				}\n\n<b>Лояльность</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\nСтатус:<b> ${
 					dataAboutUser.userStatus
 				}</b>\nРазмер скидки:<b> ${
-					dataAboutUser.requestsHistiory.length >= 3
-						? "5%"
-						: dataAboutUser.requestsHistiory.length >= 6
-						? "10%"
-						: dataAboutUser.requestsHistiory.length >= 10
-						? "20%"
-						: dataAboutUser.requestsHistiory.length < 3
-						? "Нет ( 0% )"
-						: ""
+					dataAboutUser.requestsHistiory
+						? `${
+								dataAboutUser.requestsHistiory.length >= 3
+									? "5%"
+									: dataAboutUser.requestsHistiory.length >= 6
+									? "10%"
+									: dataAboutUser.requestsHistiory.length >= 10
+									? "20%"
+									: dataAboutUser.requestsHistiory.length < 3
+									? "Нет ( 0% )"
+									: "Нет ( 0% )"
+						  }`
+						: ``
 				}</b>\n\n<b>Статистика:</b>\nВсего заказов: <b>${
-					dataAboutUser.requestsHistiory.length
+					dataAboutUser.requestsHistiory
+						? dataAboutUser.requestsHistiory.length
+						: "0"
 				} шт</b>${
-					dataAboutUser.requestsHistiory.length == 0
+					(dataAboutUser.requestsHistiory &&
+						dataAboutUser.requestsHistiory.length == 0) ||
+					!dataAboutUser.requestsHistiory
 						? ` - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
 						: ``
 				}\nКол-во отзывов: <b>${
@@ -2281,7 +2233,7 @@ async function userStatusInfo(chatId) {
 			`<b><i>👑 Программа лояльности 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (<b>начальный</b>)\n\n<b>"Постоянный клиент 😎"</b> - 5% (от <b>3 заказов</b>)\n\n<b>"Особый клиент 🤩"</b> - 10% (от <b>6 заказов</b>)\n\n<b>"Лучший покупатель 🫅"</b> - 20% (от <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
 				dataAboutUser.userStatus
 			}</b>${
-				dataAboutUser.requestsHistiory.length > 0
+				dataAboutUser.requestsHistiory
 					? `\n\nКол-во заказов: <b>${dataAboutUser.requestsHistiory.length} шт</b>`
 					: `\n\nКол-во заказов: <b>0 шт</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
 			}`,
@@ -2679,40 +2631,40 @@ async function requestsList(
 							}">Подробнее о заявке</a></b>\n\n`;
 						}
 						break;
-					case 3:
-						dataAboutUser.userAction = "requestsList3";
+					// case 3:
+					// dataAboutUser.userAction = "requestsList3";
 
-						for (
-							let i = 0;
-							i < dataAboutUser.requestsHistiory.length;
-							i++
-						) {
-							const dataAboutUserСertainRequest = usersData.find(
-								(obj) => obj.chatId == requestsData[i].chatId
-							);
+					// for (
+					// 	let i = 0;
+					// 	i < dataAboutUser.requestsHistiory.length;
+					// 	i++
+					// ) {
+					// 	const dataAboutUserСertainRequest = usersData.find(
+					// 		(obj) => obj.chatId == requestsData[i].chatId
+					// 	);
 
-							if (count % 10 == 0 && count != 0) {
-								++countOfLists;
-							}
-							count++;
-							listText[
-								countOfLists - 1
-							] += `<b>[${count}] <a href="tg://user?id=${
-								requestsData[i].chatId
-							}">${dataAboutUserСertainRequest.login}</a> • <code>${
-								requestsData[i].chatId
-							}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
-								requestsData[i].serviceNum
-							}. ${
-								catalogOfServicesText[requestsData[i].serviceNum - 1]
-									.serviceName
-							}</b>\n<b>${requestsData[i].creationTime}</b> - ${
-								requestsData[i].creationDate
-							}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
-								requestsData[i].requestId
-							}">Подробнее о заявке</a></b>\n\n`;
-						}
-						break;
+					// 	if (count % 10 == 0 && count != 0) {
+					// 		++countOfLists;
+					// 	}
+					// 	count++;
+					// 	listText[
+					// 		countOfLists - 1
+					// 	] += `<b>[${count}] <a href="tg://user?id=${
+					// 		requestsData[i].chatId
+					// 	}">${dataAboutUserСertainRequest.login}</a> • <code>${
+					// 		requestsData[i].chatId
+					// 	}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
+					// 		requestsData[i].serviceNum
+					// 	}. ${
+					// 		catalogOfServicesText[requestsData[i].serviceNum - 1]
+					// 			.serviceName
+					// 	}</b>\n<b>${requestsData[i].creationTime}</b> - ${
+					// 		requestsData[i].creationDate
+					// 	}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
+					// 		requestsData[i].requestId
+					// 	}">Подробнее о заявке</a></b>\n\n`;
+					// }
+					// break;
 				}
 
 				await bot.editMessageText(
@@ -2929,7 +2881,9 @@ async function registryList(chatId, listNum = 1, otherChatId = null) {
 					}\nСтатус: <b>${
 						dataAboutClient.userStatus
 					}</b>\n\n<b>Статистика:</b>\nЗаявок: <b>${
-						dataAboutClient.requestsHistiory.length
+						dataAboutClient.requestsHistiory
+							? `${dataAboutClient.requestsHistiory.length}`
+							: `0`
 					} шт</b>\nОтзывов: <b>${
 						feedbacksData.filter(
 							(obj) =>
@@ -2972,17 +2926,17 @@ async function registryList(chatId, listNum = 1, otherChatId = null) {
 										text: "⬅️Назад",
 										callback_data: `${
 											dataAboutUser.userAction == "registryList1"
-												? `registryDataAdmin`
+												? `registryList1`
 												: dataAboutUser.userAction ==
 												  "dialogBuilder"
 												? `dialogBuilder1`
 												: "-"
 										}`,
 									},
-									{
-										text: "Клиент 👤",
-										url: `tg://user?id=${dataAboutClient.chatId}`,
-									},
+									// {
+									// 	text: "Клиент 👤",
+									// 	url: `tg://user?id=${dataAboutClient.chatId}`,
+									// },
 								],
 							],
 						},
@@ -3164,6 +3118,16 @@ async function StartAll() {
 		});
 	} else if (TOKEN == TOKENs[0]) {
 		BotName = "digtestingbot";
+
+		if (
+			fs.readFileSync("supportiveDB.json") != "[]" &&
+			fs.readFileSync("supportiveDB.json") != ""
+		) {
+			let dataFromDB = JSON.parse(fs.readFileSync("supportiveDB.json"));
+			usersData = dataFromDB.usersData || [];
+			requestsData = dataFromDB.requestsData || [];
+			feedbacksData = dataFromDB.feedbacksData || [];
+		}
 	}
 
 	bot.on("contact", (message) => {
@@ -3816,6 +3780,9 @@ async function StartAll() {
 					case "requestsDataAdmin":
 						dataAboutUser.supportiveCount = 1;
 						requestsList(chatId, 1);
+						break;
+					case "registryList1":
+						registryList(chatId);
 						break;
 					case "registryDataAdmin":
 						dataAboutUser.supportiveCount = 1;
