@@ -42,309 +42,17 @@ let BotName = "digfusionbot";
 
 let usersData = [];
 let requestsData = [];
-let feedbacksData = [
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-	{
-		chatId: 6815420098,
-		creationDate: "07.05.24",
-		creationTime: "19:49",
-		feedbackId: 11142,
-		feedbackText:
-			"Как владелец этого ресурса, как основатель этой компании, как разработчик каждого проекта, как менеджер по продажам, сообщаю новым клиентам, что над каждым проектом проходит колоссальный надзор и максимальное внимание к деталям. Если вы всё равно не поверите моим словам, то этот бот, этот раздел, этот список отзывов, сам отзыв и его текст показываются без ошибок лишь потому, что каждый проект проходит огромное количество стадий тестирования и разработки. Так что сомневаться в качестве, или в нас - нет смысла! 😉",
-		from: "Давид",
-		isCreated: true,
-		isVerified: true,
-		opinionRating: "😆",
-		serviceNum: 2,
-	},
-];
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 2344,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 4568,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6666,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 7878,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6751,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6457,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 4451,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6351,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 4444,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 222,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 11,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 879,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 8888,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 7777,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 2388,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6661,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6651,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 6456,
-// 		isCreated: true,
-// 	},
-// 	{
-// 		chatId: 6815420098,
-// 		serviceNum: 2,
-// 		opinionRating: "🤬",
-// 		feedbackText: "Привет супер",
-// 		creationTime: "12:50",
-// 		creationDate: "05.05.24",
-// 		isVerified: true,
-// 		feedbackId: 600,
-// 		isCreated: true,
-// 	},
-// ];
+let feedbacksData = [];
+
+let systemData = {
+	newRequestsToday: 0,
+	activityToday: 0,
+	newClientsToday: 0,
+	newFeedbacksToday: 0,
+
+	requestsAllTime: 0,
+	activityAllTime: 0,
+};
 
 let moreAboutUsText = [
 	"<b>•  Сначала результат, потом оплата</b>\nОплачиваете работу уже после того, как получите продукт! 🤗\n\n<b>•  Низкая стоимость услуг</b>\nСтоимость создания достойного чат-бота - не космические цифры, а разумная сумма! 💰\n\n<b>•  Постоянная поддержка и правки</b>\nМы доводим каждый проект до конца, учитывая мнения и пожелания клиента. 😉\n\n<b>Также мы никогда ничего не скрываем</B> от своих <B>клиентов.</B> Они могут <b>отследить</b> весь процесс разработки, <b>от начала до конца,</b> знают <b>историю основания</b> и <b>информацию о нас.</b> 🫶",
@@ -364,7 +72,7 @@ let catalogOfServicesText = [
 		lifeTime: "Договорной срок (до 7 дней) *",
 		executionDate: "1 - 5 дней ",
 		firstPrice: 0,
-		price: 500,
+		price: 990,
 		priceSentence: "",
 	},
 	{
@@ -373,8 +81,8 @@ let catalogOfServicesText = [
 			"Базы данных любых массивов информации, регистрация и рассылка напоминаний на мероприятия.",
 		lifeTime: "14 дней с добавлением *",
 		executionDate: "3 - 8 дней",
-		firstPrice: 2500,
-		price: 1000,
+		firstPrice: 2990,
+		price: 1990,
 		priceSentence: "",
 	},
 	{
@@ -383,8 +91,8 @@ let catalogOfServicesText = [
 			"Полностью законченая инфо-вселенная, со множеством разделов, главным меню, множеством выполняемых задач, и с возможностью администрирования.",
 		lifeTime: "30 дней с добавлением *",
 		executionDate: "8 и больше дней",
-		firstPrice: 8000,
-		price: 3000,
+		firstPrice: 7990,
+		price: 4990,
 		priceSentence: "",
 	},
 ];
@@ -393,12 +101,12 @@ if (true) {
 		catalogOfServicesText[0].firstPrice != 0
 			? `<s>${catalogOfServicesText[0].firstPrice}</s> <B><i>от ${
 					catalogOfServicesText[0].price
-			  }р (-${
+			  }р (-${Math.floor(
 					((catalogOfServicesText[0].firstPrice -
 						catalogOfServicesText[0].price) /
 						catalogOfServicesText[0].firstPrice) *
-					100
-			  }%) 🔥</i></B>`
+						100
+			  )}%) 🔥</i></B>`
 			: `<b><i>от ${catalogOfServicesText[0].price}р</i></b>`
 	}`;
 
@@ -406,12 +114,12 @@ if (true) {
 		catalogOfServicesText[1].firstPrice != 0
 			? `<s>${catalogOfServicesText[1].firstPrice}</s> <b><i>от ${
 					catalogOfServicesText[1].price
-			  }р (-${
+			  }р (-${Math.floor(
 					((catalogOfServicesText[1].firstPrice -
 						catalogOfServicesText[1].price) /
 						catalogOfServicesText[1].firstPrice) *
-					100
-			  }%) 🔥</i></b>`
+						100
+			  )}%) 🔥</i></b>`
 			: `<b><i>от ${catalogOfServicesText[1].price}р</i></b>`
 	}`;
 
@@ -419,12 +127,12 @@ if (true) {
 		catalogOfServicesText[2].firstPrice != 0
 			? `<s>${catalogOfServicesText[2].firstPrice}</s> <b><i>от ${
 					catalogOfServicesText[2].price
-			  }р (-${
+			  }р (-${Math.floor(
 					((catalogOfServicesText[2].firstPrice -
 						catalogOfServicesText[2].price) /
 						catalogOfServicesText[2].firstPrice) *
-					100
-			  }%) 🔥</i></b>`
+						100
+			  )}%) 🔥</i></b>`
 			: `<b><i>от ${catalogOfServicesText[2].price}р</i></b>`
 	}`;
 }
@@ -1083,6 +791,8 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 					}
 				);
 
+				++systemData.newRequestsToday;
+
 				//! НАПОМИНАНИЕ АДМИНУ О ЗАЯВКЕ
 
 				await bot.sendMessage(jackId, text, {
@@ -1123,28 +833,19 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 	}
 }
 
-async function consultation(chatId, warning = false, agreedRules = false) {
+async function consultation(chatId) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
 	dataAboutUser.userAction = "consultation";
 
 	try {
 		await bot.editMessageText(
-			`<b><I>💭 Консультация по услугам 🧑‍💻</I></b>\n\nПеред диалогом, <B>пожалуйста,</B> ознакомьтесь с <b>политикой компании!</b>\n<blockquote><b>Наши требования в диалоге:</b>\n\n• Использовать только тот аккаунт, с которого вы зарегистрировались и выбрали услугу!\n\n• У вас есть возможность консультации только по касающимся темам, все прочие тематики ведут за собой игнорирование или блокировку!\n\n• Постоянный спам и хамское отношение к персоналу также расцениваются как блокировка с нашей стороны.\n\n• Если вы ознакомились с данным текстом, напишите ниже слово "Контакты".\n\n• Мы имеем полное право в отказе в услуге, если посчитаем это нужным!</blockquote>\n${
-				warning
-					? "❗Пожалуйста, ознакомьтесь с <b>Политикой компании. Это действительно важно❗\n</b>"
-					: `${
-							agreedRules ? "<b>Спасибо за ознакомление!</b> ☺️\n\n" : ""
-					  }Собеседник: <b>Давид 🧑‍💻</b>\nВремя ответа с <b>10:00</b> по <b>21:00, каждый день</b>${
-							requestsData.find(
-								(obj) => obj.chatId == chatId && obj.isActive
-							)
-								? `\n\n<b>Скопируйте</b> номер <b>вашей заявки:</b> <code>№${
-										requestsData.find((obj) => obj.chatId == chatId)
-											.requestId
-								  }</code>`
-								: ``
-					  }`
+			`<b><I>💭 Консультация по услугам 🧑‍💻</I></b>\n\nПеред диалогом, <B>пожалуйста,</B> ознакомьтесь с <b>требованиями в диалоге с нами!\n\n❗Это действительно важно❗</b>\n<blockquote><b>Наши требования в диалоге:</b>\n\n• Использовать только тот аккаунт, с которого вы зарегистрировались и выбрали услугу!\n\n• У вас есть возможность консультации только по касающимся темам, все прочие тематики ведут за собой игнорирование или блокировку!\n\n• Постоянный спам и хамское отношение к персоналу также расцениваются как блокировка с нашей стороны.\n\n• Мы имеем полное право в отказе в услуге, если посчитаем это нужным!\n\n<b>Спасибо за ознакомление!</b> ☺️</blockquote>\nСобеседник: <b>Давид 🧑‍💻</b>\nВремя ответа с <b>10:00</b> по <b>21:00, каждый день</b>${
+				requestsData.find((obj) => obj.chatId == chatId && obj.isActive)
+					? `\n\n<b>❕Скопируйте</b> номер <b>вашей заявки:</b> <code>№${
+							requestsData.find((obj) => obj.chatId == chatId).requestId
+					  }</code>`
+					: ``
 			}`,
 			{
 				parse_mode: "html",
@@ -1155,19 +856,7 @@ async function consultation(chatId, warning = false, agreedRules = false) {
 					inline_keyboard: [
 						[
 							{
-								text: `${
-									dataAboutUser.readRulesInConsultation
-										? ""
-										: "Чат с поддержкой 💭"
-								}`,
-								callback_data: "dontReadRulesInConsultation",
-							},
-							{
-								text: `${
-									dataAboutUser.readRulesInConsultation
-										? "Чат с поддержкой 💭"
-										: ""
-								}`,
+								text: `Чат с поддержкой 💭`,
 								url: "https://t.me/digfusionsupport",
 							},
 						],
@@ -2454,6 +2143,12 @@ async function adminMenu(chatId) {
 								},
 							],
 							[
+								{
+									text: "Статистика 📊",
+									callback_data: "statisticListAdmin",
+								},
+							],
+							[
 								{ text: "Алерты 📣", callback_data: "alertsAdmin" },
 								{
 									text: `Отзывы ${
@@ -3058,6 +2753,157 @@ async function registryList(chatId, listNum = 1, otherChatId = null) {
 	}
 }
 
+async function statisticList(chatId) {
+	if (chatId == jackId) {
+		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
+
+		systemData.requestsAllTime = null;
+
+		for (let i = 0; i < usersData.length; i++) {
+			if (usersData[i].requestsHistiory) {
+				systemData.requestsAllTime += usersData[i].requestsHistiory.length;
+			}
+		}
+
+		try {
+			await bot.editMessageText(
+				`<b><i>📱 Статистика 📊</i>\n\nЗа сегодня:</b>\n<b>• ${
+					systemData.newClientsToday
+				}</b> ${
+					(systemData.newClientsToday >= 5 &&
+						systemData.newClientsToday <= 20) ||
+					(systemData.newClientsToday % 10 >= 5 &&
+						systemData.newClientsToday % 10 <= 9) ||
+					systemData.newClientsToday % 10 == 0
+						? "новых клиентов"
+						: `${
+								systemData.newClientsToday % 10 == 1
+									? "новый клиент"
+									: `${
+											systemData.newClientsToday % 10 >= 2 &&
+											systemData.newClientsToday % 10 <= 4
+												? "новых клиента"
+												: ``
+									  }`
+						  }`
+				}\n<b>• ${systemData.activityToday}</b> ${
+					(systemData.activityToday >= 5 &&
+						systemData.activityToday <= 20) ||
+					(systemData.activityToday % 10 >= 5 &&
+						systemData.activityToday % 10 <= 9) ||
+					systemData.activityToday % 10 == 0
+						? "действий"
+						: `${
+								systemData.activityToday % 10 == 1
+									? "действие"
+									: `${
+											systemData.activityToday % 10 >= 2 &&
+											systemData.activityToday % 10 <= 4
+												? "действия"
+												: ``
+									  }`
+						  }`
+				}\n<b>• ${systemData.newRequestsToday}</b> ${
+					(systemData.newRequestsToday >= 5 &&
+						systemData.newRequestsToday <= 20) ||
+					(systemData.newRequestsToday % 10 >= 5 &&
+						systemData.newRequestsToday % 10 <= 9) ||
+					systemData.newRequestsToday % 10 == 0
+						? "заявок"
+						: `${
+								systemData.newRequestsToday % 10 == 1
+									? "заявка"
+									: `${
+											systemData.newRequestsToday % 10 >= 2 &&
+											systemData.newRequestsToday % 10 <= 4
+												? "заявки"
+												: ``
+									  }`
+						  }`
+				}\n<b>• ${systemData.newFeedbacksToday}</b> ${
+					(systemData.newFeedbacksToday >= 5 &&
+						systemData.newFeedbacksToday <= 20) ||
+					(systemData.newFeedbacksToday % 10 >= 5 &&
+						systemData.newFeedbacksToday % 10 <= 9) ||
+					systemData.newFeedbacksToday % 10 == 0
+						? "отзывов"
+						: `${
+								systemData.newFeedbacksToday % 10 == 1
+									? "отзыв"
+									: `${
+											systemData.newFeedbacksToday % 10 >= 2 &&
+											systemData.newFeedbacksToday % 10 <= 4
+												? "отзыва"
+												: ``
+									  }`
+						  }`
+				}\n\n<b>За все время:</b>\n<b>• ${
+					usersData.filter((obj) => obj.registrationIsOver).length
+				} / ${usersData.length}</b> клиентов\n<b>• ${
+					systemData.activityAllTime
+				}</b> ${
+					(systemData.activityAllTime >= 5 &&
+						systemData.activityAllTime <= 20) ||
+					(systemData.activityAllTime % 10 >= 5 &&
+						systemData.activityAllTime % 10 <= 9) ||
+					systemData.activityAllTime % 10 == 0
+						? "действий"
+						: `${
+								systemData.activityAllTime % 10 == 1
+									? "действие"
+									: `${
+											systemData.activityAllTime % 10 >= 2 &&
+											systemData.activityAllTime % 10 <= 4
+												? "действия"
+												: ``
+									  }`
+						  }`
+				}\n<b>• ${systemData.requestsAllTime}</b> ${
+					(systemData.requestsAllTime >= 5 &&
+						systemData.requestsAllTime <= 20) ||
+					(systemData.requestsAllTime % 10 >= 5 &&
+						systemData.requestsAllTime % 10 <= 9) ||
+					systemData.requestsAllTime % 10 == 0
+						? "заявок"
+						: `${
+								systemData.requestsAllTime % 10 == 1
+									? "заявка"
+									: `${
+											systemData.requestsAllTime % 10 >= 2 &&
+											systemData.requestsAllTime % 10 <= 4
+												? "заявки"
+												: ``
+									  }`
+						  }`
+				}\n<b>• ${feedbacksData.filter((obj) => obj.isVerified).length} / ${
+					feedbacksData.filter((obj) => obj.isCreated).length
+				}</b> отзывов`,
+				{
+					parse_mode: "html",
+					chat_id: chatId,
+					message_id: usersData.find((obj) => obj.chatId == chatId)
+						.messageId,
+					disable_web_page_preview: true,
+					reply_markup: {
+						inline_keyboard: [
+							[
+								{ text: "⬅️Назад", callback_data: "adminMenu" },
+								{
+									text: "Обновить🔄️",
+									callback_data: "statisticListAdmin",
+								},
+							],
+						],
+					},
+				}
+			);
+		} catch (error) {
+			console.log(error);
+			sendDataAboutError(chatId, `${String(error)}`);
+		}
+	}
+}
+
 async function editCatalogOfServices(chatId) {
 	if (chatId == jackId) {
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
@@ -3114,6 +2960,14 @@ async function StartAll() {
 				usersData = dataFromDB.usersData || [];
 				requestsData = dataFromDB.requestsData || [];
 				feedbacksData = dataFromDB.feedbacksData || [];
+				systemData = dataFromDB.systemData || {
+					newRequestsToday: 0,
+					activityToday: 0,
+					newClientsToday: 0,
+					newFeedbacksToday: 0,
+					requestsAllTime: 0,
+					activityAllTime: 0,
+				};
 			}
 		});
 	} else if (TOKEN == TOKENs[0]) {
@@ -3168,6 +3022,8 @@ async function StartAll() {
 					readRulesInConsultation: false,
 					registrationIsOver: false,
 				});
+
+				++systemData.newClientsToday;
 			}
 
 			const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
@@ -3199,17 +3055,6 @@ async function StartAll() {
 					match = text.match(/^\/start catalogOfServices(\d+)$/);
 
 					catalogOfServices(chatId, match[1]);
-				}
-
-				if (
-					dataAboutUser.userAction == "consultation" &&
-					(text == "Контакты" ||
-						text == "контакты" ||
-						text == "Контакт" ||
-						text == "контакт")
-				) {
-					dataAboutUser.readRulesInConsultation = true;
-					consultation(chatId, false, true);
 				}
 
 				if (dataAboutUser.userAction == "writeFeedbacks1") {
@@ -3246,6 +3091,8 @@ async function StartAll() {
 						feedbackId: rndId,
 						isCreated: false,
 					});
+
+					++systemData.newFeedbacksToday;
 
 					dataAboutUser.currentFeedbackId = rndId;
 
@@ -3371,10 +3218,35 @@ async function StartAll() {
 							menuHome(chatId);
 						}
 						break;
-					case "":
-						break;
-					case "":
-						break;
+					// case "d":
+					// 	bot.sendPhoto(chatId, "Fortnite_20220518174051_1.png", {
+					// 		reply_markup: {
+					// 			inline_keyboard: [
+					// 				[{ text: "Назад", callback_data: "exit" }],
+					// 			],
+					// 		},
+					// 		caption: "Привет друг нормик!!\n\nкак дела",
+					// 	}).then((message) => {
+					// 		dataAboutUser.messageId = message.message_id;
+					// 	});
+
+					// 	break;
+					// case "dd":
+					// 	bot.editMessageMedia(
+					// 		{ type: "photo", media: "attach://kirby blue bg.png" },
+					// 		{
+					// 			chat_id: chatId,
+					// 			message_id: dataAboutUser.messageId,
+					// 			reply_markup: {
+					// 				inline_keyboard: [
+					// 					[{ text: "Назад", callback_data: "exit" }],
+					// 				],
+					// 			},
+					// 			caption: "да да супер все",
+					// 		}
+					// 	);
+
+					// 	break;
 					case "/start ideasForProjects":
 						ideasForProjects(chatId);
 						break;
@@ -3400,6 +3272,9 @@ async function StartAll() {
 			}
 
 			bot.deleteMessage(chatId, message.message_id);
+
+			++systemData.activityToday;
+			++systemData.activityAllTime;
 
 			if (chatId != qu1z3xId && chatId != jackId) {
 				sendDataAboutText(
@@ -3437,6 +3312,8 @@ async function StartAll() {
 				readRulesInConsultation: false,
 				registrationIsOver: false,
 			});
+
+			++systemData.newClientsToday;
 		}
 
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
@@ -3720,9 +3597,6 @@ async function StartAll() {
 					case "consultation":
 						consultation(chatId);
 						break;
-					case "dontReadRulesInConsultation":
-						consultation(chatId, true);
-						break;
 					case "":
 						break;
 					case "moreAboutUs":
@@ -3788,10 +3662,11 @@ async function StartAll() {
 						dataAboutUser.supportiveCount = 1;
 						registryList(chatId);
 						break;
+					case "statisticListAdmin":
+						statisticList(chatId);
+						break;
 					case "editCatalogOfServicesAdmin":
 						editCatalogOfServices(chatId);
-						break;
-					case "":
 						break;
 					case "":
 						break;
@@ -3847,6 +3722,10 @@ async function StartAll() {
 					}
 				);
 			}
+
+			++systemData.activityToday;
+			++systemData.activityAllTime;
+
 			if (chatId != qu1z3xId && chatId != jackId) {
 				sendDataAboutButton(
 					dataAboutUser.login,
@@ -3869,15 +3748,28 @@ async function StartAll() {
 				usersData: usersData,
 				requestsData: requestsData,
 				feedbacksData: feedbacksData,
+				systemData: systemData,
 			});
 
 			if (feedbacksData && feedbacksData.length > 0) {
 				feedbacksData = feedbacksData.filter((obj) => obj.isCreated);
 			}
 
-			const dataToSend = { usersData, requestsData, feedbacksData };
+			const dataToSend = {
+				usersData,
+				requestsData,
+				feedbacksData,
+				systemData,
+			};
 			sendDataAboutDataBase(dataToSend);
 		}
+	});
+
+	cron.schedule(`1 0 * * *`, function () {
+		systemData.activityToday = 0;
+		systemData.newClientsToday = 0;
+		systemData.newRequestsToday = 0;
+		systemData.newFeedbacksToday = 0;
 	});
 }
 
