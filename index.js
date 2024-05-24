@@ -1593,7 +1593,7 @@ async function writeFeedbacks(chatId, stageNum) {
 									(obj) =>
 										obj.chatId == chatId && obj.isActive == false
 							  ) || dataAboutUser.canWriteFeedbacks
-							? `Напишите <b>ваше мнение</b> о <b>полученном заказе, на услугу №${
+							? `Напишите ваше мнение о полученном заказе, на <b>услугу №${
 									requestsData.find((obj) => obj.chatId == chatId)
 										.serviceNum
 							  } "${
@@ -2189,6 +2189,10 @@ async function requestsList(
 
 		try {
 			if (dataAboutRequestForUser) {
+				try {
+					bot.deleteMessage(chatId, dataAboutUser.messageIdOther);
+				} catch (error) {}
+
 				const dataAboutСertainRequest = requestsData.find(
 					(obj) => obj.chatId == chatId
 				);
@@ -2966,7 +2970,7 @@ async function StartAll() {
 					newClientsToday: 0,
 					newFeedbacksToday: 0,
 					requestsAllTime: 0,
-					activityAllTime: 0,
+					activityAllTime: 800,
 				};
 			}
 		});
@@ -3525,43 +3529,66 @@ async function StartAll() {
 				}
 
 				if (data.includes("toggleToActiveRequestWithId")) {
-					match = data.match(/^toggleToActiveRequestWithId(\d+)$/);
+					if (chatId == jackId) {
+						match = data.match(/^toggleToActiveRequestWithId(\d+)$/);
+						const dataAboutСertainUser = usersData.find(
+							(obj) =>
+								obj.chatId ==
+								requestsData.find(
+									(obj) => obj.requestId == parseInt(match[1])
+								).chatId
+						);
+						const dataAboutСertainRequest = requestsData.find(
+							(obj) => obj.requestId == parseInt(match[1])
+						);
 
-					const dataAboutСertainUser = usersData.find(
-						(obj) =>
-							obj.chatId ==
-							requestsData.find(
-								(obj) => obj.requestId == parseInt(match[1])
-							).chatId
-					);
-					const dataAboutСertainRequest = requestsData.find(
-						(obj) => obj.requestId == parseInt(match[1])
-					);
+						dataAboutСertainRequest.isActive =
+							!dataAboutСertainRequest.isActive;
 
-					dataAboutСertainRequest.isActive =
-						!dataAboutСertainRequest.isActive;
+						dataAboutСertainUser.canWriteFeedbacks =
+							!dataAboutСertainRequest.isActive;
 
-					dataAboutСertainUser.canWriteFeedbacks =
-						!dataAboutСertainRequest.isActive;
+						if (
+							dataAboutСertainUser.requestsHistiory &&
+							!dataAboutСertainUser.requestsHistiory.find(
+								(obj) =>
+									obj.requestId == dataAboutСertainRequest.requestId
+							)
+						) {
+							dataAboutUser.selectedService = null;
+							dataAboutСertainUser.requestsHistiory.push({
+								chatId: dataAboutСertainRequest.chatId,
+								serviceNum: dataAboutСertainRequest.serviceNum,
+								creationTime: dataAboutСertainRequest.creationTime,
+								creationDate: dataAboutСertainRequest.creationDate,
+								requestId: dataAboutСertainRequest.requestId,
+							});
 
-					if (
-						dataAboutСertainUser.requestsHistiory &&
-						!dataAboutСertainUser.requestsHistiory.find(
-							(obj) => obj.requestId == dataAboutСertainRequest.requestId
-						) &&
-						chatId == jackId
-					) {
-						dataAboutUser.selectedService = null;
-						dataAboutСertainUser.requestsHistiory.push({
-							chatId: dataAboutСertainRequest.chatId,
-							serviceNum: dataAboutСertainRequest.serviceNum,
-							creationTime: dataAboutСertainRequest.creationTime,
-							creationDate: dataAboutСertainRequest.creationDate,
-							requestId: dataAboutСertainRequest.requestId,
-						});
+							bot.sendMessage(
+								dataAboutСertainUser.chatId,
+								`<b>${dataAboutСertainUser.login}, <a href="https://t.me/${BotName}/?start=myRequest">заявка №${dataAboutСertainRequest.requestId}</a> успешно обработана! ✅</b>\n\n<i>Пожалуйста, оставьте содержательный отзыв о полученой работе 🙏</i> \n\n<b>Спасибо вам за сотрудничество! ❤️</b>`,
+								{
+									parse_mode: "HTML",
+									disable_web_page_preview: true,
+									reply_markup: {
+										inline_keyboard: [
+											[
+												{
+													text: "Оставить отзыв ✍️",
+													callback_data: "writeFeedbacks",
+												},
+											],
+										],
+									},
+								}
+							).then((message) => {
+								dataAboutСertainUser.messageIdOther =
+									message.message_id;
+							});
+						}
+
+						requestsList(chatId, null, parseInt(match[1]));
 					}
-
-					requestsList(chatId, null, parseInt(match[1]));
 				}
 
 				if (
@@ -3607,6 +3634,10 @@ async function StartAll() {
 						feedbacksList(chatId);
 						break;
 					case "writeFeedbacks":
+						try {
+							bot.deleteMessage(chatId, dataAboutUser.messageIdOther);
+						} catch (error) {}
+
 						writeFeedbacks(chatId, 1);
 						break;
 					case "sendMyFeedback":
@@ -3742,7 +3773,6 @@ async function StartAll() {
 
 	cron.schedule(`1 */2 * * *`, function () {
 		// Запись данных в базу данных
-		console.log("DB updated");
 		if (TOKEN == TOKENs[1]) {
 			set(dataRef, {
 				usersData: usersData,
