@@ -15,7 +15,7 @@ const TOKENs = [
 	"7068045329:AAF0ZeLcIKKEvcubFTb2rWhmFBqrlWId0i8",
 ];
 
-const TOKEN = TOKENs[1]; // 1 - оригинал
+const TOKEN = TOKENs[0]; // 1 - оригинал
 const bot = new TelegramBot(TOKEN, { polling: true });
 
 const firebaseConfig = {
@@ -41,9 +41,6 @@ const jackId = "6815420098";
 let BotName = "digfusionbot";
 
 let usersData = [];
-let requestsData = [];
-let feedbacksData = [];
-
 let systemData = {
 	newRequestsToday: 0,
 	activityToday: 0,
@@ -51,6 +48,7 @@ let systemData = {
 	newFeedbacksToday: 0,
 
 	requestsAllTime: 0,
+	feedbacksAllTime: 0,
 	activityAllTime: 0,
 };
 
@@ -69,8 +67,9 @@ let catalogOfServicesText = [
 		serviceName: `Однотипный бот`,
 		moreAbout:
 			"Сбор информации с пользователей, и доступ к полученной базе данных.",
-		lifeTime: "Договорной срок (до 7 дней) *",
-		executionDate: "1 - 5 дней ",
+
+		executionDate: "1 - 5 дней",
+		lifeTime: "",
 		firstPrice: 0,
 		price: 990,
 		priceSentence: "",
@@ -79,8 +78,9 @@ let catalogOfServicesText = [
 		serviceName: `Бот среднего класса`,
 		moreAbout:
 			"Базы данных любых массивов информации, регистрация и рассылка напоминаний на мероприятия.",
-		lifeTime: "14 дней с добавлением *",
+
 		executionDate: "3 - 8 дней",
+		lifeTime: "",
 		firstPrice: 2990,
 		price: 1990,
 		priceSentence: "",
@@ -89,10 +89,22 @@ let catalogOfServicesText = [
 		serviceName: `Сложносоставной бот`,
 		moreAbout:
 			"Полностью законченая инфо-вселенная, со множеством разделов, главным меню, множеством выполняемых задач, и с возможностью администрирования.",
-		lifeTime: "30 дней с добавлением *",
+
 		executionDate: "8 и больше дней",
+		lifeTime: "",
 		firstPrice: 7990,
 		price: 4990,
+		priceSentence: "",
+	},
+	{
+		serviceName: `Неделя на сервере`,
+		moreAbout:
+			"Неделя хранения вашего проекта на нашем хостинге. Подходит для тех, кому действительно не хочется заморачиваться с собственным сервером.",
+
+		executionDate: "",
+		lifeTime: "7 дней",
+		firstPrice: 0,
+		price: 150,
 		priceSentence: "",
 	},
 ];
@@ -134,6 +146,18 @@ if (true) {
 						100
 			  )}%) 🔥</i></b>`
 			: `<b><i>от ${catalogOfServicesText[2].price}р</i></b>`
+	}`;
+	catalogOfServicesText[3].priceSentence = `${
+		catalogOfServicesText[3].firstPrice != 0
+			? `<s>${catalogOfServicesText[3].firstPrice}</s> <b><i>от ${
+					catalogOfServicesText[3].price
+			  }р (-${Math.floor(
+					((catalogOfServicesText[3].firstPrice -
+						catalogOfServicesText[3].price) /
+						catalogOfServicesText[3].firstPrice) *
+						100
+			  )}%) 🔥</i></b>`
+			: `<b><i>от ${catalogOfServicesText[3].price}р</i></b>`
 	}`;
 }
 
@@ -357,16 +381,16 @@ async function menuHome(
 		dataAboutUser.userStatus =
 			dataAboutUser.chatId == jackId
 				? "Администратор 👑"
-				: (dataAboutUser.requestsHistiory &&
-						dataAboutUser.requestsHistiory.length < 3) ||
-				  !dataAboutUser.requestsHistiory
+				: (dataAboutUser.requestsData &&
+						dataAboutUser.requestsData.length < 3) ||
+				  !dataAboutUser.requestsData
 				? "Клиент 🙂"
-				: dataAboutUser.requestsHistiory.length >= 3
+				: dataAboutUser.requestsData.length >= 3
 				? "Постоянный клиент 😎"
-				: dataAboutUser.requestsHistiory.length >= 6
+				: dataAboutUser.requestsData.length >= 6
 				? "Особый клиент 🤩"
-				: dataAboutUser.requestsHistiory.length >= 10
-				? "Лучший покупатель 🫅"
+				: dataAboutUser.requestsData.length >= 10
+				? "Лучший покупатель 🤴"
 				: "";
 
 		let navigationListText = `<b>"Каталог услуг 🛒"</b> - расчет стоимости и выбор типа продукта.\n\n<b>"Идеи 💡"</b> - список идей для вашей деятельности.\n\n<b>"Консультация 🧑‍💻"</b> - в живой переписке подскажем и проконсультируем вас по любому вопросу!\n\n<b>"Наши работы 📱"</b> - список и описание всех наших проектов.\n\n<b>"О нас 👥"</b> - вся информация о нашей корпорации и наших преимуществах.\n\n<b>"Отзывы 📧"</b> - возможность оставить отзыв, и список реальных мнений заказчиков.\n\n<b>"Профиль ⚙️"</b> - личные данные, и прочая информация.`;
@@ -391,12 +415,13 @@ async function menuHome(
 						[
 							{
 								text: `${
-									requestsData.find(
-										(obj) => obj.chatId == chatId && obj.isActive
+									dataAboutUser.requestsData &&
+									dataAboutUser.requestsData.find(
+										(obj) => obj.isActive
 									)
 										? `❗Ваша заявка №${
-												requestsData.find(
-													(obj) => obj.chatId == chatId
+												dataAboutUser.requestsData.find(
+													(obj) => obj.isActive
 												).requestId
 										  } 🕑`
 										: ""
@@ -449,89 +474,59 @@ async function menuHome(
 async function catalogOfServices(chatId, serviceNum = 1) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-	const dataAboutСertainRequest = requestsData.find(
-		(obj) => obj.chatId == chatId && obj.isActive
-	);
+	const dataAboutСertainRequest = dataAboutUser.requestsData
+		? dataAboutUser.requestsData.find((obj) => obj.isActive)
+		: null;
 
 	try {
+		let text = "";
+		for (let i = 1; i <= catalogOfServicesText.length; i++) {
+			text += `${
+				serviceNum == i
+					? `\n\n<b>• ${i}. ${
+							catalogOfServicesText[serviceNum - 1].serviceName
+					  } •\n</b><blockquote>${
+							dataAboutСertainRequest &&
+							dataAboutСertainRequest.serviceNum == i
+								? `<i>Выбранная вами услуга</i> - <a href="https://t.me/${BotName}/?start=myRequest">к заявке</a>\n\n`
+								: ``
+					  }<b>Подробнее:</b> ${
+							catalogOfServicesText[serviceNum - 1].moreAbout
+					  }${
+							catalogOfServicesText[serviceNum - 1].lifeTime
+								? `\n\n<b>Действует:</b> ${
+										catalogOfServicesText[serviceNum - 1].lifeTime
+								  }`
+								: ``
+					  }${
+							catalogOfServicesText[serviceNum - 1].executionDate
+								? `\n\n<b>Срок выполнения:</b> ${
+										catalogOfServicesText[serviceNum - 1]
+											.executionDate
+								  } ⌛`
+								: ``
+					  }\n\n<b>Цена:</b> ${
+							catalogOfServicesText[serviceNum - 1].priceSentence
+					  } 💰${
+							serviceNum != 4
+								? `\n\n<b><a href="https://t.me/${BotName}/?start=ideasForProjects">Идеи для проекта</a></b>`
+								: ``
+					  }</blockquote>`
+					: `\n\n<b>${i}. </b>${catalogOfServicesText[i - 1].serviceName}${
+							dataAboutСertainRequest &&
+							dataAboutСertainRequest.serviceNum == i
+								? ` - <b><a href="https://t.me/${BotName}/?start=myRequest">к заявке</a></b>`
+								: ``
+					  }`
+			}`;
+		}
+
 		await bot.editMessageText(
-			`<b><i>🛍️ Каталог услуг 🛒</i></b>\n\n<b>На данный момент</b> мы предоставляем <b>данные услуги:\n\n</b>${
-				serviceNum == 1
-					? `<b>• 1. ${
-							catalogOfServicesText[serviceNum - 1].serviceName
-					  } •\n</b><blockquote>${
-							dataAboutСertainRequest &&
-							dataAboutСertainRequest.serviceNum == 1
-								? `<i>Выбранная вами услуга</i> - <a href="https://t.me/${BotName}/?start=myRequest">к заявке</a>\n\n`
-								: ``
-					  }<b>Подробнее:</b> ${
-							catalogOfServicesText[serviceNum - 1].moreAbout
-					  }\n\n<b><a href="https://t.me/${BotName}/?start=ideasForProjects">Идеи для проекта</a>\n\nДействует:</b> ${
-							catalogOfServicesText[serviceNum - 1].lifeTime
-					  }\n\n<b>Срок выполнения:</b> ${
-							catalogOfServicesText[serviceNum - 1].executionDate
-					  } ⌛\n\n<b>Цена:</b> ${
-							catalogOfServicesText[serviceNum - 1].priceSentence
-					  } 💰</blockquote>`
-					: `<b>1. </b>${catalogOfServicesText[0].serviceName}${
-							dataAboutСertainRequest &&
-							dataAboutСertainRequest.serviceNum == 1
-								? ` - <b><a href="https://t.me/${BotName}/?start=myRequest">к заявке</a></b>`
-								: ``
-					  }`
-			}\n\n${
-				serviceNum == 2
-					? `<b>• 2. ${
-							catalogOfServicesText[serviceNum - 1].serviceName
-					  } •\n</b><blockquote>${
-							dataAboutСertainRequest &&
-							dataAboutСertainRequest.serviceNum == 2
-								? `<i>Выбранная вами услуга</i> - <a href="https://t.me/${BotName}/?start=myRequest">к заявке</a>\n\n`
-								: ``
-					  }<b>Подробнее:</b> ${
-							catalogOfServicesText[serviceNum - 1].moreAbout
-					  }\n\n<b><a href="https://t.me/${BotName}/?start=ideasForProjects">Идеи для проекта</a>\n\nДействует:</b> ${
-							catalogOfServicesText[serviceNum - 1].lifeTime
-					  }\n\n<b>Срок выполнения:</b> ${
-							catalogOfServicesText[serviceNum - 1].executionDate
-					  } ⌛\n\n<b>Цена:</b> ${
-							catalogOfServicesText[serviceNum - 1].priceSentence
-					  } 💰</blockquote>`
-					: `<b>2. </b>${catalogOfServicesText[1].serviceName}${
-							dataAboutСertainRequest &&
-							dataAboutСertainRequest.serviceNum == 2
-								? ` - <b><a href="https://t.me/${BotName}/?start=myRequest">к заявке</a></b>`
-								: ``
-					  }`
-			}\n\n${
-				serviceNum == 3
-					? `<b>• 3. ${
-							catalogOfServicesText[serviceNum - 1].serviceName
-					  } •\n</b><blockquote>${
-							dataAboutСertainRequest &&
-							dataAboutСertainRequest.serviceNum == 3
-								? `<i>Выбранная вами услуга</i> - <a href="https://t.me/${BotName}/?start=myRequest">к заявке</a>\n\n`
-								: ``
-					  }<b>Подробнее:</b> ${
-							catalogOfServicesText[serviceNum - 1].moreAbout
-					  }\n\n<b><a href="https://t.me/${BotName}/?start=ideasForProjects">Идеи для проекта</a>\n\nДействует:</b> ${
-							catalogOfServicesText[serviceNum - 1].lifeTime
-					  }\n\n<b>Срок выполнения:</b> ${
-							catalogOfServicesText[serviceNum - 1].executionDate
-					  } ⌛\n\n<b>Цена:</b> ${
-							catalogOfServicesText[serviceNum - 1].priceSentence
-					  } 💰</blockquote>`
-					: `<b>3. </b>${catalogOfServicesText[2].serviceName}${
-							dataAboutСertainRequest &&
-							dataAboutСertainRequest.serviceNum == 3
-								? ` - <b><a href="https://t.me/${BotName}/?start=myRequest">к заявке</a></b>`
-								: ``
-					  }`
-			}\n\n<i>* Или размещение на ваш сервер.</i>\n\n${
+			`<b><i>🛍️ Каталог услуг 🛒</i></b>\n\n<b>На данный момент</b> мы предоставляем <b>данные услуги:</b>${text}${
 				dataAboutСertainRequest
-					? `<b>У вас</b> уже выбрана <b>услуга №${dataAboutСertainRequest.serviceNum},</b> но выбор <b>можно изменить!</b> 😉`
+					? `\n\n<b>У вас</b> уже выбрана <b>услуга №${dataAboutСertainRequest.serviceNum},</b> но выбор <b>можно изменить!</b> 😉`
 					: ``
-			}`,
+			}\n\n<b><a href="https://t.me/${BotName}/?start=soon">Политика компании digfusion</a></b>`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -566,15 +561,8 @@ async function catalogOfServices(chatId, serviceNum = 1) {
 									dataAboutСertainRequest &&
 									dataAboutСertainRequest.serviceNum == serviceNum
 										? `${
-												requestsData.find(
-													(obj) =>
-														obj.chatId == chatId && obj.isActive
-												)
-													? `❗Ваша заявка №${
-															requestsData.find(
-																(obj) => obj.chatId == chatId
-															).requestId
-													  } 🕑`
+												dataAboutСertainRequest
+													? `❗Ваша заявка №${dataAboutСertainRequest.requestId} 🕑`
 													: ""
 										  }`
 										: `Создать заявку на №${serviceNum}💭`
@@ -610,7 +598,7 @@ async function ideasForProjects(chatId) {
 	dataAboutUser.userAction = "ideasForProjects";
 	try {
 		await bot.editMessageText(
-			`<b><i>💭 Идеи для проектов 💡</i></b>\n\nМы представили <B><i>небольшой</i> список идей для каждой из наших услуг:\n\n1. ${catalogOfServicesText[0].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a><b><blockquote>Примеры реализации:\n• Опрос пользователей\n• Проведение тестирования\n• Регистрации на мероприятия\n• Ответы на часто-задаваемы вопросы\n• Сбор отзывов клиентов\n• Заявки на консультацию</blockquote>\n2. ${catalogOfServicesText[1].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a><b><blockquote>Примеры реализации:\n• Регистрации с напоминаниями\n• Объявления о событиях\n• Рассылки для компаний\n• Сбор любой инфоромации</blockquote>\n3. ${catalogOfServicesText[2].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a><b><blockquote>Примеры реализации:\n• Автоматизации бизнес-процессов\n• Просмотр услуг компании\n• Мини интернет магазин\n• Мини онлайн школа\n• Учебные задания</blockquote>\n\nМы очень надеемся, </B>что хотя бы одна из идей <b>привлекла вас</b> к <B>нашим услугам!</B> ☺️`,
+			`<b><i>💭 Идеи для проектов 💡</i></b>\n\nМы представили <B><i>небольшой</i> список идей для наших услуг:\n\n1. ${catalogOfServicesText[0].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услуге</a><b><blockquote>Примеры реализации:\n• Опрос пользователей\n• Проведение тестирования\n• Регистрации на мероприятия\n• Ответы на часто-задаваемы вопросы\n• Сбор отзывов клиентов\n• Заявки на консультацию</blockquote>\n2. ${catalogOfServicesText[1].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices2">к услуге</a><b><blockquote>Примеры реализации:\n• Регистрации с напоминаниями\n• Объявления о событиях\n• Рассылки для компаний\n• Сбор любой инфоромации</blockquote>\n3. ${catalogOfServicesText[2].serviceName}</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a><b><blockquote>Примеры реализации:\n• Автоматизации бизнес-процессов\n• Просмотр услуг компании\n• Мини интернет магазин\n• Мини онлайн школа\n• Учебные задания</blockquote>\n\nМы очень надеемся, </B>что хотя бы одна из идей <b>привлекла вас</b> к <B>нашим услугам!</B> ☺️`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -651,26 +639,35 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 						catalogOfServicesText[serviceNum - 1].serviceName
 					}\n</b><blockquote><b>Подробнее:</b> ${
 						catalogOfServicesText[serviceNum - 1].moreAbout
-					}\n\n<b>Действует:</b> ${
+					}${
 						catalogOfServicesText[serviceNum - 1].lifeTime
-					}\n\n<b>Срок выполнения:</b> ${
+							? `\n\n<b>Действует:</b> ${
+									catalogOfServicesText[serviceNum - 1].lifeTime
+							  }`
+							: ``
+					}${
 						catalogOfServicesText[serviceNum - 1].executionDate
-					} ⌛\n\n<b>Цена:</b> ${
+							? `\n\n<b>Срок выполнения:</b> ${
+									catalogOfServicesText[serviceNum - 1].executionDate
+							  } ⌛`
+							: ``
+					}\n\n<b>Цена:</b> ${
 						catalogOfServicesText[serviceNum - 1].priceSentence
 					} 💰</blockquote>\n\n${
-						requestsData.find(
-							(obj) => obj.chatId == chatId && obj.isActive
-						)
+						dataAboutUser.requestsData &&
+						dataAboutUser.requestsData.find((obj) => obj.isActive)
 							? `<b>❗Ранее,</b> вы выбирали <b>услугу №${
-									requestsData.find((obj) => obj.chatId == chatId)
-										.serviceNum
+									dataAboutUser.requestsData.find(
+										(obj) => obj.isActive
+									).serviceNum
 							  } "${
 									catalogOfServicesText[
-										requestsData.find((obj) => obj.chatId == chatId)
-											.serviceNum - 1
+										dataAboutUser.requestsData.find(
+											(obj) => obj.isActive
+										).serviceNum - 1
 									].serviceName
-							  }".</b>\n\nХотите ли <b>изменить свой выбор</b> и <B>получить консультацию</B> по новой услуге? 🤔`
-							: `Вы <b>действительно</b> хотите получить <b>консультацию по этой услуге?</b> 🤔`
+							  }".</b>\n\n<b><a href="https://t.me/${BotName}/?start=soon">Политика услуг digfusion</a></b>\n\nХотите ли <b>изменить свой выбор</b> и <B>получить консультацию</B> по новой услуге? 🤔`
+							: `<b><a href="https://t.me/${BotName}/?start=soon">Политика услуг digfusion</a></b>\n\nВы <b>действительно</b> хотите получить <b>консультацию по этой услуге?</b> 🤔`
 					}`,
 					{
 						parse_mode: "html",
@@ -687,13 +684,7 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 									},
 									{
 										text: "Получить! ✅",
-										callback_data: `${
-											requestsData.find(
-												(obj) => (obj.chatId = chatId)
-											)
-												? `editRequestAndConsultationOnService${serviceNum}`
-												: `consultationOnService${serviceNum}`
-										}`,
+										callback_data: `consultationOnService${serviceNum}`,
 									},
 								],
 							],
@@ -702,66 +693,56 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 				);
 				break;
 			case 2:
-				const dataAboutСertainRequest = requestsData.find(
-					(obj) => obj.chatId == chatId
-				);
-				let text = "";
+				if (
+					dataAboutUser.requestsData &&
+					dataAboutUser.requestsData.find((obj) => obj.isActive)
+				)
+					dataAboutUser.requestsData.at(-1).isActive = false;
 
-				rndId = 1; // присвоение уникального id
-				do {
-					rndId = Math.floor(Math.random() * 100000);
-				} while (
-					requestsData.some((obj) => obj.requestId == rndId) &&
-					requestsData.length != 0
-				);
+				let isUnique = false;
+				while (!isUnique) {
+					rndId = Math.floor(Math.random() * 9999);
+					isUnique = true;
 
-				if (!requestsData.find((obj) => obj.chatId == chatId)) {
-					requestsData.push({
-						chatId: chatId,
-						serviceNum: dataAboutUser.selectedService,
-						isActive: true,
-						creationTime: `${String(new Date().getHours()).padStart(
-							2,
-							"0"
-						)}:${String(new Date().getMinutes()).padStart(2, "0")}`,
-						creationDate: `${new Date()
-							.getDate()
-							.toString()
-							.padStart(2, "0")}.${(new Date().getMonth() + 1)
-							.toString()
-							.padStart(2, "0")}.${(new Date().getFullYear() % 100)
-							.toString()
-							.padStart(2, "0")}`,
-						requestId: rndId,
-						isDelete: false,
-					});
+					for (let i = 0; i < usersData.length; i++) {
+						if (usersData[i].requestsData)
+							for (
+								let j = 0;
+								j < usersData[i].requestsData.length;
+								j++
+							) {
+								if (usersData[i].requestsData[j].requestId === rndId) {
+									isUnique = false;
+									break;
+								}
+							}
+						if (!isUnique) break;
+					}
+				}
 
-					//! НАПОМИНАНИЕ АДМИНУ О ЗАЯВКЕ
+				if (!dataAboutUser.requestsData) {
+					dataAboutUser.requestsData = [];
+				}
 
-					text = `<b>Давид, поступила</b> заявка на <b>услугу №${dataAboutUser.selectedService}❗\n\nОт: <a href="tg://user?id=${dataAboutUser.chatId}">${dataAboutUser.login}</a> • <code>${dataAboutUser.chatId}</code>\n\nОтветить на нее сразу? 🧐</b>`;
-				} else {
-					dataAboutСertainRequest.serviceNum =
-						dataAboutUser.selectedService;
-					dataAboutСertainRequest.creationTime = `${String(
-						new Date().getHours()
-					).padStart(2, "0")}:${String(new Date().getMinutes()).padStart(
+				dataAboutUser.requestsData.push({
+					serviceNum: dataAboutUser.selectedService,
+
+					creationTime: `${String(new Date().getHours()).padStart(
 						2,
 						"0"
-					)}`;
-					dataAboutСertainRequest.creationDate = `${new Date()
+					)}:${String(new Date().getMinutes()).padStart(2, "0")}`,
+					creationDate: `${new Date()
 						.getDate()
 						.toString()
 						.padStart(2, "0")}.${(new Date().getMonth() + 1)
 						.toString()
 						.padStart(2, "0")}.${(new Date().getFullYear() % 100)
 						.toString()
-						.padStart(2, "0")}`;
+						.padStart(2, "0")}`,
 
-					dataAboutСertainRequest.requestId = rndId;
-					dataAboutСertainRequest.isActive = true;
-
-					text = `<b>Давид,</b> заявка <b>изменена</b> на <b>услугу №${dataAboutUser.selectedService}! ✏️\n\nОт: <a href="tg://user?id=${dataAboutUser.chatId}">${dataAboutUser.login}</a> • <code>${dataAboutUser.chatId}</code>\n\nОтветить на нее сразу? 🧐</b>`;
-				}
+					requestId: rndId,
+					isActive: true,
+				});
 
 				await bot.editMessageText(
 					`<b>Ваша <a href="https://t.me/${BotName}/?start=myRequest">заявка №${rndId}</a></b> находится <b>в обработке! 🕑</b>\n\n<b>Вы</b> можете написать <b>нам напрямую</b> или <b>дождаться</b> нашей <b>связи с вами! 😉</b>`,
@@ -790,41 +771,44 @@ async function consultationOnService(chatId, stageNum, serviceNum) {
 						},
 					}
 				);
-
 				++systemData.newRequestsToday;
 
 				//! НАПОМИНАНИЕ АДМИНУ О ЗАЯВКЕ
 
-				await bot.sendMessage(jackId, text, {
-					parse_mode: "HTML",
-					disable_web_page_preview: true,
-					reply_markup: {
-						inline_keyboard: [
-							[
-								{
-									text: `К заявке 🪪`,
-									callback_data: `requestWithId${rndId}`,
-								},
+				await bot.sendMessage(
+					jackId,
+					`<b>Давид, поступила</b> заявка на <b>услугу №${dataAboutUser.selectedService}❗\n\nОт: <a href="tg://user?id=${dataAboutUser.chatId}">${dataAboutUser.login}</a> • <code>${dataAboutUser.chatId}</code>\n\nОтветить на нее сразу? 🧐</b>`,
+					{
+						parse_mode: "HTML",
+						disable_web_page_preview: true,
+						reply_markup: {
+							inline_keyboard: [
+								[
+									{
+										text: `К заявке 🪪`,
+										callback_data: `requestWithId${rndId}`,
+									},
+								],
+								[
+									{
+										text: "Клиент 👤",
+										url: `tg://user?id=${dataAboutUser.chatId}`,
+									},
+									{
+										text: "Все заявки 🧑‍💻",
+										callback_data: `requestsList1`,
+									},
+								],
+								[
+									{
+										text: "Позже ❌",
+										callback_data: "deleteexcess",
+									},
+								],
 							],
-							[
-								{
-									text: "Клиент 👤",
-									url: `tg://user?id=${dataAboutUser.chatId}`,
-								},
-								{
-									text: "Все заявки 🧑‍💻",
-									callback_data: `requestsList1`,
-								},
-							],
-							[
-								{
-									text: "Позже ❌",
-									callback_data: "deleteexcess",
-								},
-							],
-						],
-					},
-				});
+						},
+					}
+				);
 				break;
 		}
 	} catch (error) {
@@ -841,9 +825,11 @@ async function consultation(chatId) {
 	try {
 		await bot.editMessageText(
 			`<b><I>💭 Консультация по услугам 🧑‍💻</I></b>\n\nПеред диалогом, <B>пожалуйста,</B> ознакомьтесь с <b>требованиями в диалоге с нами!\n\n❗Это действительно важно❗</b>\n<blockquote><b>Наши требования в диалоге:</b>\n\n• Использовать только тот аккаунт, с которого вы зарегистрировались и выбрали услугу!\n\n• У вас есть возможность консультации только по касающимся темам, все прочие тематики ведут за собой игнорирование или блокировку!\n\n• Постоянный спам и хамское отношение к персоналу также расцениваются как блокировка с нашей стороны.\n\n• Мы имеем полное право в отказе в услуге, если посчитаем это нужным!\n\n<b>Спасибо за ознакомление!</b> ☺️</blockquote>\nСобеседник: <b>Давид 🧑‍💻</b>\nВремя ответа с <b>10:00</b> по <b>21:00, каждый день</b>${
-				requestsData.find((obj) => obj.chatId == chatId && obj.isActive)
+				dataAboutUser.requestsData &&
+				dataAboutUser.requestsData.find((obj) => obj.isActive)
 					? `\n\n<b>❕Скопируйте</b> номер <b>вашей заявки:</b> <code>№${
-							requestsData.find((obj) => obj.chatId == chatId).requestId
+							dataAboutUser.requestsData.find((obj) => obj.isActive)
+								.requestId
 					  }</code>`
 					: ``
 			}`,
@@ -893,7 +879,7 @@ async function ourProjectsList(chatId, projectNum = 1) {
 		{
 			nameLink: `Алгебравичок 🧮`,
 			botName: "digmathbot",
-			moreAboutText: `Личный репититор, генерирующий арифметические задачки по вашему уровню знаний. Прекрасно подходит для закрепления пройденного материала и поддержания математических навыков в форме.`,
+			moreAboutText: `Личный репититор, генерирующий арифметические задачки по вашему уровню знаний. Прекрасно подходит для закрепления материала и поддержания счётных навыков в форме.`,
 			serviceName: `${catalogOfServicesText[2].serviceName} - <a href="https://t.me/${BotName}/?start=catalogOfServices3">к услуге</a>\n\n<B>Цена:</B> ${catalogOfServicesText[2].priceSentence}`,
 		},
 		{
@@ -1143,18 +1129,29 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 
 	try {
 		if (feedbackId) {
-			const dataAboutFeedback = feedbacksData.find(
+			let allFeedbacksData = [];
+			usersData.forEach((user) => {
+				if (user.feedbacksData)
+					user.feedbacksData.forEach((feedback) => {
+						allFeedbacksData.push(feedback);
+					});
+			});
+
+			const dataAboutFeedback = allFeedbacksData.find(
 				(obj) => obj.feedbackId == feedbackId
 			);
 
 			await bot.editMessageText(
-				`<b><i>📧 Отзыв • <code>${
-					dataAboutFeedback.feedbackId
-				}</code> 👤\n\n</i>Содержимое:</b><blockquote><b>${
+				`<b><i>📧 Отзыв • <code>${feedbackId}</code> 👤\n\n</i>Содержимое:</b><blockquote><b>${
 					dataAboutFeedback.from
 				} • ${
-					usersData.find((obj) => obj.chatId == dataAboutFeedback.chatId)
-						.userStatus
+					usersData.find(
+						(user) =>
+							user.feedbacksData &&
+							user.feedbacksData.find(
+								(feedback) => feedback.feedbackId == feedbackId
+							)
+					).userStatus
 				}\n\n№${dataAboutFeedback.serviceNum} "${
 					catalogOfServicesText[dataAboutFeedback.serviceNum - 1]
 						.serviceName
@@ -1220,14 +1217,35 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 				}
 			);
 		} else {
+			let allFeedbacksData;
 			switch (listNum) {
 				case 1:
+					if (
+						dataAboutUser.feedbacksData &&
+						dataAboutUser.feedbacksData.length > 0
+					) {
+						dataAboutUser.feedbacksData =
+							dataAboutUser.feedbacksData.filter((obj) => obj.isCreated);
+					}
+
 					count = 0;
 					countOfLists = 1;
 					text = ["", "", "", "", "", "", "", "", "", ""];
-					for (let i = feedbacksData.length - 1; i >= 0; i--) {
-						const dataAboutUserСertainFeedback = usersData.find(
-							(obj) => obj.chatId == feedbacksData[i].chatId
+
+					allFeedbacksData = [];
+					usersData.forEach((user) => {
+						if (user.feedbacksData)
+							user.feedbacksData.forEach((feedback) => {
+								allFeedbacksData.push(feedback);
+							});
+					});
+
+					for (let i = allFeedbacksData.length - 1; i >= 0; i--) {
+						const dataAboutUserСertainFeedback = usersData.find((user) =>
+							user.feedbacksData.find(
+								(feedback) =>
+									feedback.feedbackId == allFeedbacksData[i].feedbackId
+							)
 						);
 
 						if (count % 3 == 0 && count != 0) {
@@ -1235,26 +1253,26 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						}
 
 						if (
-							feedbacksData[i].isVerified ||
-							(feedbacksData[i].chatId == chatId &&
-								!feedbacksData[i].isVerified)
+							allFeedbacksData[i].isVerified ||
+							(dataAboutUserСertainFeedback.chatId == chatId &&
+								!allFeedbacksData[i].isVerified)
 						) {
 							count++;
 							text[countOfLists - 1] += `<b>${count}. ${
-								feedbacksData[i].from
+								allFeedbacksData[i].from
 							} • ${
 								dataAboutUserСertainFeedback.userStatus
-							}\n</b>Услуга<b> №${feedbacksData[i].serviceNum} ${
-								feedbacksData[i].isVerified
+							}\n</b>Услуга<b> №${allFeedbacksData[i].serviceNum} ${
+								allFeedbacksData[i].isVerified
 									? ``
 									: `</b>- на проверке 🔎<b>`
 							}\nТекст:</b><i> "${truncateString(
-								feedbacksData[i].feedbackText,
+								allFeedbacksData[i].feedbackText,
 								100
 							)}" - ${
-								feedbacksData[i].opinionRating
+								allFeedbacksData[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
-								feedbacksData[i].feedbackId
+								allFeedbacksData[i].feedbackId
 							}">Подробнее об отзыве</a></b>\n\n`;
 						}
 					}
@@ -1283,10 +1301,8 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						}</i></b>\n\n${
 							text[dataAboutUser.supportiveCount - 1]
 								? `${text[dataAboutUser.supportiveCount - 1]}${
-										feedbacksData.find(
-											(obj) =>
-												obj.chatId == chatId &&
-												obj.isVerified == false
+										dataAboutUser.feedbacksData.find(
+											(obj) => !obj.isVerified
 										)
 											? `<i>🔎 - находится на проверке</i>`
 											: ``
@@ -1338,15 +1354,10 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 									[
 										{
 											text: `${
-												feedbacksData.filter(
-													(obj) =>
-														obj.chatId == chatId && obj.isCreated
-												).length > 0
+												dataAboutUser.feedbacksData.at(-1)
 													? `Ваши отзывы (${
-															feedbacksData.filter(
-																(obj) =>
-																	obj.chatId == chatId &&
-																	obj.isCreated
+															dataAboutUser.feedbacksData.filter(
+																(obj) => obj.isCreated
 															).length
 													  }) 📧`
 													: ``
@@ -1368,9 +1379,9 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 					);
 					break;
 				case 2:
-					const dataAboutUserFeedbacks = feedbacksData.filter(
-						(obj) => obj.chatId == chatId && obj.isCreated
-					);
+					const dataAboutUserFeedbacks =
+						dataAboutUser.feedbacksData || null;
+
 					count = 0;
 					countOfLists = 1;
 					text = ["", "", "", "", "", "", "", "", "", "", "", "", "", ""];
@@ -1379,21 +1390,19 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 							++countOfLists;
 						}
 
-						if (dataAboutUserFeedbacks[i].chatId == chatId) {
-							count++;
-							text[countOfLists - 1] += `<b>${count}. ${
-								dataAboutUserFeedbacks[i].from
-							} • Услуга №${dataAboutUserFeedbacks[i].serviceNum} ${
-								dataAboutUserFeedbacks[i].isVerified ? `` : `🔎`
-							}\nТекст: </b><i>"${truncateString(
-								dataAboutUserFeedbacks[i].feedbackText,
-								100
-							)}" - ${
-								dataAboutUserFeedbacks[i].opinionRating
-							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
-								dataAboutUserFeedbacks[i].feedbackId
-							}">Подробнее об отзыве</a></b>\n\n`;
-						}
+						count++;
+						text[countOfLists - 1] += `<b>${count}. ${
+							dataAboutUserFeedbacks[i].from
+						} • Услуга №${dataAboutUserFeedbacks[i].serviceNum} ${
+							dataAboutUserFeedbacks[i].isVerified ? `` : `🔎`
+						}\nТекст: </b><i>"${truncateString(
+							dataAboutUserFeedbacks[i].feedbackText,
+							100
+						)}" - ${
+							dataAboutUserFeedbacks[i].opinionRating
+						}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
+							dataAboutUserFeedbacks[i].feedbackId
+						}">Подробнее об отзыве</a></b>\n\n`;
 					}
 
 					dataAboutUser.userAction = "feedbacksList2";
@@ -1420,10 +1429,8 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 						}</i></b>\n\n${
 							text[dataAboutUser.supportiveCount - 1]
 								? `${text[dataAboutUser.supportiveCount - 1]}${
-										feedbacksData.find(
-											(obj) =>
-												obj.chatId == chatId &&
-												obj.isVerified == false
+										dataAboutUser.feedbacksData.find(
+											(obj) => !obj.isVerified
 										)
 											? `<i>🔎 - находится на проверке</i>`
 											: ``
@@ -1488,24 +1495,32 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 					);
 					break;
 				case 3:
+					allFeedbacksData = [];
+					usersData.forEach((user) => {
+						if (user.feedbacksData)
+							user.feedbacksData.forEach((feedback) => {
+								allFeedbacksData.push(feedback);
+							});
+					});
+
 					count = 0;
-					for (let i = 0; i < feedbacksData.length; i++) {
-						const dataAboutUserСertainFeedback = usersData.find(
-							(obj) => obj.chatId == feedbacksData[i].chatId
-						);
-						if (!feedbacksData[i].isVerified) {
+					for (let i = 0; i < allFeedbacksData.length; i++) {
+						if (
+							!allFeedbacksData[i].isVerified &&
+							allFeedbacksData[i].isCreated
+						) {
 							count++;
-							text += `<b>${count}. ${feedbacksData[i].from} • Услуга №${
-								feedbacksData[i].serviceNum
-							} ${
-								feedbacksData[i].isVerified ? `` : `🔎`
+							text += `<b>${count}. ${
+								allFeedbacksData[i].from
+							} • Услуга №${allFeedbacksData[i].serviceNum} ${
+								allFeedbacksData[i].isVerified ? `` : `🔎`
 							}\nТекст: </b><i>"${truncateString(
-								feedbacksData[i].feedbackText,
+								allFeedbacksData[i].feedbackText,
 								100
 							)}" - ${
-								feedbacksData[i].opinionRating
+								allFeedbacksData[i].opinionRating
 							}</i>\n<b><a href="https://t.me/${BotName}/?start=feedbackWithId${
-								feedbacksData[i].feedbackId
+								allFeedbacksData[i].feedbackId
 							}">Подробнее об отзыве</a></b>\n\n`;
 						}
 					}
@@ -1561,50 +1576,40 @@ async function feedbacksList(chatId, listNum = 1, feedbackId = null) {
 async function writeFeedbacks(chatId, stageNum) {
 	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-	const dataAboutFeedback = feedbacksData.find(
+	const dataAboutFeedback = dataAboutUser.feedbacksData.find(
 		(obj) => obj.feedbackId == dataAboutUser.currentFeedbackId
 	);
 
 	try {
 		switch (stageNum) {
 			case 1:
-				if (
-					requestsData.find(
-						(obj) => obj.chatId == chatId && obj.isActive == false
-					) ||
-					dataAboutUser.canWriteFeedbacks
-				) {
+				if (dataAboutUser.canWriteFeedbacks) {
 					dataAboutUser.userAction = "writeFeedbacks1";
 				}
 
 				await bot.editMessageText(
 					`<b><i>📧 Создание отзыва ✍️</i></b>\n\n${
-						requestsData.find(
-							(obj) => obj.chatId == chatId && obj.isActive
-						)
-							? `<b>${
-									dataAboutUser.login
-							  },</b> отзывы оставляются <b>после получения</b> заказа❗\n\n<b><a href="https://t.me/${BotName}/?start=myRequest">Ваша заявка №${
-									requestsData.find(
-										(obj) => obj.chatId == chatId && obj.isActive
-									).requestId
-							  }</a></b>`
-							: requestsData.find(
-									(obj) =>
-										obj.chatId == chatId && obj.isActive == false
-							  ) || dataAboutUser.canWriteFeedbacks
-							? `Напишите ваше мнение о полученном заказе, на <b>услугу №${
-									requestsData.find((obj) => obj.chatId == chatId)
-										.serviceNum
-							  } "${
-									catalogOfServicesText[
-										requestsData.find((obj) => obj.chatId == chatId)
-											.serviceNum - 1
-									].serviceName
-							  }"! 😊\n\nПримечание:</b>\n<i>Пожалуйста, оставьте отзыв с разумным размером, будьте вежливы и излагайте информацию исключительно по теме, которая в дальнейшем поможет сотням клиентов! 🙏</i>`
-							: !requestsData.find((obj) => obj.chatId == chatId)
+						dataAboutUser.requestsData.at(-1)
+							? !dataAboutUser.canWriteFeedbacks &&
+							  dataAboutUser.requestsData.find((obj) => obj.isActive)
+								? `<b>${
+										dataAboutUser.login
+								  },</b> отзывы оставляются <b>после получения</b> заказа❗\n\n<b><a href="https://t.me/${BotName}/?start=myRequest">Ваша заявка №${
+										dataAboutUser.requestsData.at(-1).requestId
+								  }</a></b>`
+								: dataAboutUser.canWriteFeedbacks
+								? `Напишите ваше мнение о полученном заказе, на <b>услугу №${
+										dataAboutUser.requestsData.at(-1).serviceNum
+								  } "${
+										catalogOfServicesText[
+											dataAboutUser.requestsData.at(-1).serviceNum -
+												1
+										].serviceName
+								  }"! 😊\n\nПримечание:</b>\n<i>Пожалуйста, оставьте отзыв с разумным размером, будьте вежливы и излагайте информацию исключительно по теме, которая в дальнейшем поможет сотням клиентов! 🙏</i>`
+								: ``
+							: !dataAboutUser.requestsData.at(-1)
 							? `<b>${dataAboutUser.login},</b> отзывы оставляются <b>после получения</b> заказа❗\n\n<b><a href="https://t.me/${BotName}/?start=catalogOfServices1">Выбрать услугу</a></b>`
-							: ``
+							: `--`
 					}`,
 					{
 						parse_mode: "html",
@@ -1627,7 +1632,7 @@ async function writeFeedbacks(chatId, stageNum) {
 					`<b><i>📧 Создание отзыва ✍️\n\nВаш отзыв:</i></b><blockquote><b>${
 						dataAboutUser.login
 					} • Услуга №${
-						requestsData.find((obj) => obj.chatId == chatId).serviceNum
+						dataAboutUser.requestsData.at(-1).serviceNum
 					}\n\nПродукт:</b> ${
 						dataAboutFeedback.productLink
 							? `<a href="${dataAboutFeedback.productLink}">к боту</a>`
@@ -1734,15 +1739,10 @@ async function writeFeedbacks(chatId, stageNum) {
 								[
 									{
 										text: `${
-											feedbacksData.filter(
-												(obj) =>
-													obj.chatId == chatId && obj.isCreated
-											).length > 0
+											dataAboutUser.feedbacksData
 												? `Ваши отзывы (${
-														feedbacksData.filter(
-															(obj) =>
-																obj.chatId == chatId &&
-																obj.isCreated
+														dataAboutUser.feedbacksData.filter(
+															(obj) => obj.isCreated
 														).length
 												  }) 📧`
 												: ``
@@ -1785,49 +1785,40 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 				}\n\n<b>Лояльность</b> - <a href="https://t.me/${BotName}/?start=moreAboutUserStatus">подробнее</a>\nСтатус:<b> ${
 					dataAboutUser.userStatus
 				}</b>\nРазмер скидки:<b> ${
-					dataAboutUser.requestsHistiory
+					dataAboutUser.requestsData.at(-1)
 						? `${
-								dataAboutUser.requestsHistiory.length >= 3
-									? "5%"
-									: dataAboutUser.requestsHistiory.length >= 6
+								dataAboutUser.requestsData.length >= 3
+									? "3%"
+									: dataAboutUser.requestsData.length >= 6
+									? "6%"
+									: dataAboutUser.requestsData.length >= 10
 									? "10%"
-									: dataAboutUser.requestsHistiory.length >= 10
-									? "20%"
-									: dataAboutUser.requestsHistiory.length < 3
+									: dataAboutUser.requestsData.length < 3
 									? "Нет ( 0% )"
-									: "Нет ( 0% )"
+									: ""
 						  }`
-						: ``
+						: `Нет ( 0% )`
 				}</b>\n\n<b>Статистика:</b>\nВсего заказов: <b>${
-					dataAboutUser.requestsHistiory
-						? dataAboutUser.requestsHistiory.length
+					dataAboutUser.requestsData.at(-1)
+						? dataAboutUser.requestsData.length
 						: "0"
 				} шт</b>${
-					(dataAboutUser.requestsHistiory &&
-						dataAboutUser.requestsHistiory.length == 0) ||
-					!dataAboutUser.requestsHistiory
+					!dataAboutUser.requestsData.at(-1)
 						? ` - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
 						: ``
 				}\nКол-во отзывов: <b>${
-					feedbacksData.filter(
-						(obj) =>
-							obj.chatId == dataAboutUser.chatId &&
-							obj.isVerified &&
-							obj.isCreated
-					).length
+					dataAboutUser.feedbacksData.filter((obj) => obj.isVerified)
+						.length
 				}${
-					feedbacksData.filter(
-						(obj) => obj.chatId == dataAboutUser.chatId && obj.isCreated
-					).length > 0
+					dataAboutUser.feedbacksData.filter((obj) => obj.isCreated)
+						.length > 0
 						? ` / ${
-								feedbacksData.filter(
-									(obj) =>
-										obj.chatId == dataAboutUser.chatId &&
-										obj.isCreated
+								dataAboutUser.feedbacksData.filter(
+									(obj) => obj.isCreated
 								).length
-						  } шт</b> - <a href="https://t.me/${BotName}/?start=myFeedbacks">к отзывам</a>`
+						  } шт</b> - <a href="https://t.me/${BotName}/?start=myFeedbacks">ваши отзывы</a>`
 						: ` шт</b>`
-				}\n\n<i>Прошу извинить, бот-консультант только стажируется, поэтому некоторые разделы ещё в разработке.. 🫤</i>`,
+				}\n\n<b><a href="https://t.me/${BotName}/?start=soon">Политика компании digfusion</a></b>`,
 				{
 					parse_mode: "html",
 					chat_id: chatId,
@@ -1839,13 +1830,10 @@ async function settings(chatId, editLogin = false, afterEdit = false) {
 							[
 								{
 									text: `${
-										requestsData.find(
-											(obj) => obj.chatId == chatId && obj.isActive
-										)
+										dataAboutUser.requestsData.at(-1)
 											? `❗Ваша заявка №${
-													requestsData.find(
-														(obj) => obj.chatId == chatId
-													).requestId
+													dataAboutUser.requestsData.at(-1)
+														.requestId
 											  } 🕑`
 											: ""
 									}`,
@@ -1919,13 +1907,17 @@ async function userStatusInfo(chatId) {
 
 	try {
 		await bot.editMessageText(
-			`<b><i>👑 Программа лояльности 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\nВот весь список:</b><blockquote><b>"Клиент 🙂"</b> - без скидки (<b>начальный</b>)\n\n<b>"Постоянный клиент 😎"</b> - 5% (от <b>3 заказов</b>)\n\n<b>"Особый клиент 🤩"</b> - 10% (от <b>6 заказов</b>)\n\n<b>"Лучший покупатель 🫅"</b> - 20% (от <b>10 заказов</b>)</blockquote>\n\nВаша текущая роль:<b>\n${
+			`<b><i>👑 Программа лояльности 📊</i></b>\n\nУ <b>каждого</b> клиента имеется <b>статус,</b> который в зависимости <B>от уровня,</B> предоставляет <b>скидку на заказ</b> при его <b>оформлении! 😍\n\n</b><blockquote><b>Вот весь список:\n\n"Клиент 🙂"</b> - без скидки (<b>начальный</b>) *\n\n<b>"Постоянный клиент 😎"</b> - 3% (от <b>3 заказов</b>) *\n\n<b>"Особый клиент 🤩"</b> - 6% (от <b>6 заказов</b>) *\n\n<b>"Лучший покупатель 🤴"</b> - 10% (от <b>10 заказов</b>) *\n\n<b>${
+				catalogOfServicesText.find((obj) => obj.firstPrice)
+					? `<i>Суммируются с текущими скидками на услуги</i>`
+					: ``
+			}</b></blockquote>\n\nВаша текущая роль: <b>${
 				dataAboutUser.userStatus
-			}</b>${
-				dataAboutUser.requestsHistiory
-					? `\n\nКол-во заказов: <b>${dataAboutUser.requestsHistiory.length} шт</b>`
-					: `\n\nКол-во заказов: <b>0 шт</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
-			}`,
+			}</b>\nКол-во заказов: ${
+				dataAboutUser.requestsData.at(-1)
+					? `<b>${dataAboutUser.requestsData.length} шт</b>`
+					: `<b>0 шт</b> - <a href="https://t.me/${BotName}/?start=catalogOfServices1">к услугам</a>`
+			}\n\n<i>* Считаются только выполненные заказы</i>`,
 			{
 				parse_mode: "html",
 				chat_id: chatId,
@@ -1969,23 +1961,22 @@ async function dialogBuilder(chatId, textNum = 1) {
 		textToSayHelloForEnd = "Доброго вечера";
 	else if (dateNowHHNN >= 2200 || dateNowHHNN < 600)
 		textToSayHelloForEnd = "Доброй ночи";
+
 	try {
-		let dataAboutClient = "",
-			dataAboutСertainRequest = "";
-		if (usersData.find((obj) => obj.chatId == clientChatId)) {
+		let dataAboutClient;
+		if (clientChatId)
 			dataAboutClient = usersData.find((obj) => obj.chatId == clientChatId);
-			dataAboutСertainRequest = requestsData.find(
-				(obj) => obj.chatId == clientChatId
-			);
-		}
-		if (textNum == 0) {
-			clientChatId = null;
-		}
+
+		let dataAboutСertainRequest;
+		if (dataAboutClient && dataAboutClient.requestsData.at(-1))
+			dataAboutСertainRequest = dataAboutClient.requestsData.at(-1);
+
+		if (textNum == 0) clientChatId = null;
 
 		let textsToDialog = [
 			`${textToSayHello}${
 				clientChatId ? `, ${dataAboutClient.login}` : ""
-			}! 👋\n\nМое имя Давид, и я здесь, чтобы помочь вам с любыми вопросами, касающимися нашей деятельности. Я лично отвечаю за выполнение всех проектов и буду работать с вами, чтобы гарантировать успешное завершение вашего будущего проекта! 😊`,
+			}! 👋\n\nМое имя Давид, и я готов помочь вам с любыми вопросами, касающимися нашей деятельности. Я лично отвечаю за выполнение всех проектов и буду работать с вами, чтобы гарантировать успешное завершение вашего будущего проекта! 😊`,
 			`Подробную информацию о наших преимуществах и о нашей компании вы можете узнать в нашем боте-консультате, в разделе "О нас"! 😉`,
 			`Услуги подробно и понятно описаны в нашем консультационном боте, в разделе "Каталог услуг". Если у вас остались вопросы, не стесняйтесь их задавать! 😉`,
 			`Для оформления нам потребуется, чтобы вы точно определились с услугой и создали на неё заявку в разделе "Каталог услуг", после чего написали нам, указав номер созданной заявки. 😉\n\nЕсли ваша заявка уже создана, номер можно заметить на странице главного меню.`,
@@ -2004,9 +1995,9 @@ async function dialogBuilder(chatId, textNum = 1) {
 			}🛠️</i></b>\n\n<b>Скопировать:</b><blockquote><code>${
 				textsToDialog[textNum - 1]
 			}</code></blockquote>\n\n${
-				!dataAboutСertainRequest
+				!dataAboutClient
 					? `Впишите Id любого клиента ✍️`
-					: `Текущий клиент: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutСertainRequest.chatId}">${dataAboutСertainRequest.login}</a></b>`
+					: `Текущий клиент: <b><a href="https://t.me/${BotName}/?start=moreAboutUserWithId${dataAboutClient.chatId}">${dataAboutClient.login}</a></b>`
 			}`,
 			{
 				parse_mode: "html",
@@ -2067,16 +2058,16 @@ async function dialogBuilder(chatId, textNum = 1) {
 							{
 								text: `${
 									dataAboutСertainRequest &&
-									dataAboutСertainRequest.requestId
+									dataAboutСertainRequest.requestsData.at(-1)
 										? `К заявке 🧑‍💻`
 										: ``
 								}`,
 								callback_data: `${
-									dataAboutСertainRequest
+									dataAboutСertainRequest &&
+									dataAboutСertainRequest.requestsData.at(-1)
 										? `requestWithId${
-												requestsData.find(
-													(obj) => obj.chatId == clientChatId
-												).requestId
+												dataAboutСertainRequest.requestsData.at(-1)
+													.requestId
 										  }`
 										: `-`
 								}`,
@@ -2106,6 +2097,22 @@ async function adminMenu(chatId) {
 	if (chatId == jackId) {
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
+		let allRequestsData = [];
+		usersData.forEach((user) => {
+			if (user.requestsData)
+				user.requestsData.forEach((request) => {
+					allRequestsData.push(request);
+				});
+		});
+
+		let allFeedbacksData = [];
+		usersData.forEach((user) => {
+			if (user.feedbacksData)
+				user.feedbacksData.forEach((feedback) => {
+					allFeedbacksData.push(feedback);
+				});
+		});
+
 		try {
 			await bot.editMessageText(
 				`<b><i>💠 Управление 💠</i>\n\nЗдравствуйте, ${dataAboutUser.login}!\n\nЧто вы хотите изменить? 🤔</b>`,
@@ -2120,11 +2127,11 @@ async function adminMenu(chatId) {
 							[
 								{
 									text: `${
-										requestsData.filter((obj) => obj.isActive == true)
+										allRequestsData.filter((obj) => obj.isActive)
 											.length != 0
 											? `❗Заявки (${
-													requestsData.filter(
-														(obj) => obj.isActive == true
+													allRequestsData.filter(
+														(obj) => obj.isActive
 													).length
 											  })`
 											: "Заявки"
@@ -2152,11 +2159,11 @@ async function adminMenu(chatId) {
 								{ text: "Алерты 📣", callback_data: "alertsAdmin" },
 								{
 									text: `Отзывы ${
-										feedbacksData.filter(
+										allFeedbacksData.filter(
 											(obj) => !obj.isVerified && obj.isCreated
 										).length > 0
 											? `(${
-													feedbacksData.filter(
+													allFeedbacksData.filter(
 														(obj) =>
 															!obj.isVerified && obj.isCreated
 													).length
@@ -2184,128 +2191,158 @@ async function requestsList(
 	requestId = null,
 	dataAboutRequestForUser = false
 ) {
-	if (chatId == jackId) {
-		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
+	const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
-		try {
-			if (dataAboutRequestForUser) {
-				try {
-					bot.deleteMessage(chatId, dataAboutUser.messageIdOther);
-				} catch (error) {}
+	try {
+		if (dataAboutRequestForUser) {
+			try {
+				bot.deleteMessage(chatId, dataAboutUser.messageIdOther);
+			} catch (error) {}
 
-				const dataAboutСertainRequest = requestsData.find(
-					(obj) => obj.chatId == chatId
-				);
+			let dataAboutСertainRequest;
+			if (dataAboutUser.requestsData.at(-1))
+				dataAboutСertainRequest = dataAboutUser.requestsData.at(-1);
 
-				await bot.editMessageText(
-					`<b><i>🧑‍💻 Ваша заявка • <code>№${
-						dataAboutСertainRequest.requestId
-					}</code> 🪪</i>\n\nНа услугу №${
-						dataAboutСertainRequest.serviceNum
-					}:\n</b><blockquote><b>${dataAboutСertainRequest.serviceNum}. ${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.serviceName
-					} - <a href="https://t.me/${BotName}/?start=catalogOfServices${
-						dataAboutСertainRequest.serviceNum
-					}">к услуге</a>\n\nПодробнее:</b> ${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.moreAbout
-					}\n\n<b>Действует:</b> ${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.lifeTime
-					}\n\n<b>Срок выполнения:</b> ${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.executionDate
-					} ⌛\n\n<b>Цена:</b> ${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.priceSentence
-					} 💰</blockquote>\n\nСтатус: <b>${
-						dataAboutСertainRequest.isActive
-							? "Обрабатывается.. 🕑"
-							: "Обработана! ✅"
-					}</b>\n\n<B>${dataAboutСertainRequest.creationTime}</B> - ${
-						dataAboutСertainRequest.creationDate
-					}`,
-					{
-						parse_mode: "html",
-						chat_id: chatId,
-						message_id: usersData.find((obj) => obj.chatId == chatId)
-							.messageId,
-						disable_web_page_preview: true,
-						reply_markup: {
-							inline_keyboard: [
-								[
-									{
-										text: `Сменить услугу 🔃`,
-										callback_data: `catalogOfServices`,
-									},
-								],
-								[
-									{
-										text: "Связь 💭",
-										callback_data: `consultation`,
-									},
-									{
-										text: `Удалить ❌`,
-										callback_data: `deleteRequestWithId${dataAboutСertainRequest.requestId}`,
-									},
-								],
-
-								[
-									{
-										text: "⬅️В меню",
-										callback_data: "exit",
-									},
-								],
+			await bot.editMessageText(
+				`<b><i>🧑‍💻 Ваша заявка • <code>№${
+					dataAboutСertainRequest.requestId
+				}</code> 🪪</i>\n\nНа услугу №${
+					dataAboutСertainRequest.serviceNum
+				}:\n</b><blockquote><b>${dataAboutСertainRequest.serviceNum}. ${
+					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+						.serviceName
+				} - <a href="https://t.me/${BotName}/?start=catalogOfServices${
+					dataAboutСertainRequest.serviceNum
+				}">к услуге</a>\n\nПодробнее:</b> ${
+					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+						.moreAbout
+				}${
+					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+						.lifeTime
+						? `\n\n<b>Действует:</b> ${
+								catalogOfServicesText[
+									dataAboutСertainRequest.serviceNum - 1
+								].lifeTime
+						  }`
+						: ``
+				}${
+					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+						.executionDate
+						? `\n\n<b>Срок выполнения:</b> ${
+								catalogOfServicesText[
+									dataAboutСertainRequest.serviceNum - 1
+								].executionDate
+						  } ⌛`
+						: ``
+				}\n\n<b>Цена:</b> ${
+					catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
+						.priceSentence
+				} 💰</blockquote>\n\nСтатус: <b>${
+					dataAboutСertainRequest.isActive
+						? "Обрабатывается.. 🕑"
+						: "Обработана! ✅"
+				}</b>\n\n<B>${dataAboutСertainRequest.creationTime}</B> - ${
+					dataAboutСertainRequest.creationDate
+				}`,
+				{
+					parse_mode: "html",
+					chat_id: chatId,
+					message_id: usersData.find((obj) => obj.chatId == chatId)
+						.messageId,
+					disable_web_page_preview: true,
+					reply_markup: {
+						inline_keyboard: [
+							[
+								{
+									text: `Сменить услугу 🔃`,
+									callback_data: `catalogOfServices`,
+								},
 							],
-						},
-					}
-				);
-			} else if (!requestId) {
-				let listText = "";
+							[
+								{
+									text: "Связь 💭",
+									callback_data: `consultation`,
+								},
+								{
+									text: `Удалить ❌`,
+									callback_data: `deleteRequestQuestionWithId${dataAboutСertainRequest.requestId}`,
+								},
+							],
+
+							[
+								{
+									text: "⬅️В меню",
+									callback_data: "exit",
+								},
+							],
+						],
+					},
+				}
+			);
+		} else if (chatId == jackId) {
+			if (!requestId) {
 				let count = 0;
 				let countOfLists = 1;
+				let listText = ["", "", "", "", "", "", "", "", "", ""];
 
-				listText = ["", "", "", "", "", "", "", "", "", ""];
+				let allRequestsData = [];
+				usersData.forEach((user) => {
+					if (user.requestsData)
+						user.requestsData.forEach((request) => {
+							allRequestsData.push(request);
+						});
+				});
+
 				switch (listNum) {
 					case 1:
 						dataAboutUser.userAction = "requestsList1";
 
-						let dataAboutRequests = requestsData.filter(
-							(obj) => obj.isActive == true
-						);
-						for (let i = 0; i < dataAboutRequests.length; i++) {
-							const dataAboutUserСertainRequest = usersData.find(
-								(obj) => obj.chatId == requestsData[i].chatId
-							);
+						for (let i = 0; i < allRequestsData.length; i++) {
+							if (allRequestsData[i].isActive) {
+								let dataAboutUserСertainRequest = usersData.find(
+									(obj) =>
+										obj.requestsData &&
+										obj.requestsData.find(
+											(request) =>
+												request.requestId ==
+												allRequestsData[i].requestId
+										)
+								);
 
-							if (count % 10 == 0 && count != 0) {
-								++countOfLists;
+								if (count % 10 == 0 && count != 0) {
+									++countOfLists;
+								}
+								count++;
+								listText[
+									countOfLists - 1
+								] += `<b>[${count}] <a href="tg://user?id=${
+									allRequestsData[i].chatId
+								}">${dataAboutUserСertainRequest.login}</a> • <code>${
+									dataAboutUserСertainRequest.chatId
+								}</code> 🕑\n${allRequestsData[i].serviceNum}. ${
+									catalogOfServicesText[
+										allRequestsData[i].serviceNum - 1
+									].serviceName
+								}</b>\n<b>${allRequestsData[i].creationTime}</b> - ${
+									allRequestsData[i].creationDate
+								}<b>\n<a href = "https://t.me/${BotName}/?start=requestWithId${
+									allRequestsData[i].requestId
+								}">Подробнее о заявке</a></b>\n\n`;
 							}
-							count++;
-							listText[
-								countOfLists - 1
-							] += `<b>[${count}] <a href="tg://user?id=${
-								dataAboutRequests[i].chatId
-							}">${dataAboutUserСertainRequest.login}</a> • <code>${
-								dataAboutRequests[i].chatId
-							}</code> 🕑\n${dataAboutRequests[i].serviceNum}. ${
-								catalogOfServicesText[
-									dataAboutRequests[i].serviceNum - 1
-								].serviceName
-							}</b>\n<b>${dataAboutRequests[i].creationTime}</b> - ${
-								dataAboutRequests[i].creationDate
-							}<b>\n<a href = "https://t.me/${BotName}/?start=requestWithId${
-								dataAboutRequests[i].requestId
-							}">Подробнее о заявке</a></b>\n\n`;
 						}
 						break;
 					case 2:
 						dataAboutUser.userAction = "requestsList2";
 
-						for (let i = 0; i < requestsData.length; i++) {
-							const dataAboutUserСertainRequest = usersData.find(
-								(obj) => obj.chatId == requestsData[i].chatId
+						for (let i = 0; i < allRequestsData.length; i++) {
+							let dataAboutUserСertainRequest = usersData.find(
+								(user) =>
+									user.requestsData &&
+									user.requestsData.find(
+										(request) =>
+											request.requestId ==
+											allRequestsData[i].requestId
+									)
 							);
 
 							if (count % 10 == 0 && count != 0) {
@@ -2315,55 +2352,21 @@ async function requestsList(
 							listText[
 								countOfLists - 1
 							] += `<b>[${count}] <a href="tg://user?id=${
-								requestsData[i].chatId
+								allRequestsData[i].chatId
 							}">${dataAboutUserСertainRequest.login}</a> • <code>${
-								requestsData[i].chatId
-							}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
-								requestsData[i].serviceNum
+								dataAboutUserСertainRequest.chatId
+							}</code> ${allRequestsData[i].isActive ? "🕑" : "✅"}\n${
+								allRequestsData[i].serviceNum
 							}. ${
-								catalogOfServicesText[requestsData[i].serviceNum - 1]
+								catalogOfServicesText[allRequestsData[i].serviceNum - 1]
 									.serviceName
-							}</b>\n<b>${requestsData[i].creationTime}</b> - ${
-								requestsData[i].creationDate
+							}</b>\n<b>${allRequestsData[i].creationTime}</b> - ${
+								allRequestsData[i].creationDate
 							}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
-								requestsData[i].requestId
+								allRequestsData[i].requestId
 							}">Подробнее о заявке</a></b>\n\n`;
 						}
 						break;
-					// case 3:
-					// dataAboutUser.userAction = "requestsList3";
-
-					// for (
-					// 	let i = 0;
-					// 	i < dataAboutUser.requestsHistiory.length;
-					// 	i++
-					// ) {
-					// 	const dataAboutUserСertainRequest = usersData.find(
-					// 		(obj) => obj.chatId == requestsData[i].chatId
-					// 	);
-
-					// 	if (count % 10 == 0 && count != 0) {
-					// 		++countOfLists;
-					// 	}
-					// 	count++;
-					// 	listText[
-					// 		countOfLists - 1
-					// 	] += `<b>[${count}] <a href="tg://user?id=${
-					// 		requestsData[i].chatId
-					// 	}">${dataAboutUserСertainRequest.login}</a> • <code>${
-					// 		requestsData[i].chatId
-					// 	}</code> ${requestsData[i].isActive ? "🕑" : "✅"}\n${
-					// 		requestsData[i].serviceNum
-					// 	}. ${
-					// 		catalogOfServicesText[requestsData[i].serviceNum - 1]
-					// 			.serviceName
-					// 	}</b>\n<b>${requestsData[i].creationTime}</b> - ${
-					// 		requestsData[i].creationDate
-					// 	}\n<b><a href = "https://t.me/${BotName}/?start=requestWithId${
-					// 		requestsData[i].requestId
-					// 	}">Подробнее о заявке</a></b>\n\n`;
-					// }
-					// break;
 				}
 
 				await bot.editMessageText(
@@ -2442,32 +2445,15 @@ async function requestsList(
 								],
 								[
 									{
-										text:
-											listNum == 1
-												? `• Новые ${
-														requestsData.filter(
-															(obj) => obj.isActive == true
-														).length != 0
-															? `(${
-																	requestsData.filter(
-																		(obj) =>
-																			obj.isActive == true
-																	).length
-															  } шт) `
-															: ""
-												  }❗•`
-												: `Новые ${
-														requestsData.filter(
-															(obj) => obj.isActive == true
-														).length != 0
-															? `(${
-																	requestsData.filter(
-																		(obj) =>
-																			obj.isActive == true
-																	).length
-															  } шт) `
-															: ""
-												  }❗`,
+										text: `${listNum == 1 ? "•" : ""} Новые ${
+											allRequestsData.filter((obj) => obj.isActive)
+												? `(${
+														allRequestsData.filter(
+															(obj) => obj.isActive
+														).length
+												  } шт) `
+												: ""
+										}❗${listNum == 1 ? "•" : ""}`,
 										callback_data: "requestsList1",
 									},
 								],
@@ -2483,74 +2469,95 @@ async function requestsList(
 					}
 				);
 			} else if (requestId) {
-				const dataAboutСertainRequest = requestsData.find(
-					(obj) => obj.requestId == requestId
-				);
 				const dataAboutUserСertainRequest = usersData.find(
-					(obj) => obj.chatId == dataAboutСertainRequest.chatId
+					(obj) =>
+						obj.requestsData &&
+						obj.requestsData.find(
+							(request) => request.requestId == requestId
+						)
 				);
 
-				await bot.editMessageText(
-					`<b><i>🧑‍💻 Заявка • <code>${requestId}</code> 🪪</i></b>\n\n<b><a href="tg://user?id=${
-						dataAboutСertainRequest.chatId
-					}">${dataAboutUserСertainRequest.login}</a></b> • <code>${
-						dataAboutUserСertainRequest.chatId
-					}</code>\n<b>Услуга:</b>\n<blockquote><b>${
-						dataAboutСertainRequest.serviceNum
-					}. ${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.serviceName
-					}\nЦена: </b>${
-						catalogOfServicesText[dataAboutСertainRequest.serviceNum - 1]
-							.priceSentence
-					}</blockquote>\n<b>${
-						dataAboutСertainRequest.creationTime
-					}</b> - ${dataAboutСertainRequest.creationDate} ${
-						dataAboutСertainRequest.isActive ? "" : "✅"
-					}`,
-					{
-						parse_mode: "html",
-						chat_id: chatId,
-						message_id: usersData.find((obj) => obj.chatId == chatId)
-							.messageId,
-						disable_web_page_preview: true,
-						reply_markup: {
-							inline_keyboard: [
-								[
-									{
-										text: "🛠️",
-										callback_data: `buildDialogForUserWithId${dataAboutСertainRequest.chatId}`,
-									},
-									{
-										text: "👤",
-										url: `tg://user?id=${dataAboutСertainRequest.chatId}`,
-									},
-									{
-										text: `${
-											dataAboutСertainRequest.isActive ? "✅" : "🕑"
-										}`,
-										callback_data: `toggleToActiveRequestWithId${dataAboutСertainRequest.requestId}`,
-									},
+				if (
+					dataAboutUserСertainRequest.requestsData.find(
+						(obj) => obj.requestId == requestId
+					)
+				) {
+					const dataAboutСertainRequest =
+						dataAboutUserСertainRequest.requestsData.find(
+							(obj) => obj.requestId == requestId
+						);
+
+					await bot.editMessageText(
+						`<b><i>🧑‍💻 Заявка • <code>${requestId}</code> 🪪</i></b>\n\n<b><a href="tg://user?id=${
+							dataAboutUserСertainRequest.chatId
+						}">${dataAboutUserСertainRequest.login}</a></b> • <code>${
+							dataAboutUserСertainRequest.chatId
+						}</code>\n<b>Услуга:</b>\n<blockquote><b>${
+							dataAboutСertainRequest.serviceNum
+						}. ${
+							catalogOfServicesText[
+								dataAboutСertainRequest.serviceNum - 1
+							].serviceName
+						}\nЦена: </b>${
+							catalogOfServicesText[
+								dataAboutСertainRequest.serviceNum - 1
+							].priceSentence
+						}</blockquote>\n<b>${
+							dataAboutСertainRequest.creationTime
+						}</b> - ${dataAboutСertainRequest.creationDate} ${
+							dataAboutСertainRequest.isActive ? "🕗" : `✅`
+						}`,
+						{
+							parse_mode: "html",
+							chat_id: chatId,
+							message_id: usersData.find((obj) => obj.chatId == chatId)
+								.messageId,
+							disable_web_page_preview: true,
+							reply_markup: {
+								inline_keyboard: [
+									[
+										{
+											text: "🛠️",
+											callback_data: `buildDialogForUserWithId${dataAboutUserСertainRequest.chatId}`,
+										},
+										{
+											text: "👤",
+											url: `tg://user?id=${dataAboutUserСertainRequest.chatId}`,
+										},
+										{
+											text: `${
+												dataAboutСertainRequest.isActive
+													? "✅"
+													: "🕑"
+											}`,
+											callback_data: `toggleToActiveRequestWithId${dataAboutСertainRequest.requestId}`,
+										},
+									],
+									[
+										{
+											text: "⬅️Назад",
+											callback_data:
+												dataAboutUser.userAction ==
+													"requestsList1" ||
+												dataAboutUser.userAction == "requestsList2"
+													? "requestsList1"
+													: "exit",
+										},
+										{
+											text: "Удалить❌",
+											callback_data: `deleteRequest100%WithId${dataAboutСertainRequest.requestId}`,
+										},
+									],
 								],
-								[
-									{
-										text: "⬅️Назад",
-										callback_data:
-											dataAboutUser.userAction == "requestsList1" ||
-											dataAboutUser.userAction == "requestsList2"
-												? "requestsList1"
-												: "exit",
-									},
-								],
-							],
-						},
-					}
-				);
+							},
+						}
+					);
+				}
 			}
-		} catch (error) {
-			console.log(error);
-			sendDataAboutError(chatId, `${String(error)}`);
 		}
+	} catch (error) {
+		console.log(error);
+		sendDataAboutError(chatId, `${String(error)}`);
 	}
 }
 
@@ -2580,21 +2587,14 @@ async function registryList(chatId, listNum = 1, otherChatId = null) {
 					}\nСтатус: <b>${
 						dataAboutClient.userStatus
 					}</b>\n\n<b>Статистика:</b>\nЗаявок: <b>${
-						dataAboutClient.requestsHistiory
-							? `${dataAboutClient.requestsHistiory.length}`
-							: `0`
+						dataAboutClient.requestsData.length || `0`
 					} шт</b>\nОтзывов: <b>${
-						feedbacksData.filter(
-							(obj) =>
-								obj.chatId == otherChatId &&
-								obj.isVerified &&
-								obj.isCreated
-						).length
+						dataAboutClient.feedbacksData.filter((obj) => obj.isVerified)
+							.length
 					} / ${
-						feedbacksData.filter(
-							(obj) => obj.chatId == otherChatId && obj.isCreated
-						).length
-					} шт</b></blockquote>`,
+						dataAboutClient.feedbacksData.filter((obj) => obj.isCreated)
+							.length
+					} шт</b></blockquote><b>${dataAboutClient.registrationDate}</b>`,
 					{
 						parse_mode: "html",
 						chat_id: chatId,
@@ -2763,11 +2763,9 @@ async function statisticList(chatId) {
 
 		systemData.requestsAllTime = null;
 
-		for (let i = 0; i < usersData.length; i++) {
-			if (usersData[i].requestsHistiory) {
-				systemData.requestsAllTime += usersData[i].requestsHistiory.length;
-			}
-		}
+		for (let i = 0; i < usersData.length; i++)
+			systemData.requestsAllTime += usersData[i].requestsData.length;
+		systemData.feedbacksAllTime += usersData[i].feedbacksData.length;
 
 		try {
 			await bot.editMessageText(
@@ -2879,9 +2877,24 @@ async function statisticList(chatId) {
 												: ``
 									  }`
 						  }`
-				}\n<b>• ${feedbacksData.filter((obj) => obj.isVerified).length} / ${
-					feedbacksData.filter((obj) => obj.isCreated).length
-				}</b> отзывов`,
+				}\n<b>• ${systemData.feedbacksAllTime}</b> ${
+					(systemData.feedbacksAllTime >= 5 &&
+						systemData.feedbacksAllTime <= 20) ||
+					(systemData.feedbacksAllTime % 10 >= 5 &&
+						systemData.feedbacksAllTime % 10 <= 9) ||
+					systemData.feedbacksAllTime % 10 == 0
+						? "отзывов"
+						: `${
+								systemData.feedbacksAllTime % 10 == 1
+									? "отзыв"
+									: `${
+											systemData.feedbacksAllTime % 10 >= 2 &&
+											systemData.feedbacksAllTime % 10 <= 4
+												? "отзыва"
+												: ``
+									  }`
+						  }`
+				}`,
 				{
 					parse_mode: "html",
 					chat_id: chatId,
@@ -2962,16 +2975,7 @@ async function StartAll() {
 			if (snapshot.exists()) {
 				const dataFromDB = snapshot.val();
 				usersData = dataFromDB.usersData || [];
-				requestsData = dataFromDB.requestsData || [];
-				feedbacksData = dataFromDB.feedbacksData || [];
-				systemData = dataFromDB.systemData || {
-					newRequestsToday: 0,
-					activityToday: 0,
-					newClientsToday: 0,
-					newFeedbacksToday: 0,
-					requestsAllTime: 0,
-					activityAllTime: 800,
-				};
+				systemData = dataFromDB.systemData || [];
 			}
 		});
 	} else if (TOKEN == TOKENs[0]) {
@@ -2982,9 +2986,7 @@ async function StartAll() {
 			fs.readFileSync("supportiveDB.json") != ""
 		) {
 			let dataFromDB = JSON.parse(fs.readFileSync("supportiveDB.json"));
-			usersData = dataFromDB.usersData || [];
-			requestsData = dataFromDB.requestsData || [];
-			feedbacksData = dataFromDB.feedbacksData || [];
+			//
 		}
 	}
 
@@ -3018,13 +3020,22 @@ async function StartAll() {
 					userAction: null,
 					canWriteFeedbacks: false,
 
-					requestsHistiory: [],
+					requestsData: [],
+					feedbacksData: [],
 
 					messageIdOther: null,
 					telegramFirstName: message.from.first_name,
 					supportiveCount: null,
 					readRulesInConsultation: false,
 					registrationIsOver: false,
+					registrationDate: `${new Date()
+						.getDate()
+						.toString()
+						.padStart(2, "0")}.${(new Date().getMonth() + 1)
+						.toString()
+						.padStart(2, "0")}.${(new Date().getFullYear() % 100)
+						.toString()
+						.padStart(2, "0")}`,
 				});
 
 				++systemData.newClientsToday;
@@ -3035,7 +3046,7 @@ async function StartAll() {
 			if (dataAboutUser && !dataAboutUser.inBlackList) {
 				if (
 					dataAboutUser.userAction == "firstMeeting3" &&
-					!text.includes("/")
+					Array.from(text)[0] != "/"
 				) {
 					dataAboutUser.login = text;
 
@@ -3061,21 +3072,38 @@ async function StartAll() {
 					catalogOfServices(chatId, match[1]);
 				}
 
-				if (dataAboutUser.userAction == "writeFeedbacks1") {
-					rndId = 1;
-					do {
-						rndId = Math.floor(Math.random() * 100000);
-					} while (
-						feedbacksData.some((obj) => obj.feedbackId == rndId) &&
-						feedbacksData.length != 0
-					);
+				if (
+					dataAboutUser.userAction == "writeFeedbacks1" &&
+					Array.from(text)[0] != "/"
+				) {
+					let isUnique = false;
+					while (!isUnique) {
+						rndId = Math.floor(Math.random() * 9999);
+						isUnique = true;
 
-					feedbacksData.push({
-						chatId: chatId,
+						for (let i = 0; i < usersData.length; i++) {
+							if (usersData[i].feedbacksData)
+								for (
+									let j = 0;
+									j < usersData[i].feedbacksData.length;
+									j++
+								) {
+									if (
+										usersData[i].feedbacksData[j].feedbackId === rndId
+									) {
+										isUnique = false;
+										break;
+									}
+								}
+							if (!isUnique) break;
+						}
+					}
+
+					// TODO
+					dataAboutUser.feedbacksData.push({
 						from: dataAboutUser.login,
-						serviceNum: requestsData.find(
-							(obj) => obj.chatId == dataAboutUser.chatId
-						).serviceNum,
+						serviceNum: dataAboutUser.requestsData.at(-1).serviceNum,
+
 						opinionRating: null,
 						feedbackText: text,
 
@@ -3091,8 +3119,9 @@ async function StartAll() {
 							.padStart(2, "0")}.${(new Date().getFullYear() % 100)
 							.toString()
 							.padStart(2, "0")}`,
-						isVerified: false,
+
 						feedbackId: rndId,
+						isVerified: false,
 						isCreated: false,
 					});
 
@@ -3106,10 +3135,9 @@ async function StartAll() {
 				if (
 					dataAboutUser.userAction == "writeFeedbacks2" &&
 					text.includes("https://t.me/") &&
-					!text.includes("/start") &&
-					!text.includes("/restart")
+					Array.from(text)[0] != "/"
 				) {
-					feedbacksData.find(
+					dataAboutUser.feedbacksData.find(
 						(obj) => obj.feedbackId == dataAboutUser.currentFeedbackId
 					).productLink = text;
 
@@ -3124,7 +3152,8 @@ async function StartAll() {
 
 				if (
 					dataAboutUser.userAction == "editLogin" &&
-					text != dataAboutUser.login
+					text != dataAboutUser.login &&
+					Array.from(text)[0] != "/"
 				) {
 					dataAboutUser.supportiveCount = text;
 					settings(chatId, true, true);
@@ -3142,7 +3171,10 @@ async function StartAll() {
 				if (
 					(dataAboutUser.userAction == "requestsList1" ||
 						dataAboutUser.userAction == "requestsList2") &&
-					requestsData.find((obj) => obj.requestId == parseInt(text))
+					dataAboutUser.requestsData.at(-1) &&
+					dataAboutUser.requestsData.find(
+						(obj) => obj.requestId == parseInt(text)
+					)
 				) {
 					requestsList(chatId, null, parseInt(text));
 				}
@@ -3212,7 +3244,7 @@ async function StartAll() {
 					case "ые":
 					case "st":
 					case "St":
-						if (chatId == jackId) {
+						if (chatId == jackId || chatId == qu1z3xId) {
 							await bot
 								.sendMessage(chatId, "ㅤ")
 								.then(
@@ -3298,28 +3330,6 @@ async function StartAll() {
 		const chatId = query.message.chat.id;
 		const data = query.data;
 
-		if (!usersData.find((obj) => obj.chatId === chatId)) {
-			usersData.push({
-				chatId: chatId,
-				login: query.from.first_name,
-				phoneNumber: null,
-				userStatus: "Клиент 🙂",
-				messageId: query.message.message_id,
-				userAction: null,
-				canWriteFeedbacks: false,
-
-				requestsHistiory: [],
-
-				messageIdOther: null,
-				telegramFirstName: query.from.first_name,
-				supportiveCount: null,
-				readRulesInConsultation: false,
-				registrationIsOver: false,
-			});
-
-			++systemData.newClientsToday;
-		}
-
 		const dataAboutUser = usersData.find((obj) => obj.chatId == chatId);
 
 		try {
@@ -3336,13 +3346,13 @@ async function StartAll() {
 				) {
 					match = data.match(/^(.*)ServiceNum$/);
 
-					if (dataAboutUser.supportiveCount == 3 && match[1] == "next") {
+					if (dataAboutUser.supportiveCount == 4 && match[1] == "next") {
 						dataAboutUser.supportiveCount = 1;
 					} else if (
 						dataAboutUser.supportiveCount == 1 &&
 						match[1] == "previous"
 					) {
-						dataAboutUser.supportiveCount = 3;
+						dataAboutUser.supportiveCount = 4;
 					} else {
 						match[1] == "next"
 							? dataAboutUser.supportiveCount++
@@ -3359,7 +3369,8 @@ async function StartAll() {
 
 					if (
 						dataAboutUser.selectedService == parseInt(match[1]) &&
-						requestsData.find((obj) => obj.chatId == chatId).isActive
+						dataAboutUser.requestsData.at(-1) &&
+						dataAboutUser.requestsData.at(-1).isActive
 					) {
 						consultation(chatId);
 					} else {
@@ -3369,13 +3380,6 @@ async function StartAll() {
 
 				if (data.includes("consultationOnService")) {
 					match = data.match(/^consultationOnService(\d+)$/);
-
-					dataAboutUser.selectedService = parseInt(match[1]);
-					consultationOnService(chatId, 2);
-				}
-
-				if (data.includes("editRequestAndConsultationOnService")) {
-					match = data.match(/^editRequestAndConsultationOnService(\d+)$/);
 
 					dataAboutUser.selectedService = parseInt(match[1]);
 					consultationOnService(chatId, 2);
@@ -3396,9 +3400,29 @@ async function StartAll() {
 				if (data.includes("deleteFeedbackWithId")) {
 					match = data.match(/^deleteFeedbackWithId(\d+)$/);
 
-					feedbacksData.find(
-						(obj) => obj.feedbackId == parseInt(match[1])
-					).isCreated = false;
+					let allFeedbacksData = [];
+					usersData.forEach((user) => {
+						if (user.feedbacksData)
+							user.feedbacksData.forEach((feedback) => {
+								allFeedbacksData.push(feedback);
+							});
+					});
+
+					if (
+						chatId == jackId &&
+						allFeedbacksData.find(
+							(obj) => obj.feedbackId == parseInt(match[1])
+						)
+					) {
+						allFeedbacksData.splice(
+							allFeedbacksData.indexOf(
+								allFeedbacksData.find(
+									(obj) => obj.feedbackId === parseInt(match[1])
+								),
+								1
+							)
+						);
+					}
 
 					feedbacksList(chatId, 1);
 				}
@@ -3406,8 +3430,21 @@ async function StartAll() {
 				if (data.includes("unverifiedFeedbackWithId")) {
 					match = data.match(/^unverifiedFeedbackWithId(\d+)$/);
 
-					if (match && chatId == jackId) {
-						feedbacksData.find(
+					let allFeedbacksData = [];
+					usersData.forEach((user) => {
+						if (user.feedbacksData)
+							user.feedbacksData.forEach((feedback) => {
+								allFeedbacksData.push(feedback);
+							});
+					});
+
+					if (
+						chatId == jackId &&
+						allFeedbacksData.find(
+							(obj) => obj.feedbackId == parseInt(match[1])
+						)
+					) {
+						allFeedbacksData.find(
 							(obj) => obj.feedbackId == parseInt(match[1])
 						).isVerified = false;
 					}
@@ -3416,8 +3453,21 @@ async function StartAll() {
 				} else if (data.includes("verifiedFeedbackWithId")) {
 					match = data.match(/^verifiedFeedbackWithId(\d+)$/);
 
-					if (chatId == jackId) {
-						feedbacksData.find(
+					let allFeedbacksData = [];
+					usersData.forEach((user) => {
+						if (user.feedbacksData)
+							user.feedbacksData.forEach((feedback) => {
+								allFeedbacksData.push(feedback);
+							});
+					});
+
+					if (
+						chatId == jackId &&
+						allFeedbacksData.find(
+							(obj) => obj.feedbackId == parseInt(match[1])
+						)
+					) {
+						allFeedbacksData.find(
 							(obj) => obj.feedbackId == parseInt(match[1])
 						).isVerified = true;
 					}
@@ -3425,7 +3475,7 @@ async function StartAll() {
 				} else if (data.includes("setOpinionRating")) {
 					match = data.match(/^setOpinionRating(\d+)$/);
 
-					feedbacksData.find(
+					dataAboutUser.feedbacksData.find(
 						(obj) => obj.feedbackId == dataAboutUser.currentFeedbackId
 					).opinionRating =
 						match[1] == 1
@@ -3437,7 +3487,7 @@ async function StartAll() {
 							: match[1] == 4
 							? "😊"
 							: match[1] == 5
-							? "😆"
+							? "🤩"
 							: null;
 
 					writeFeedbacks(chatId, 2);
@@ -3510,14 +3560,87 @@ async function StartAll() {
 					requestsList(chatId, null, parseInt(match[1]));
 				}
 
-				if (data.includes("deleteRequestWithId")) {
-					match = data.match(/^deleteRequestWithId(\d+)$/);
+				if (data.includes("deleteRequest")) {
+					match = data.match(/^deleteRequest(.*)WithId(\d+)$/);
 
-					requestsData.find(
-						(obj) => obj.requestId == parseInt(match[1])
-					).isActive = false;
+					let dataAboutСertainRequest;
+					if (dataAboutUser.requestsData.at(-1))
+						dataAboutСertainRequest = dataAboutUser.requestsData.at(-1);
 
-					menuHome(chatId);
+					if (match[1] == "Question")
+						bot.editMessageText(
+							`❗<b>${
+								dataAboutUser.login
+							}, ваша <a href="https://t.me/${BotName}/?start=myRequest">заявка №${
+								dataAboutСertainRequest.requestId
+							}</a> на услугу:\n\n${
+								dataAboutСertainRequest.serviceNum
+							}. ${
+								catalogOfServicesText[
+									dataAboutСertainRequest.serviceNum - 1
+								].serviceName
+							}\n</b><blockquote><b>Подробнее:</b> ${
+								catalogOfServicesText[
+									dataAboutСertainRequest.serviceNum - 1
+								].moreAbout
+							}\n\n<b>Цена:</b> ${
+								catalogOfServicesText[
+									dataAboutСertainRequest.serviceNum - 1
+								].priceSentence
+							} 💰</blockquote>\n\nВы <b>действительно</b> хотите <B><I>безвозвратно</I> удалить вашу заявку?</B> 🤔`,
+							{
+								parse_mode: "html",
+								chat_id: chatId,
+								message_id: usersData.find(
+									(obj) => obj.chatId == chatId
+								).messageId,
+								disable_web_page_preview: true,
+								reply_markup: {
+									inline_keyboard: [
+										[
+											{
+												text: "⬅️Назад",
+												callback_data: `myRequest`,
+											},
+											{
+												text: "Да, удалить❌",
+												callback_data: `deleteRequest100%WithId${parseInt(
+													match[2]
+												)}`,
+											},
+										],
+									],
+								},
+							}
+						);
+					else if (match[1] == "100%") {
+						const dataAboutUserСertainRequest = usersData.find(
+							(obj) =>
+								obj.requestsData &&
+								obj.requestsData.find(
+									(request) => request.requestId == parseInt(match[2])
+								)
+						);
+
+						// let allRequestsData = [];
+						// usersData.forEach((user) => {
+						// 	if (user.requestsData)
+						// 		user.requestsData.forEach((request) => {
+						// 			allRequestsData.push(request);
+						// 		});
+						// });
+
+						dataAboutUserСertainRequest.requestsData.splice(
+							dataAboutUserСertainRequest.requestsData.indexOf(
+								dataAboutUserСertainRequest.requestsData.find(
+									(obj) => obj.requestId == parseInt(match[2])
+								),
+								1
+							)
+						);
+
+						menuHome(chatId);
+					}
 				}
 
 				if (data.includes("buildDialogForUserWithId")) {
@@ -3531,42 +3654,31 @@ async function StartAll() {
 				if (data.includes("toggleToActiveRequestWithId")) {
 					if (chatId == jackId) {
 						match = data.match(/^toggleToActiveRequestWithId(\d+)$/);
-						const dataAboutСertainUser = usersData.find(
+
+						const dataAboutUserСertainRequest = usersData.find(
 							(obj) =>
-								obj.chatId ==
-								requestsData.find(
-									(obj) => obj.requestId == parseInt(match[1])
-								).chatId
+								obj.requestsData &&
+								obj.requestsData.find(
+									(request) => request.requestId == parseInt(match[1])
+								)
 						);
-						const dataAboutСertainRequest = requestsData.find(
-							(obj) => obj.requestId == parseInt(match[1])
-						);
+						const dataAboutСertainRequest =
+							dataAboutUserСertainRequest.requestsData.find(
+								(obj) => obj.requestId == parseInt(match[1])
+							);
 
 						dataAboutСertainRequest.isActive =
 							!dataAboutСertainRequest.isActive;
 
-						dataAboutСertainUser.canWriteFeedbacks =
+						dataAboutUserСertainRequest.canWriteFeedbacks =
 							!dataAboutСertainRequest.isActive;
 
-						if (
-							dataAboutСertainUser.requestsHistiory &&
-							!dataAboutСertainUser.requestsHistiory.find(
-								(obj) =>
-									obj.requestId == dataAboutСertainRequest.requestId
-							)
-						) {
-							dataAboutUser.selectedService = null;
-							dataAboutСertainUser.requestsHistiory.push({
-								chatId: dataAboutСertainRequest.chatId,
-								serviceNum: dataAboutСertainRequest.serviceNum,
-								creationTime: dataAboutСertainRequest.creationTime,
-								creationDate: dataAboutСertainRequest.creationDate,
-								requestId: dataAboutСertainRequest.requestId,
-							});
+						dataAboutUser.selectedService = null;
 
+						if (!dataAboutСertainRequest.isActive) {
 							bot.sendMessage(
-								dataAboutСertainUser.chatId,
-								`<b>${dataAboutСertainUser.login}, <a href="https://t.me/${BotName}/?start=myRequest">заявка №${dataAboutСertainRequest.requestId}</a> успешно обработана! ✅</b>\n\n<i>Пожалуйста, оставьте содержательный отзыв о полученой работе 🙏</i> \n\n<b>Спасибо вам за сотрудничество! ❤️</b>`,
+								dataAboutUserСertainRequest.chatId,
+								`<b>${dataAboutUserСertainRequest.login}, <a href="https://t.me/${BotName}/?start=myRequest">заявка №${dataAboutСertainRequest.requestId}</a> успешно обработана! ✅</b>\n\n<i>Пожалуйста, оставьте содержательный отзыв о полученой работе 🙏</i> \n\n<b>Спасибо вам за сотрудничество! ❤️</b>`,
 								{
 									parse_mode: "HTML",
 									disable_web_page_preview: true,
@@ -3582,7 +3694,7 @@ async function StartAll() {
 									},
 								}
 							).then((message) => {
-								dataAboutСertainUser.messageIdOther =
+								dataAboutUserСertainRequest.messageIdOther =
 									message.message_id;
 							});
 						}
@@ -3597,9 +3709,9 @@ async function StartAll() {
 				) {
 					match = data.match(/^(.*)BlackListUserWithId(\d+)$/);
 
-					const dataAboutClient = usersData.find(
-						(obj) => obj.chatId == parseInt(match[2])
-					);
+					const dataAboutClient =
+						usersData.find((obj) => obj.chatId == parseInt(match[2])) ||
+						null;
 
 					if (match[1] == "addTo") {
 						dataAboutClient.inBlackList = true;
@@ -3641,7 +3753,7 @@ async function StartAll() {
 						writeFeedbacks(chatId, 1);
 						break;
 					case "sendMyFeedback":
-						feedbacksData.find(
+						dataAboutUser.feedbacksData.find(
 							(obj) => obj.feedbackId == dataAboutUser.currentFeedbackId
 						).isCreated = true;
 
@@ -3771,24 +3883,16 @@ async function StartAll() {
 		}
 	});
 
-	cron.schedule(`1 */2 * * *`, function () {
+	cron.schedule(`1 */3 * * *`, function () {
 		// Запись данных в базу данных
 		if (TOKEN == TOKENs[1]) {
 			set(dataRef, {
 				usersData: usersData,
-				requestsData: requestsData,
-				feedbacksData: feedbacksData,
 				systemData: systemData,
 			});
 
-			if (feedbacksData && feedbacksData.length > 0) {
-				feedbacksData = feedbacksData.filter((obj) => obj.isCreated);
-			}
-
 			const dataToSend = {
 				usersData,
-				requestsData,
-				feedbacksData,
 				systemData,
 			};
 			sendDataAboutDataBase(dataToSend);

@@ -4,8 +4,8 @@
 	"version": "1.0.0",
 	"main": "index.js",
 	"scripts": {
-		"start": "nodemon ./index.js && nodemon ./tgterminal.js",
-		"start2": "node ./index.js && node ./tgterminal.js"
+		"start": "nodemon ./index.js && nodemon ./tgterminal.js && nodemon config.js",
+		"start2": "node ./index.js && node ./tgterminal.js && node config.js"
 	},
 	"author": "",
 	"license": "ISC",
