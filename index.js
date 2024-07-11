@@ -10,27 +10,13 @@ import { sendDataAboutDataBase } from "./tgterminal.js";
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set, get } from "firebase/database";
 
-const TOKENs = [
-	"7072188605:AAGRJq0QEasOS3CYVBnjBZdnIzpRDRWoYpI",
-	"7068045329:AAF0ZeLcIKKEvcubFTb2rWhmFBqrlWId0i8",
-];
+import { config } from "./config.js";
 
-const TOKEN = TOKENs[0]; // 1 - оригинал
+const TOKEN = config.TOKENs[0]; // 1 - оригинал
 const bot = new TelegramBot(TOKEN, { polling: true });
 
-const firebaseConfig = {
-	apiKey: "AIzaSyD96s4e-HW2U7rCSgxhoyw8uKNvJ8_l_wA",
-	authDomain: "digfusionco.firebaseapp.com",
-	databaseURL: "https://digfusionco-default-rtdb.firebaseio.com/",
-	projectId: "digfusionco",
-	storageBucket: "digfusionco.appspot.com",
-	messagingSenderId: "886551969909",
-	appId: "1:886551969909:web:c75dc93afe36b72a98383c",
-	measurementId: "G-0TJRZZ13H8",
-};
-
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+const app = initializeApp(config.firebaseConfig);
 
 // Получение ссылки на базу данных Firebase Realtime Database
 const db = getDatabase(app);
@@ -2968,7 +2954,7 @@ async function alertsAdmin(chatId) {
 }
 
 async function StartAll() {
-	if (TOKEN == TOKENs[1]) {
+	if (TOKEN == config.TOKENs[1]) {
 		BotName = "digfusionbot";
 
 		get(dataRef).then((snapshot) => {
@@ -2978,7 +2964,7 @@ async function StartAll() {
 				systemData = dataFromDB.systemData || [];
 			}
 		});
-	} else if (TOKEN == TOKENs[0]) {
+	} else if (TOKEN == config.TOKENs[0]) {
 		BotName = "digtestingbot";
 
 		if (
@@ -3885,7 +3871,7 @@ async function StartAll() {
 
 	cron.schedule(`1 */3 * * *`, function () {
 		// Запись данных в базу данных
-		if (TOKEN == TOKENs[1]) {
+		if (TOKEN == config.TOKENs[1]) {
 			set(dataRef, {
 				usersData: usersData,
 				systemData: systemData,
