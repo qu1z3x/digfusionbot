@@ -1,0 +1,24 @@
+{
+	"name": "digfusionbot",
+	"type": "module",
+	"version": "1.0.0",
+	"main": "index.js",
+	"scripts": {
+		"start": "nodemon ./index.js && nodemon ./tgterminal.js && nodemon config.js",
+		"start2": "node ./index.js && node ./tgterminal.js && node config.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"firebase": "^10.11.0",
+		"googleapis": "^134.0.0",
+		"node-cron": "^3.0.3",
+		"node-telegram-bot-api": "^0.65.1",
+		"nodemon": "^3.1.0"
+	},
+	"devDependencies": {
+		"@eslint/js": "^9.9.0",
+		"globals": "^15.9.0",
+		"prettier": "^3.3.3"
+	}
+}
