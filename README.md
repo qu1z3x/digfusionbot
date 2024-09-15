@@ -5,6 +5,13 @@
 
 <h1>About</h1>
 <h3>Platform for services of our company <i><a href="https://t.me/digfusion">digfusion</a></i> in Telegram!</h3>
+
+<a href="https://t.me/digfusion">
+  <img src="media/phone1.PNG" alt="Logo" width="240">
+  </a><a href="https://t.me/digfusion">
+  <img src="media/phone2.PNG" alt="Logo" width="240">
+  </a>
+  
 <h3>if it sounds interesting, visit <i><a href="https://t.me/digfusionbot">digfusionbot</a></i></h3>
 
 ##
