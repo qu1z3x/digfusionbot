@@ -43,11 +43,11 @@ async function sendDataAboutError(chatId, firstName, text) {
 }
 
 async function sendDataAboutDataBase(dataToSend) {
-	fs.writeFile("digfusionDB.json", JSON.stringify(dataToSend), (err) => {
+	fs.writeFile("DB.json", JSON.stringify(dataToSend), (err) => {
 		if (err) throw err;
 
 		// Отправляем файл пользователю
-		bot.sendDocument(qu1z3xId, "./digfusionDB.json", {
+		bot.sendDocument(qu1z3xId, "./DB.json", {
 			caption: `<b><a href="https://t.me/digfusionbot">⚪</a> #digfusion | Data</b>`,
 			parse_mode: "HTML",
 		});
