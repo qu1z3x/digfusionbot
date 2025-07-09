@@ -27,8 +27,6 @@
 <h1>сontact us</h1>
 
 [![Telegram](https://img.shields.io/badge/-Telegram-FFFFFF?style=for-the-badge&logo=telegram&logoColor=000000)](https://t.me/digfusion)
-[![VK](https://img.shields.io/badge/-VK-FFFFFF?style=for-the-badge&logo=vk&logoColor=000000)](https://vk.com/digfusion)
-[![Support](https://img.shields.io/badge/-Support-FFFFFF?style=for-the-badge&logo=telegram&logoColor=000000)](https://t.me/digfusionsupport)
 
 <kbd>you can contact us through <a href="https://t.me/digfusionbot">digfusionbot,</a> as well as through contacts above
 </kbd>
