@@ -2729,12 +2729,11 @@ async function StartAll() {
 
 		console.log(message + "\n\n" + fileId);
 	});
-
 	bot.on("text", async (message) => {
 		const chatId = message.chat.id;
 		let text = message.text;
 
-		// console.log(message);
+		console.log(message);
 
 		let dataAboutUser = usersData?.find((obj) => obj.chatId == chatId);
 
@@ -3111,6 +3110,8 @@ async function StartAll() {
 									},
 								],
 							],
+							photoId: "",
+							buttons: [],
 						};
 						break;
 					case "/alert2":
@@ -3132,6 +3133,8 @@ async function StartAll() {
 									.sendPhoto(element.chatId, alertData.photoId, {
 										caption: alertData.text || null,
 										caption_entities: alertData.entities || null,
+										caption_entities: null,
+
 										disable_web_page_preview: true,
 										reply_markup: {
 											inline_keyboard: alertData.buttons
